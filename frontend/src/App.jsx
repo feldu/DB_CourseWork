@@ -1,12 +1,10 @@
 import './App.css';
-import {Center, Text} from "@chakra-ui/react";
 import React from "react";
+import LoginForm from "./pages/LoginForm";
 
 function App() {
     return (
-        <Center w="full" h="400px">
-            <Text>Is it working?</Text>
-        </Center>
+        <LoginForm/>
     );
 }
 
