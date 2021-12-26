@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+import {useDispatch, useSelector} from "react-redux";
 import {
     Box,
     Button,
@@ -13,8 +14,9 @@ import {
     InputRightElement,
 } from '@chakra-ui/react';
 import {ViewIcon, ViewOffIcon} from '@chakra-ui/icons';
-import ErrorMessage from "../components/ErrorMessage";
 import {validateInput} from "../utils/validateInput";
+import * as thunks from "../redux/thunks";
+import AlertMessage from "../components/AlertMessage";
 
 
 export default function LoginForm() {
@@ -24,20 +26,22 @@ export default function LoginForm() {
     const [error, setError] = useState(false);
     const [errorMsg, setErrorMsg] = useState('');
     const [isLoading, setIsLoading] = useState(false);
+    const authInfo = useSelector(state => state.authorization.authorizationInfo);
+    const dispatch = useDispatch();
 
     const toggleShowPassword = () => setShow(!show);
     const signUp = async e => {
         e.preventDefault();
-        handleSubmit({username, password}, thunks.registerUser);
+        await handleSubmit({username, password}, thunks.registerUser);
         setPassword("");
     };
 
     const signIn = async e => {
         e.preventDefault();
-        handleSubmit({username, password}, thunks.loginUser);
+        await handleSubmit({username, password}, thunks.loginUser);
     };
 
-    const handleSubmit = ({username, password}, auth_func) => {
+    const handleSubmit = async ({username, password}, auth_func) => {
         let {isValid, message} = validateInput({username, password});
         setError(!isValid);
         if (!isValid) {
@@ -46,7 +50,7 @@ export default function LoginForm() {
         }
         setIsLoading(true);
         try {
-            //await dispatch(thunks.addUser({username, password}, auth_func));
+            await dispatch(thunks.addUser({username, password}, auth_func));
             setIsLoading(false);
         } catch (error) {
             setIsLoading(false);
@@ -60,7 +64,7 @@ export default function LoginForm() {
                 <Box textAlign="center">
                     <Heading size="lg">Авторизация</Heading>
                 </Box>
-                {error && <ErrorMessage message={errorMsg} maxW="100%"/>}
+                {error && <AlertMessage status="error" message={errorMsg} maxW="100%"/>}
                 <Box my={4} textAlign="left">
                     <form>
                         <FormControl isRequired={true}>
@@ -99,6 +103,8 @@ export default function LoginForm() {
                             {isLoading ? (<CircularProgress isIndeterminate size="24px" color="teal"/>) : ('Вход')}
                         </Button>
                     </form>
+                    {authInfo.message &&
+                    <AlertMessage message={authInfo.message} status={authInfo.isError ? "error" : "success"}/>}
                 </Box>
             </Box>
         </Flex>
