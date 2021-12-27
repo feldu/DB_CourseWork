@@ -15,7 +15,7 @@ export function registerUser(user) {
     return function (dispatch, getState) {
         try {
             axios
-                .post('/auth/register', user,
+                .post('/auth/signup', user,
                     setHeaders(getState().authorization.currentUser))
                 .then(response => {
                     dispatch(showMessage({message: response.data, isError: false}))
@@ -34,7 +34,7 @@ export function loginUser(user) {
     return function (dispatch, getState) {
         try {
             axios
-                .post('/auth/login', user,
+                .post('/auth/signin', user,
                     setHeaders(getState().authorization.currentUser))
                 .then(response => {
                     user = {username: user.username, token: response.data};

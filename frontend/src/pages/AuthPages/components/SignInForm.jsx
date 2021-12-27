@@ -3,7 +3,6 @@ import {useDispatch, useSelector} from "react-redux";
 import {
     Box,
     Button,
-    CircularProgress,
     Flex,
     FormControl,
     FormLabel,
@@ -14,55 +13,38 @@ import {
     InputRightElement,
 } from '@chakra-ui/react';
 import {ViewIcon, ViewOffIcon} from '@chakra-ui/icons';
-import {validateInput} from "../utils/validateInput";
-import * as thunks from "../redux/thunks";
-import AlertMessage from "../components/AlertMessage";
+
+import {validateSignInInput} from "../../../utils/validateInput";
+import * as thunks from "../../../redux/thunks";
+import AlertMessage from "../../../components/AlertMessage";
 
 
-export default function LoginForm() {
+export default function SignInForm() {
     const [show, setShow] = React.useState(false);
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState(false);
     const [errorMsg, setErrorMsg] = useState('');
-    const [isLoading, setIsLoading] = useState(false);
     const authInfo = useSelector(state => state.authorization.authorizationInfo);
     const dispatch = useDispatch();
 
-    const toggleShowPassword = () => setShow(!show);
-    const signUp = async e => {
-        e.preventDefault();
-        await handleSubmit({username, password}, thunks.registerUser);
-        setPassword("");
-    };
 
     const signIn = async e => {
         e.preventDefault();
-        await handleSubmit({username, password}, thunks.loginUser);
-    };
-
-    const handleSubmit = async ({username, password}, auth_func) => {
-        let {isValid, message} = validateInput({username, password});
+        let {isValid, message} = validateSignInInput({username, password});
         setError(!isValid);
         if (!isValid) {
             setErrorMsg(message);
             return;
         }
-        setIsLoading(true);
-        try {
-            await dispatch(thunks.addUser({username, password}, auth_func));
-            setIsLoading(false);
-        } catch (error) {
-            setIsLoading(false);
-            setError(true);
-            setErrorMsg("Не удалось авторизоваться");
-        }
+        dispatch(thunks.loginUser({username, password}));
     };
+
     return (
-        <Flex width="full" align="center" justifyContent="center">
+        <Flex width="full" align="center" justifyContent="center" alignItems="center" direction="vertical" flex={1}>
             <Box p={2} px={5} borderWidth={1} borderRadius={14} boxShadow="lg" w={400}>
                 <Box textAlign="center">
-                    <Heading size="lg">Авторизация</Heading>
+                    <Heading size="lg">Вход</Heading>
                 </Box>
                 {error && <AlertMessage status="error" message={errorMsg} maxW="100%"/>}
                 <Box my={4} textAlign="left">
@@ -89,19 +71,13 @@ export default function LoginForm() {
                                     }}
                                 />
                                 <InputRightElement width='4.5rem'>
-                                    <Button h='1.75rem' size='sm' onClick={toggleShowPassword}>
+                                    <Button h='1.75rem' size='sm' onClick={() => setShow(!show)}>
                                         <Icon as={show ? ViewOffIcon : ViewIcon}/>
                                     </Button>
                                 </InputRightElement>
                             </InputGroup>
                         </FormControl>
-                        <Button width="full" mt={4} type="submit" onClick={signUp}>
-                            {isLoading ? (
-                                <CircularProgress isIndeterminate size="24px" color="teal"/>) : ('Регистрация')}
-                        </Button>
-                        <Button width="full" mt={4} type="submit" onClick={signIn}>
-                            {isLoading ? (<CircularProgress isIndeterminate size="24px" color="teal"/>) : ('Вход')}
-                        </Button>
+                        <Button width="full" mt={4} type="submit" onClick={signIn}>Вход</Button>
                     </form>
                     {authInfo.message &&
                     <AlertMessage message={authInfo.message} status={authInfo.isError ? "error" : "success"}/>}
