@@ -3,6 +3,7 @@ package db.coursework.entities;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
@@ -12,7 +13,8 @@ import java.util.Set;
 @Data
 @Entity
 @NoArgsConstructor
-@EqualsAndHashCode(exclude = "humanRoles")
+@EqualsAndHashCode(exclude = "humans")
+@ToString(exclude = "humans")
 @Table(name = "role")
 public class Role implements GrantedAuthority {
     @Id
@@ -20,8 +22,8 @@ public class Role implements GrantedAuthority {
     @Column(name = "id")
     private long id;
     private String name;
-    @OneToMany(mappedBy = "role")
-    private Set<HumanRole> humanRoles = new HashSet<>();
+    @ManyToMany(mappedBy = "roles")
+    private Set<Human> humans = new HashSet<>();
 
     public Role(String name) {
         this.name = name;
@@ -30,13 +32,5 @@ public class Role implements GrantedAuthority {
     @Override
     public String getAuthority() {
         return getName();
-    }
-
-    @Override
-    public String toString() {
-        return "Role{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                '}';
     }
 }

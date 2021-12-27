@@ -1,7 +1,6 @@
 package db.coursework.controllers;
 
 import db.coursework.entities.Human;
-import db.coursework.entities.HumanRole;
 import db.coursework.entities.Role;
 import db.coursework.entities.User;
 import db.coursework.services.RoleService;
@@ -61,8 +60,7 @@ public class AuthController {
             Role role = roleService.saveRole(dto.getRole());
             Human human = new Human();
             human.setFullname(dto.getFullname());
-            human.setHumanRoles(Collections.singleton(new HumanRole(human, role)));
-            role.setHumanRoles(Collections.singleton(new HumanRole(human, role)));
+            human.setRoles(Collections.singleton(role));
             user.setHuman(human);
             log.debug("POST request to register user {}", user);
             log.debug("Associated human {}", human);

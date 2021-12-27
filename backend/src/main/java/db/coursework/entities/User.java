@@ -10,7 +10,6 @@ import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 import java.util.Collection;
-import java.util.stream.Collectors;
 
 @Data
 @Entity
@@ -52,7 +51,7 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return getHuman().getHumanRoles().stream().map(HumanRole::getRole).collect(Collectors.toSet());
+        return getHuman().getRoles();
     }
 
     @Override

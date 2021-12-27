@@ -3,14 +3,17 @@ package db.coursework.entities;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
+import java.util.HashSet;
 import java.util.Set;
 
 @Data
 @NoArgsConstructor
-@EqualsAndHashCode(exclude = "humanRoles")
+@EqualsAndHashCode(exclude = "roles")
+@ToString(exclude = "roles")
 @Entity(name = "human")
 public class Human {
     @Id
@@ -22,7 +25,14 @@ public class Human {
     @Size(min = 1)
     private String fullname;
 
-    @OneToMany(mappedBy = "human")
-    private Set<HumanRole> humanRoles;
+    @ManyToMany
+    @JoinTable(name = "human_role",
+            joinColumns = {
+                    @JoinColumn(name = "human_id", referencedColumnName = "id",
+                            nullable = false)},
+            inverseJoinColumns = {
+                    @JoinColumn(name = "role_id", referencedColumnName = "id",
+                            nullable = false)})
+    private Set<Role> roles = new HashSet<>();
 
 }
