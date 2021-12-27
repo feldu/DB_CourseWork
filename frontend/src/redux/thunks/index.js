@@ -15,7 +15,12 @@ export function registerUser(user) {
     return function (dispatch, getState) {
         try {
             axios
-                .post('/auth/signup', user,
+                .post('/auth/signup', {
+                        username: user.username,
+                        password: user.password,
+                        fullname: user.fullname,
+                        role: user.role
+                    },
                     setHeaders(getState().authorization.currentUser))
                 .then(response => {
                     dispatch(showMessage({message: response.data, isError: false}))
