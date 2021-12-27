@@ -1,10 +1,10 @@
 import './App.css';
 import React from "react";
-import LoginForm from "./pages/LoginForm";
+import {Router} from "./router/Router";
 
 function App() {
     return (
-        <LoginForm/>
+        <Router/>
     );
 }
 
