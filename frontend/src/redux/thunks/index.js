@@ -12,16 +12,15 @@ export function showMessage(payload) {
 }
 
 export function registerUser(user) {
-    return function (dispatch, getState) {
+    return function (dispatch) {
         try {
             axios
                 .post('/auth/signup', {
-                        username: user.username,
-                        password: user.password,
-                        fullname: user.fullname,
-                        role: user.role
-                    },
-                    setHeaders(getState().authorization.currentUser))
+                    username: user.username,
+                    password: user.password,
+                    fullname: user.fullname,
+                    role: user.role
+                })
                 .then(response => {
                     dispatch(showMessage({message: response.data, isError: false}))
                 })
@@ -36,20 +35,25 @@ export function registerUser(user) {
 }
 
 export function loginUser(user) {
-    return function (dispatch, getState) {
+    return function (dispatch) {
+        let formData = new FormData();
+        formData.append('username', user.username);
+        formData.append('password', user.password);
         try {
             axios
-                .post('/auth/signin', user,
-                    setHeaders(getState().authorization.currentUser))
+                .post('/auth/signin', formData)
                 .then(response => {
-                    user = {username: user.username, token: response.data};
-                    localStorage.setItem("token", response.data);
-                    localStorage.setItem("username", user.username);
+                    if (response.status === 200) {
+                        let url = new URL(response.request.responseURL);
+                        if (url.searchParams.has("error"))
+                            dispatch(showMessage({message: "Не удалось войти", isError: true}));
+                        else
+                            window.location.href = response.request.responseURL;
+                    }
                     dispatch(actions.signIn(user));
                 })
-                .catch(e => {
-                    if (e.response.status === 400)
-                        dispatch(showMessage({message: e.response.data, isError: true}))
+                .catch(() => {
+                    dispatch(showMessage({message: "Ошибка входа", isError: true}));
                 })
         } catch (e) {
             console.log("SignIn error", e);
@@ -58,28 +62,18 @@ export function loginUser(user) {
     }
 }
 
-export function addUser(user, thunk) {
-    return function (dispatch) {
-        dispatch(thunk(user));
-    }
-}
 
 export function logout() {
     return function (dispatch) {
-        localStorage.removeItem("token");
-        localStorage.removeItem("username");
+        axios
+            .post('/auth/logout')
+            .then(response => {
+                    if (response.status === 200) {
+                        window.location.href = response.request.responseURL;
+                    }
+                }
+            )
+            .catch();
         dispatch(actions.signOut());
     }
-}
-
-
-function setHeaders(currentUser) {
-    if (currentUser) {
-        return {
-            headers: {
-                'Authorization': "Bearer " + currentUser.token,
-            }
-        }
-    }
-    return {headers: {}}
 }

@@ -1,12 +1,8 @@
 import * as constants from "../constants";
 
-const username = localStorage.getItem("username"),
-    token = localStorage.getItem("token");
-
-const currentUser = (username && token) ? {username: username, token: token} : null;
 
 const initialState = {
-    currentUser: currentUser,
+    currentUser: null,
     authorizationInfo: {
         message: null,
         isError: null
