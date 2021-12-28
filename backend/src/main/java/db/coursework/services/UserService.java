@@ -2,13 +2,8 @@ package db.coursework.services;
 
 import db.coursework.entities.User;
 import db.coursework.repositories.UserRepository;
-import db.coursework.secutity.jwt.JwtUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -19,17 +14,13 @@ import javax.transaction.Transactional;
 @Slf4j
 @Service
 public class UserService implements UserDetailsService {
-    final AuthenticationManager authenticationManager;
-    final JwtUtils jwtUtils;
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
-    public UserService(UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder, AuthenticationManager authenticationManager, JwtUtils jwtUtils) {
+    public UserService(UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.userRepository = userRepository;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
-        this.authenticationManager = authenticationManager;
-        this.jwtUtils = jwtUtils;
     }
 
     @Override
@@ -55,11 +46,4 @@ public class UserService implements UserDetailsService {
         return true;
     }
 
-    public String getUserToken(User user) {
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword()));
-
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        return jwtUtils.generateJwtToken(authentication);
-    }
 }
