@@ -2,14 +2,11 @@ import React from "react";
 import {Button, Flex} from "@chakra-ui/react";
 import * as thunks from "../redux/thunks";
 import {useDispatch} from "react-redux";
-import {useNavigate} from "react-router-dom";
 
-export default function UserHeader() {
+export default function MainHeader() {
     const dispatch = useDispatch();
-    const navigate = useNavigate();
     const logout = () => {
         dispatch(thunks.logout());
-        navigate('/');
     };
     return (
         <Flex
