@@ -25,7 +25,7 @@ public class Human {
     @Size(min = 1)
     private String fullname;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "human_role",
             joinColumns = {
                     @JoinColumn(name = "human_id", referencedColumnName = "id",
@@ -35,4 +35,8 @@ public class Human {
                             nullable = false)})
     private Set<Role> roles = new HashSet<>();
 
+    public Human(@Size(min = 1) String fullname, Set<Role> roles) {
+        this.fullname = fullname;
+        this.roles = roles;
+    }
 }

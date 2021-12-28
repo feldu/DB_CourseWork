@@ -22,7 +22,7 @@ public class Role implements GrantedAuthority {
     @Column(name = "id")
     private long id;
     private String name;
-    @ManyToMany(mappedBy = "roles")
+    @ManyToMany(mappedBy = "roles", fetch = FetchType.EAGER)
     private Set<Human> humans = new HashSet<>();
 
     public Role(String name) {

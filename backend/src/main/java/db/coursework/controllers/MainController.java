@@ -7,13 +7,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping("/")
 public class MainController {
-    @GetMapping("/auth/signin")
-    public String signIn() {
-        return "forward:/index.html";
+    @GetMapping("/auth/*")
+    public String auth() {
+        return "/index.html";
     }
 
-    @GetMapping("/auth/signup")
-    public String signUp() {
-        return "forward:/index.html";
+    @GetMapping("/user")
+    public String user() {
+        return "/index.html";
+    }
+
+    @GetMapping("/admin")
+    public String admin() {
+        return "/index.html";
     }
 }
