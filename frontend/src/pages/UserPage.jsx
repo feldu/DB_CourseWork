@@ -1,13 +1,13 @@
 import React from "react";
 import Text from "@chakra-ui/core/dist/Text";
 import Flex from "@chakra-ui/core/dist/Flex";
-import UserHeader from "../components/UserHeader";
+import MainHeader from "../components/MainHeader";
 
 
 export default function UserPage() {
     return (
         <Flex direction="column">
-            <UserHeader/>
+            <MainHeader/>
             <Text>Я юзер блядь.</Text>
         </Flex>
     );
