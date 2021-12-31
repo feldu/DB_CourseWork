@@ -2,6 +2,11 @@ import * as constants from "../constants";
 
 
 const initialState = {
+    //todo: change current user structure (must contain
+    // 1. username
+    // 2. password
+    // 3. fullname
+    // 4. role
     currentUser: null,
     authorizationInfo: {
         message: null,

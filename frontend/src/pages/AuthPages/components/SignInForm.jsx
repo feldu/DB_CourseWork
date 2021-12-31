@@ -39,7 +39,7 @@ export default function SignInForm() {
         }
         dispatch(thunks.loginUser({username, password}));
     };
-
+    //todo: decompose component
     return (
         <Flex width="full" align="center" justifyContent="center" alignItems="center" direction="vertical" flex={1}>
             <Box p={2} px={5} borderWidth={1} borderRadius={14} boxShadow="lg" w={400}>

@@ -8,6 +8,7 @@ export default function MainHeader() {
     const logout = () => {
         dispatch(thunks.logout());
     };
+    //todo: add user info to header
     return (
         <Flex
             direction="row-reverse"

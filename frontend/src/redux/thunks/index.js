@@ -49,6 +49,7 @@ export function loginUser(user) {
                             dispatch(showMessage({message: "Не удалось войти", isError: true}));
                         else
                             window.location.href = response.request.responseURL;
+                            //todo: add request to get user info
                     }
                     dispatch(actions.signIn(user));
                 })
