@@ -21,9 +21,9 @@ public class User implements UserDetails {
     @Column(name = "id")
     private long id;
 
-    @Column(unique = true)
     @NotEmpty
     @Size(min = 4, max = 20)
+    @Column(unique = true)
     private String username;
 
     @Column

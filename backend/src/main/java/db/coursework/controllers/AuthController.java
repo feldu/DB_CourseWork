@@ -3,7 +3,6 @@ package db.coursework.controllers;
 import db.coursework.entities.Human;
 import db.coursework.entities.Role;
 import db.coursework.entities.User;
-import db.coursework.services.RoleService;
 import db.coursework.services.UserService;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
@@ -22,19 +21,17 @@ import java.util.Collections;
 @RequestMapping("/auth")
 public class AuthController {
     private final UserService userService;
-    private final RoleService roleService;
 
     @Autowired
-    public AuthController(UserService userService, RoleService roleService) {
+    public AuthController(UserService userService) {
         this.userService = userService;
-        this.roleService = roleService;
     }
 
 
     @PostMapping("/signup")
     public ResponseEntity<String> register(@RequestBody UserDTO dto) {
         try {
-            Role role = roleService.saveRole(dto.getRole());
+            Role role = userService.saveRole(dto.getRole());
             Human human = new Human(dto.getFullname(), (Collections.singleton(role)));
             User user = new User(dto.getUsername(), dto.getPassword(), human);
             log.debug("POST request to register user {}", user);

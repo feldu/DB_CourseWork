@@ -1,6 +1,8 @@
 package db.coursework.services;
 
+import db.coursework.entities.Role;
 import db.coursework.entities.User;
+import db.coursework.repositories.RoleRepository;
 import db.coursework.repositories.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,11 +18,14 @@ import javax.transaction.Transactional;
 public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final RoleRepository roleRepository;
+
 
     @Autowired
-    public UserService(UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
+    public UserService(UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder, RoleRepository roleRepository) {
         this.userRepository = userRepository;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+        this.roleRepository = roleRepository;
     }
 
     @Override
@@ -44,6 +49,15 @@ public class UserService implements UserDetailsService {
         userRepository.save(user);
         log.debug("User {} saved in DB", user.getUsername());
         return true;
+    }
+
+    public Role saveRole(String name) {
+        name = "ROLE_" + name.toUpperCase(); //to ROLE_NAME format
+        Role roleByName = roleRepository.findByName(name);
+        if (roleByName != null) {
+            return roleByName;
+        }
+        return roleRepository.save(new Role(name));
     }
 
 }
