@@ -30,6 +30,7 @@ export default function SignInForm() {
             return;
         }
         dispatch(thunks.registerUser({username, password, fullname, role}));
+        //todo:: fix it
         if (!authInfo.isError) navigate("/auth/signin");
     };
 

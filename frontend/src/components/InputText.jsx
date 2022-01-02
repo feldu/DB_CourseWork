@@ -3,7 +3,7 @@ import React from "react";
 
 export default function InputText({label, placeholder, value, setValue}) {
     return (
-        <FormControl isRequired={true}>
+        <FormControl mt={6} isRequired={true}>
             <FormLabel>{label}</FormLabel>
             <Input type="text"
                    placeholder={placeholder}

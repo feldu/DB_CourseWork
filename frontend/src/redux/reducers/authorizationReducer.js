@@ -18,7 +18,7 @@ export const authorizationReducer = (state = initialState, action) => {
         case constants.SHOW_MESSAGE:
             return {...state, authorizationInfo: action.payload};
         case constants.HIDE_MESSAGE:
-            return {...state, authorizationInfo: {message: null, isError: false}};
+            return {...state, authorizationInfo: {message: null, isError: null}};
         default:
             return state;
     }
