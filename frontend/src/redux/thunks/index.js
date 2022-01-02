@@ -1,4 +1,5 @@
 import * as actions from "../actions";
+import {addOrderIndex} from "../actions";
 import * as constants from "../constants";
 import axios from "axios";
 
@@ -13,24 +14,21 @@ export function showMessage(payload) {
 
 export function registerUser(user) {
     return function (dispatch) {
-        try {
-            axios
-                .post('/auth/signup', {
-                    username: user.username,
-                    password: user.password,
-                    fullname: user.fullname,
-                    role: user.role
-                })
-                .then(response => {
-                    dispatch(showMessage({message: response.data, isError: false}))
-                })
-                .catch(e => {
-                    if (e.response.status === 400)
-                        dispatch(showMessage({message: e.response.data, isError: true}));
-                });
-        } catch (e) {
-            console.log("SingUp error", e);
-        }
+        axios
+            .post('/auth/signup', {
+                username: user.username,
+                password: user.password,
+                fullname: user.fullname,
+                role: user.role
+            })
+            .then(response => {
+                dispatch(showMessage({message: response.data, isError: false}))
+            })
+            .catch(e => {
+                if (e.response.status === 400)
+                    dispatch(showMessage({message: e.response.data, isError: true}));
+            });
+
     }
 }
 
@@ -39,25 +37,20 @@ export function loginUser(user) {
         let formData = new FormData();
         formData.append('username', user.username);
         formData.append('password', user.password);
-        try {
-            axios
-                .post('/auth/signin', formData)
-                .then(response => {
-                    if (response.status === 200) {
-                        let url = new URL(response.request.responseURL);
-                        if (url.searchParams.has("error"))
-                            dispatch(showMessage({message: "Не удалось войти", isError: true}));
-                        else
-                            window.location.href = response.request.responseURL;
-                    }
-                })
-                .catch(() => {
-                    dispatch(showMessage({message: "Ошибка входа", isError: true}));
-                })
-        } catch (e) {
-            console.log("SignIn error", e);
-        }
-
+        axios
+            .post('/auth/signin', formData)
+            .then(response => {
+                if (response.status === 200) {
+                    let url = new URL(response.request.responseURL);
+                    if (url.searchParams.has("error"))
+                        dispatch(showMessage({message: "Не удалось войти", isError: true}));
+                    else
+                        window.location.href = response.request.responseURL;
+                }
+            })
+            .catch(() => {
+                dispatch(showMessage({message: "Ошибка входа", isError: true}));
+            })
     }
 }
 
@@ -86,5 +79,24 @@ export function getUserInfo() {
                     dispatch(actions.signIn(response.data));
                 }
             }).catch(e => console.log(e));
+    }
+}
+
+export function addOrder(order) {
+    return function (dispatch) {
+        let formData = new FormData();
+        formData.append('count', order.count);
+        formData.append('caste', order.caste);
+        formData.append('futureJobs', order.futureJobs);
+        axios
+            .post('/user/add_order', formData)
+            .then(response => {
+                if (response.status === 200) {
+                    const id = response.data;
+                    dispatch(addOrderIndex(id))
+                    //todo: add  to user page message like this "Ваш запрос обработан. Отследить его вы можете по № %id"
+                }
+            })
+            .catch(e => console.log(e));
     }
 }

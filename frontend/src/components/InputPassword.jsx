@@ -5,7 +5,7 @@ import {ViewIcon, ViewOffIcon} from "@chakra-ui/icons";
 export default function InputPassword({label, placeholder, value, setValue}) {
     const [show, setShow] = React.useState(false);
     return (
-        <FormControl mt={6} isRequired={true}>
+        <FormControl m6={6} isRequired={true}>
             <FormLabel>Пароль</FormLabel>
             <InputGroup size='md'>
                 <Input
