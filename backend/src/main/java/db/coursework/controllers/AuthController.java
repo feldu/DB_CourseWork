@@ -32,7 +32,7 @@ public class AuthController {
 
 
     @PostMapping("/signup")
-    public ResponseEntity<String> register(@RequestBody DTO dto) {
+    public ResponseEntity<String> register(@RequestBody UserDTO dto) {
         try {
             Role role = roleService.saveRole(dto.getRole());
             Human human = new Human(dto.getFullname(), (Collections.singleton(role)));
@@ -50,7 +50,7 @@ public class AuthController {
     }
 
     @Data
-    private static class DTO {
+    private static class UserDTO {
         private String username;
         private String password;
         private String fullname;

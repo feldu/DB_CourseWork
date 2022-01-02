@@ -84,13 +84,10 @@ export function getUserInfo() {
 
 export function addOrder(order) {
     return function (dispatch) {
-        let formData = new FormData();
-        formData.append('count', order.count);
-        formData.append('caste', order.caste);
-        formData.append('futureJobs', order.futureJobs);
         axios
-            .post('/user/add_order', formData)
+            .post('/user/add_order', order)
             .then(response => {
+                console.log(response);
                 if (response.status === 200) {
                     const id = response.data;
                     dispatch(addOrderIndex(id))

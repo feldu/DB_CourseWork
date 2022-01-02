@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 import java.util.HashSet;
 import java.util.Set;
@@ -21,8 +22,8 @@ public class Human {
     @Column(name = "id")
     private long id;
 
+    @NotEmpty
     @Column(name = "full_name", nullable = false)
-    @Size(min = 1)
     private String fullname;
 
     @ManyToMany(fetch = FetchType.EAGER)
