@@ -2,10 +2,10 @@ import React from 'react';
 
 import {BrowserRouter, Routes} from "react-router-dom";
 import {Route} from "react-router";
-import UserPage from "../pages/UserPage";
+import UserPage from "../pages/UserPage/UserPage";
 import SignInPage from "../pages/AuthPages/SignInPage";
 import SignUpPage from "../pages/AuthPages/SignUpPage";
-import AdminPage from "../pages/AdminPage";
+import AdminPage from "../pages/AdminPage/AdminPage";
 
 
 export function Router() {
