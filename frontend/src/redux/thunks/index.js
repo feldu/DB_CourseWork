@@ -49,9 +49,7 @@ export function loginUser(user) {
                             dispatch(showMessage({message: "Не удалось войти", isError: true}));
                         else
                             window.location.href = response.request.responseURL;
-                            //todo: add request to get user info
                     }
-                    dispatch(actions.signIn(user));
                 })
                 .catch(() => {
                     dispatch(showMessage({message: "Ошибка входа", isError: true}));
@@ -76,5 +74,17 @@ export function logout() {
             )
             .catch();
         dispatch(actions.signOut());
+    }
+}
+
+export function getUserInfo() {
+    return function (dispatch) {
+        axios
+            .post('/user_info')
+            .then(response => {
+                if (response.status === 200) {
+                    dispatch(actions.signIn(response.data));
+                }
+            }).catch(e => console.log(e));
     }
 }
