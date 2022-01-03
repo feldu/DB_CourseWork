@@ -1,5 +1,5 @@
 import * as actions from "../actions";
-import {addOrderIndex} from "../actions";
+import {changeCurrentOrder, updateOrders} from "../actions";
 import * as constants from "../constants";
 import axios from "axios";
 
@@ -82,16 +82,33 @@ export function getUserInfo() {
     }
 }
 
+export function getOrders() {
+    return function (dispatch) {
+        axios
+            .post('/user/get_orders')
+            .then(response => {
+                console.log(response.data);
+                dispatch(updateOrders(response.data));
+            })
+            .catch(e => console.log(e));
+    }
+}
+
+
 export function addOrder(order) {
     return function (dispatch) {
         axios
-            .post('/user/add_order', order)
+            .post('/user/add_order', {
+                ...order,
+                futureJobTypes: order.futureJobTypes.length === 0 ? [null] : order.futureJobTypes
+            })
             .then(response => {
                 console.log(response);
                 if (response.status === 200) {
                     const id = response.data;
-                    dispatch(addOrderIndex(id))
-                    //todo: add  to user page message like this "Ваш запрос обработан. Отследить его вы можете по № %id"
+                    dispatch(changeCurrentOrder({...order, id: id}));
+                    dispatch(getOrders());
+                    //todo: add to user page message like this "Ваш запрос обработан. Отследить его вы можете по № %id"
                 }
             })
             .catch(e => console.log(e));

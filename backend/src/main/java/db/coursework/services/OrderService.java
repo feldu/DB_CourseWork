@@ -9,6 +9,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Slf4j
 @Service
 public class OrderService {
@@ -21,7 +23,11 @@ public class OrderService {
         this.futureJobTypeRepository = futureJobTypeRepository;
     }
 
-    public Order saveOrderFromRequest(Human human, Integer count, String caste, String[] types) {
+    public List<Order> findAllOrdersByHuman(Human human) {
+        return orderRepository.findAllByHuman(human);
+    }
+
+    public Order saveOrderFromRequest(Human human, Integer count, String caste, List<String> types) {
         Order order = new Order(human, count, caste);
         for (String type : types) {
             FutureJobType currentFutureJobType = findFutureJobTypeByName(type);

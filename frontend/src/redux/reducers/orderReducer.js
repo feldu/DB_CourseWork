@@ -1,14 +1,22 @@
-import {ADD_ORDER} from "../constants";
+import {CHANGE_CURRENT_ORDER, UPDATE_ORDERS} from "../constants";
 
 const initialState = {
-    order_ids: []
+    orders: [],
+    currentOrder: {
+        id: null,
+        humanNumber: null,
+        caste: null,
+        futureJobTypes: null
+    }
 };
 
 
 export const orderReducer = (state = initialState, action) => {
-    switch (action) {
-        case ADD_ORDER:
-            return {...state, order_ids: [...state.order_ids, action.payload]};
+    switch (action.type) {
+        case UPDATE_ORDERS:
+            return {...state, orders: action.payload};
+        case CHANGE_CURRENT_ORDER:
+            return {...state, currentOrder: action.payload};
         default:
             return state;
     }

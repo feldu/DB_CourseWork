@@ -12,7 +12,12 @@ export const hideMessage = () => ({
     type: constants.HIDE_MESSAGE,
 });
 
-export const addOrderIndex = index => ({
-    type: constants.ADD_ORDER,
-    payload: index
+export const updateOrders = orders => ({
+    type: constants.UPDATE_ORDERS,
+    payload: orders
+});
+
+export const changeCurrentOrder = order => ({
+    type: constants.CHANGE_CURRENT_ORDER,
+    payload: order
 });
