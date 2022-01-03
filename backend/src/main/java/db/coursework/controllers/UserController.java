@@ -16,6 +16,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Null;
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Slf4j
 @Controller
 @RequestMapping("/user")
@@ -31,23 +36,41 @@ public class UserController {
     }
 
     @PostMapping("/add_order")
-    public ResponseEntity<Long> register(@RequestBody OrderDTO orderDto, Authentication authentication) {
+    public ResponseEntity<Long> addOrder(@RequestBody OrderDTO orderDto, Authentication authentication) {
         try {
             log.debug("Adding new order. Received data: {}", orderDto);
             Human human = userService.loadUserByUsername(authentication.getName()).getHuman();
-            Order order = orderService.saveOrderFromRequest(human, orderDto.getCount(), orderDto.getCaste(), orderDto.getFutureJobs());
+            Order order = orderService.saveOrderFromRequest(human, orderDto.getHumanNumber(), orderDto.getCaste(), orderDto.getFutureJobTypes());
             return new ResponseEntity<>(order.getId(), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(-1L, HttpStatus.BAD_REQUEST);
         }
+    }
 
+    @PostMapping("/get_orders")
+    public ResponseEntity<List<OrderDTO>> getAllHumanOrders(Authentication authentication) {
+        try {
+            Human human = userService.loadUserByUsername(authentication.getName()).getHuman();
+            List<Order> orders = orderService.findAllOrdersByHuman(human);
+            List<OrderDTO> orderDTOS = orders.stream().map(order -> new OrderDTO(order.getId(), order.getHumanNumber(), order.getCaste(), order.getFutureJobTypes().stream().map(type -> type.getName()).collect(Collectors.toList()))).collect(Collectors.toList());
+            log.debug("Sending {} orders", orderDTOS.size());
+            return new ResponseEntity<>(orderDTOS, HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
     }
 
     @Data
     @AllArgsConstructor
     private static class OrderDTO {
-        private Integer count;
+        @Null
+        private Long id;
+        @NotNull
+        private Integer humanNumber;
+        @NotNull
         private String caste;
-        private String[] futureJobs;
+        @NotNull
+        private List<String> futureJobTypes;
     }
 }

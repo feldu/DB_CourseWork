@@ -7,24 +7,15 @@ import InputText from "../../../components/InputText";
 import * as thunks from "../../../redux/thunks";
 
 
-export default function OrderForm() {
+export default function CreateOrderForm({casteOptions, futureJobType}) {
     const [caste, setCaste] = useState('');
-    const [count, setCount] = useState('');
-    const [futureJobs, setFutureJobs] = useState('');
+    const [humanNumber, setCount] = useState('');
+    const [futureJobTypes, setFutureJobs] = useState([]);
     const [error, setError] = useState(false);
     const [errorMsg, setErrorMsg] = useState('');
     const authInfo = useSelector(state => state.authorization.authorizationInfo);
     const dispatch = useDispatch();
-    const casteOptions = [{value: 'Alpha', label: 'Альфа'},
-        {value: 'Beta', label: 'Бета'},
-        {value: 'Gamma', label: 'Гамма'},
-        {value: 'Delta', label: 'Дельта'},
-        {value: 'Epsilon', label: 'Эпсилон'}];
-    //todo: get from the server db (value = label)
-    const futureJobType = [{value: 'high-temp', label: 'high-temp'},
-        {value: 'low-temp', label: 'low-temp'},
-        {value: 'high-oxxxy', label: 'high-oxxxy'},
-        {value: 'low-oxxxy', label: 'low-oxxxy'}];
+
 
     const submitHandler = e => {
         e.preventDefault();
@@ -33,18 +24,18 @@ export default function OrderForm() {
         ну или лучше вообще сделать валидацию по-нормальному везде
         можешь посмотреть Formik или что-то типа этого
          */
-        dispatch(thunks.addOrder({count: count, caste: caste, futureJobs: futureJobs}));
+        dispatch(thunks.addOrder({humanNumber, caste, futureJobTypes}));
     };
 
     return (
-        <Box p={2} px={5} borderWidth={1} borderRadius={14} boxShadow="lg" w="30%">
+        <Box p={2} px={5} borderWidth={1} borderRadius={14} boxShadow="lg" w="100%">
             <Box textAlign="center">
                 <Heading size="lg">Сделать заказ на людей</Heading>
             </Box>
             {error && <AlertMessage status="error" message={errorMsg} maxW="100%"/>}
             <Box my={4} textAlign="left">
                 <form>
-                    <InputText value={count} setValue={setCount} label={"Количество"}
+                    <InputText value={humanNumber} setValue={setCount} label={"Количество"}
                                placeholder={"Положительное целое число"}/>
 
                     {
@@ -62,7 +53,7 @@ export default function OrderForm() {
                                 classNamePrefix="select"
                         />
                     </FormControl>
-                    <FormControl my={6} isRequired={true}>
+                    <FormControl my={6}>
                         <FormLabel>Для работы в условиях</FormLabel>
                         <Select onChange={(e) => setFutureJobs(Array.isArray(e) ? e.map(x => x.value) : [])}
                                 placeholder="Дополнительные требования"
@@ -74,9 +65,6 @@ export default function OrderForm() {
                         />
                     </FormControl>
                     <Button width="full" mt={4} type="submit" onClick={submitHandler}>Сделать запрос</Button>
-                    <div><b>Count: </b> {count}</div>
-                    <div><b>Caste: </b> {JSON.stringify(caste, null, 2)}</div>
-                    <div><b>Future Jobs: </b> {JSON.stringify(futureJobs, null, 2)}</div>
                 </form>
                 {authInfo.message &&
                 <AlertMessage message={authInfo.message} status={authInfo.isError ? "error" : "success"}/>}
