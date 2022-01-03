@@ -26,9 +26,9 @@ export default function UserPage() {
     return (
         <Flex direction="column">
             <MainHeader/>
-            <Flex width="30%" align="center" justifyContent="left" alignItems="" flex={1}
+            <Flex w="100%" align="center" justifyContent="left" alignItems="stretch" flex={1}
                   m={5}>
-                <Flex direction="column">
+                <Flex direction="column" width="30%" alignItems="stretch">
                     <CreateOrderForm casteOptions={casteOptions} futureJobType={futureJobType}/>
                     <SelectOrderForm casteOptions={casteOptions}/>
                 </Flex>
