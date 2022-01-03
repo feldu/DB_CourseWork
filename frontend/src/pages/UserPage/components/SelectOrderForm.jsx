@@ -30,7 +30,7 @@ export default function SelectOrderForm({casteOptions}) {
                     <Select onChange={e => {
                         dispatch(changeCurrentOrder(orders.find(o => o.id === e.value)))
                     }}
-                            placeholder="Выберите касту"
+                            placeholder="Выберите заказ"
                             name="colors"
                             options={currentOrderOptions}
                             className="basic-single"

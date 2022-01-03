@@ -87,7 +87,6 @@ export function getOrders() {
         axios
             .post('/user/get_orders')
             .then(response => {
-                console.log(response.data);
                 dispatch(updateOrders(response.data));
             })
             .catch(e => console.log(e));
