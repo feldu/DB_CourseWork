@@ -12,10 +12,11 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Data
+@Entity(name = "human")
 @NoArgsConstructor
 @EqualsAndHashCode(exclude = "roles")
 @ToString(exclude = "roles")
-@Entity(name = "human")
+@Table(name = "human")
 public class Human {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

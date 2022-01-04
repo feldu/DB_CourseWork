@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Data
-@Entity
+@Entity(name = "order")
 @EqualsAndHashCode(exclude = "futureJobTypes")
 @ToString(exclude = "futureJobTypes")
 @NoArgsConstructor
@@ -25,7 +25,7 @@ public class Order {
     OrderCaste caste;
 
     @NotNull
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "predeterminer_id")
     Human human;
 

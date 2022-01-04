@@ -8,10 +8,10 @@ import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 @Data
-@Entity(name = "ovum")
+@Entity(name = "appointment")
 @NoArgsConstructor
-@Table(name = "ovum")
-public class Ovum {
+@Table(name = "appointment")
+public class Appointment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -22,20 +22,21 @@ public class Ovum {
     @JoinColumn(name = "volunteer_id")
     private Human volunteer;
 
+    @NotNull
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "ovum_container_id")
-    private OvumContainer ovumContainer;
+    @JoinColumn(name = "surgeon_id")
+    private Human surgeon;
 
     @NotNull
-    @Column(name = "is_bud")
-    private boolean isBud;
+    @ManyToOne
+    @JoinColumn(name = "reviewer_id")
+    private Human reviewer;
 
-    @Column(name = "fertilization_time")
-    private Date fertilizationTime;
+    @NotNull
+    @Column(name = "operation_time")
+    private Date operationTime;
 
-    @Column(name = "embryo_time")
-    private Date embryoTime;
-
-    @Column(name = "baby_time")
-    private Date babyTime;
+    @NotNull
+    @Column(name = "approved")
+    private boolean approved;
 }

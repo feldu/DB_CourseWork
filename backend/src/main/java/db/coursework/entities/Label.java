@@ -9,8 +9,9 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
 @Data
-@NoArgsConstructor
 @Entity(name = "label")
+@NoArgsConstructor
+@Table(name = "label")
 public class Label {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -12,7 +12,7 @@ import javax.validation.constraints.Size;
 import java.util.Collection;
 
 @Data
-@Entity
+@Entity(name = "users")
 @NoArgsConstructor
 @Table(name = "users")
 public class User implements UserDetails {

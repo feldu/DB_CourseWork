@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Data
-@Entity
+@Entity(name = "future_job_type")
 @EqualsAndHashCode(exclude = "orders")
 @ToString(exclude = "orders")
 @NoArgsConstructor

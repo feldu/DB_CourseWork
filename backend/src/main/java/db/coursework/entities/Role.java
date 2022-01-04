@@ -13,7 +13,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Data
-@Entity
+@Entity(name = "role")
 @NoArgsConstructor
 @EqualsAndHashCode(exclude = "humans")
 @ToString(exclude = "humans")

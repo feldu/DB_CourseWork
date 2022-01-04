@@ -1,24 +1,22 @@
 package db.coursework.entities;
 
-import db.coursework.entities.enums.OvumContainerName;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 
 @Data
-@Entity(name = "ovum_container")
+@Entity(name = "room")
 @NoArgsConstructor
-@Table(name = "ovum_container")
-public class OvumContainer {
+@Table(name = "room")
+public class Room {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private long id;
 
-    @Enumerated(EnumType.STRING)
+    @NotEmpty
     @Column(name = "name")
-    private OvumContainerName name;
+    private String name;
 }
-
-
