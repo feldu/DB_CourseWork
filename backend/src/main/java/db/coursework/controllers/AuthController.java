@@ -31,7 +31,7 @@ public class AuthController {
     @PostMapping("/signup")
     public ResponseEntity<String> register(@RequestBody UserDTO dto) {
         try {
-            Role role = userService.saveRole(dto.getRole());
+            Role role = userService.saveRoleByName(dto.getRole());
             Human human = new Human(dto.getFullname(), (Collections.singleton(role)));
             User user = new User(dto.getUsername(), dto.getPassword(), human);
             log.debug("POST request to register user {}", user);

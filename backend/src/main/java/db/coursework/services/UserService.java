@@ -51,13 +51,12 @@ public class UserService implements UserDetailsService {
         return true;
     }
 
-    public Role saveRole(String name) {
+    public Role saveRoleByName(String name) {
         name = "ROLE_" + name.toUpperCase(); //to ROLE_NAME format
         Role roleByName = roleRepository.findByName(name);
-        if (roleByName != null) {
-            return roleByName;
-        }
-        return roleRepository.save(new Role(name));
+        if (roleByName == null)
+            return roleRepository.save(new Role(name));
+        return roleByName;
     }
 
 }

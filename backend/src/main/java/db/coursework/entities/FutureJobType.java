@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,6 +23,7 @@ public class FutureJobType {
     @Column(name = "id")
     private long id;
 
+    @NotNull
     @Enumerated(EnumType.STRING)
     @Column(name = "name")
     private FutureJobTypeName name;

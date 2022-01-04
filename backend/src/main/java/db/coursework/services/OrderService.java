@@ -4,6 +4,7 @@ import db.coursework.entities.FutureJobType;
 import db.coursework.entities.Human;
 import db.coursework.entities.Order;
 import db.coursework.entities.enums.FutureJobTypeName;
+import db.coursework.entities.enums.OrderCaste;
 import db.coursework.repositories.FutureJobTypeRepository;
 import db.coursework.repositories.OrderRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -29,7 +30,7 @@ public class OrderService {
     }
 
     public Order saveOrderFromRequest(Human human, Integer count, String caste, List<String> types) {
-        Order order = new Order(human, count, caste);
+        Order order = new Order(human, count, OrderCaste.valueOf(caste));
         for (String type : types) {
             if (type != null) {
                 FutureJobType currentFutureJobType = getFutureJobTypeFromDB(type);
