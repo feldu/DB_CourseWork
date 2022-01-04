@@ -22,6 +22,8 @@ export default function SignInForm() {
     const navigate = useNavigate();
     const rolesOptions = [{value: "PREDETERMINER", label: "Предопределитель"}];
 
+    if (authInfo.message !== null && authInfo.isError === false) navigate("/auth/signin");
+
     const signUp = async e => {
         e.preventDefault();
         let {isValid, message} = validateSignUpInput({username, password, fullname, role});
@@ -31,8 +33,6 @@ export default function SignInForm() {
             return;
         }
         dispatch(thunks.registerUser({username, password, fullname, role}));
-        //todo:: fix it
-        if (!authInfo.isError) navigate("/auth/signin");
     };
 
     return (

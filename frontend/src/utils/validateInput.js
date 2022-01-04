@@ -15,7 +15,7 @@ export const validateSignUpInput = ({username, password, fullname, role}) => {
         return {isValid: false, message: "Пароль должен содержать от 4 до 20 символов"};
     if (fullname.length < 1 || fullname.length > 64)
         return {isValid: false, message: "ФИО не должно быть пустым и содержать более 64 символов"};
-    else if (!["predeterminer", "surgeon", "volunteer", "reviewer"].includes(role))
+    else if (!["PREDETERMINER", "SURGEON", "VOLUNTEER", "REVIEWER"].includes(role))
         return {isValid: false, message: "Ваша профессия указана не корректно"};
     return {isValid: true, message: null};
 };
