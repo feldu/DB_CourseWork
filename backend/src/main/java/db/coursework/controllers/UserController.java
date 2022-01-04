@@ -2,6 +2,7 @@ package db.coursework.controllers;
 
 import db.coursework.entities.Human;
 import db.coursework.entities.Order;
+import db.coursework.entities.enums.FutureJobTypeName;
 import db.coursework.services.OrderService;
 import db.coursework.services.UserService;
 import lombok.AllArgsConstructor;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -43,6 +45,7 @@ public class UserController {
             Order order = orderService.saveOrderFromRequest(human, orderDto.getHumanNumber(), orderDto.getCaste(), orderDto.getFutureJobTypes());
             return new ResponseEntity<>(order.getId(), HttpStatus.OK);
         } catch (Exception e) {
+            e.printStackTrace();
             return new ResponseEntity<>(-1L, HttpStatus.BAD_REQUEST);
         }
     }
@@ -52,9 +55,21 @@ public class UserController {
         try {
             Human human = userService.loadUserByUsername(authentication.getName()).getHuman();
             List<Order> orders = orderService.findAllOrdersByHuman(human);
-            List<OrderDTO> orderDTOS = orders.stream().map(order -> new OrderDTO(order.getId(), order.getHumanNumber(), order.getCaste(), order.getFutureJobTypes().stream().map(type -> type.getName()).collect(Collectors.toList()))).collect(Collectors.toList());
+            List<OrderDTO> orderDTOS = orders.stream().map(order -> new OrderDTO(order.getId(), order.getHumanNumber(), order.getCaste(), order.getFutureJobTypes().stream().map(type -> type.getName().toString()).collect(Collectors.toList()))).collect(Collectors.toList());
             log.debug("Sending {} orders", orderDTOS.size());
             return new ResponseEntity<>(orderDTOS, HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PostMapping("/get_future_job_types")
+    public ResponseEntity<List<FutureJobTypesDTO>> getAllFutureJobTypesNames() {
+        try {
+            List<FutureJobTypeName> futureJobTypeNameList = Arrays.asList(FutureJobTypeName.values());
+            List<FutureJobTypesDTO> futureJobTypesDTOList = futureJobTypeNameList.stream().map(type -> new FutureJobTypesDTO(type.getValue(), type.getLabel())).collect(Collectors.toList());
+            return new ResponseEntity<>(futureJobTypesDTOList, HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
@@ -72,5 +87,12 @@ public class UserController {
         private String caste;
         @NotNull
         private List<String> futureJobTypes;
+    }
+
+    @Data
+    @AllArgsConstructor
+    private static class FutureJobTypesDTO {
+        String value;
+        String label;
     }
 }

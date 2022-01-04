@@ -1,5 +1,6 @@
 package db.coursework.entities;
 
+import db.coursework.entities.enums.FutureJobTypeName;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -20,9 +21,14 @@ public class FutureJobType {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private long id;
-    //todo: add Enum
+
+    @Enumerated(EnumType.STRING)
     @Column(name = "name")
-    private String name;
+    private FutureJobTypeName name;
     @ManyToMany(mappedBy = "futureJobTypes", fetch = FetchType.EAGER)
     private List<Order> orders = new ArrayList<>();
+
+    public FutureJobType(FutureJobTypeName name) {
+        this.name = name;
+    }
 }

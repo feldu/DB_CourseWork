@@ -3,6 +3,7 @@ package db.coursework.services;
 import db.coursework.entities.FutureJobType;
 import db.coursework.entities.Human;
 import db.coursework.entities.Order;
+import db.coursework.entities.enums.FutureJobTypeName;
 import db.coursework.repositories.FutureJobTypeRepository;
 import db.coursework.repositories.OrderRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -30,8 +31,8 @@ public class OrderService {
     public Order saveOrderFromRequest(Human human, Integer count, String caste, List<String> types) {
         Order order = new Order(human, count, caste);
         for (String type : types) {
-            FutureJobType currentFutureJobType = findFutureJobTypeByName(type);
-            if (currentFutureJobType != null) {
+            if (type != null) {
+                FutureJobType currentFutureJobType = getFutureJobTypeFromDB(type);
                 currentFutureJobType.getOrders().add(order);
                 order.getFutureJobTypes().add(currentFutureJobType);
             }
@@ -39,12 +40,19 @@ public class OrderService {
         return saveOrder(order);
     }
 
+    private FutureJobType getFutureJobTypeFromDB(String type) {
+        FutureJobType currentFutureJobType = findFutureJobTypeByName(FutureJobTypeName.valueOf(type));
+        if (currentFutureJobType == null)
+            currentFutureJobType = futureJobTypeRepository.save(new FutureJobType(FutureJobTypeName.valueOf(type)));
+        return currentFutureJobType;
+    }
+
     public Order saveOrder(Order order) {
         log.debug("Add order {} to DB.", order);
         return orderRepository.save(order);
     }
 
-    public FutureJobType findFutureJobTypeByName(String name) {
+    public FutureJobType findFutureJobTypeByName(FutureJobTypeName name) {
         return futureJobTypeRepository.findByName(name);
     }
 }
