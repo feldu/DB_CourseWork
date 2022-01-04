@@ -19,3 +19,11 @@ export const validateSignUpInput = ({username, password, fullname, role}) => {
         return {isValid: false, message: "Ваша профессия указана не корректно"};
     return {isValid: true, message: null};
 };
+
+export const validateCreateOrder = ({humanNumber, caste}) => {
+    if (humanNumber <= 0 || !Number.isInteger(+humanNumber))
+        return {isValid: false, message: "Количество людей должно быть целым и больше 0"};
+    else if (!["Alpha", "Beta", "Gamma", "Delta", "Epsilon"].includes(caste))
+        return {isValid: false, message: "Выберите касту"};
+    return {isValid: true, message: null};
+};
