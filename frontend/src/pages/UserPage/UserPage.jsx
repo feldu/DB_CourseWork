@@ -10,7 +10,6 @@ import SelectedOrderBox from "./components/components/SelectedOrderBox";
 
 export default function UserPage() {
     const dispatch = useDispatch();
-    //todo: get from the server enum
     const casteOptions = [{value: 'Alpha', label: 'Альфа'},
         {value: 'Beta', label: 'Бета'},
         {value: 'Gamma', label: 'Гамма'},

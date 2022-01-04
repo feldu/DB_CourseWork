@@ -1,10 +1,10 @@
-import {Box, FormControl, FormLabel} from "@chakra-ui/react";
+import {Box} from "@chakra-ui/react";
 import React, {useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import * as thunks from "../../../redux/thunks";
-import Select from "react-select";
 import CurrentOrderBox from "./components/CurrentOrderBox";
 import {changeCurrentOrder} from "../../../redux/actions";
+import InputSelect from "../../../components/InputSelect";
 
 
 export default function SelectOrderForm({casteOptions, futureJobTypeOptions}) {
@@ -26,18 +26,12 @@ export default function SelectOrderForm({casteOptions, futureJobTypeOptions}) {
             <CurrentOrderBox casteOptions={casteOptions} currentOrder={currentOrder}
                              futureJobTypeOptions={futureJobTypeOptions}/>
             <form>
-                <FormControl my={6}>
-                    <FormLabel>Посмотреть заказ</FormLabel>
-                    <Select onChange={e => {
-                        dispatch(changeCurrentOrder(orders.find(o => o.id === e.value)))
-                    }}
-                            placeholder="Выберите заказ"
-                            name="colors"
-                            options={currentOrderOptions}
-                            className="basic-single"
-                            classNamePrefix="select"
-                    />
-                </FormControl>
+                <InputSelect
+                    label={"Посмотреть заказ"}
+                    onChangeHandler={e => dispatch(changeCurrentOrder(orders.find(o => o.id === e.value)))}
+                    placeholder={"Выберите заказ"}
+                    options={currentOrderOptions}
+                />
             </form>
         </Box>
     );

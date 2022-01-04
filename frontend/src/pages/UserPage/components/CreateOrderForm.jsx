@@ -1,11 +1,11 @@
 import React, {useState} from 'react';
 import {useDispatch} from "react-redux";
-import {Box, Button, FormControl, FormLabel, Heading} from '@chakra-ui/react';
-import Select from 'react-select'
+import {Box, Button, Heading} from '@chakra-ui/react';
 import AlertMessage from "../../../components/AlertMessage";
 import InputText from "../../../components/InputText";
 import * as thunks from "../../../redux/thunks";
 import {validateCreateOrder} from "../../../utils/validateInput";
+import InputSelect from "../../../components/InputSelect";
 
 
 export default function CreateOrderForm({casteOptions, futureJobTypeOptions}) {
@@ -15,7 +15,6 @@ export default function CreateOrderForm({casteOptions, futureJobTypeOptions}) {
     const [error, setError] = useState(false);
     const [errorMsg, setErrorMsg] = useState('');
     const dispatch = useDispatch();
-
 
     const submitHandler = e => {
         e.preventDefault();
@@ -38,33 +37,11 @@ export default function CreateOrderForm({casteOptions, futureJobTypeOptions}) {
                 <form>
                     <InputText value={humanNumber} setValue={setCount} label={"Количество"}
                                placeholder={"Положительное целое число"}/>
-
-                    {
-                        //todo: make inputRoleSelect general for all Select components and extract this shit in it
-                    }
-                    <FormControl my={6} isRequired={true}>
-                        <FormLabel>Каста</FormLabel>
-                        <Select onChange={e => {
-                            setCaste(e.value)
-                        }}
-                                placeholder="Выберите касту"
-                                name="colors"
-                                options={casteOptions}
-                                className="basic-single"
-                                classNamePrefix="select"
-                        />
-                    </FormControl>
-                    <FormControl my={6}>
-                        <FormLabel>Для работы в условиях</FormLabel>
-                        <Select onChange={(e) => setFutureJobs(Array.isArray(e) ? e.map(x => x.value) : [])}
-                                placeholder="Дополнительные требования"
-                                isMulti
-                                name="colors"
-                                options={futureJobTypeOptions}
-                                className="basic-multi-select"
-                                classNamePrefix="select"
-                        />
-                    </FormControl>
+                    <InputSelect label="Каста" onChangeHandler={e => setCaste(e.value)} placeholder="Выберите касту"
+                                 options={casteOptions} isMulti={false} isRequired={true}/>
+                    <InputSelect label="Для работы в условиях"
+                                 onChangeHandler={(e) => setFutureJobs(Array.isArray(e) ? e.map(x => x.value) : [])}
+                                 placeholder="Дополнительные требования" options={futureJobTypeOptions} isMulti={true}/>
                     <Button width="full" mt={4} type="submit" onClick={submitHandler}>Сделать запрос</Button>
                 </form>
             </Box>

@@ -7,19 +7,20 @@ import AlertMessage from "../../../components/AlertMessage";
 import {useNavigate} from "react-router-dom";
 import InputText from "../../../components/InputText";
 import InputPassword from "../../../components/InputPassword";
-import InputRoleSelect from "../../../components/InputRoleSelect";
+import InputSelect from "../../../components/InputSelect";
 
 
 export default function SignInForm() {
     const [username, setUsername] = useState('');
     const [fullname, setFullname] = useState('');
     const [password, setPassword] = useState('');
-    const [role, setRole] = useState('predeterminer');
+    const [role, setRole] = useState();
     const [error, setError] = useState(false);
     const [errorMsg, setErrorMsg] = useState('');
     const authInfo = useSelector(state => state.authorization.authorizationInfo);
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const rolesOptions = [{value: "PREDETERMINER", label: "Предопределитель"}];
 
     const signUp = async e => {
         e.preventDefault();
@@ -49,7 +50,8 @@ export default function SignInForm() {
                                        label="Пароль"/>
                         <InputText value={fullname} setValue={setFullname} placeholder="Не больше 64 символов"
                                    label="ФИО"/>
-                        <InputRoleSelect setValue={setRole}/>
+                        <InputSelect label={"Ваша роль"} onChangeHandler={e => setRole(e.value)}
+                                     placeholder={"Выберите профессию"} options={rolesOptions} isRequired={true}/>
                         <Button width="full" mt={4} type="submit" onClick={signUp}>Регистрация</Button>
                     </form>
                     {authInfo.message &&
