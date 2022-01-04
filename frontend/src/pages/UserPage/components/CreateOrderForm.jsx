@@ -1,10 +1,11 @@
 import React, {useState} from 'react';
-import {useDispatch, useSelector} from "react-redux";
+import {useDispatch} from "react-redux";
 import {Box, Button, FormControl, FormLabel, Heading} from '@chakra-ui/react';
 import Select from 'react-select'
 import AlertMessage from "../../../components/AlertMessage";
 import InputText from "../../../components/InputText";
 import * as thunks from "../../../redux/thunks";
+import {validateCreateOrder} from "../../../utils/validateInput";
 
 
 export default function CreateOrderForm({casteOptions, futureJobTypeOptions}) {
@@ -13,17 +14,17 @@ export default function CreateOrderForm({casteOptions, futureJobTypeOptions}) {
     const [futureJobTypes, setFutureJobs] = useState([]);
     const [error, setError] = useState(false);
     const [errorMsg, setErrorMsg] = useState('');
-    const authInfo = useSelector(state => state.authorization.authorizationInfo);
     const dispatch = useDispatch();
 
 
     const submitHandler = e => {
         e.preventDefault();
-        //todo: add client validation (signUp like)
-        /*
-        ну или лучше вообще сделать валидацию по-нормальному везде
-        можешь посмотреть Formik или что-то типа этого
-         */
+        let {isValid, message} = validateCreateOrder({humanNumber, caste});
+        setError(!isValid);
+        if (!isValid) {
+            setErrorMsg(message);
+            return;
+        }
         dispatch(thunks.addOrder({humanNumber, caste, futureJobTypes}));
     };
 
@@ -66,8 +67,6 @@ export default function CreateOrderForm({casteOptions, futureJobTypeOptions}) {
                     </FormControl>
                     <Button width="full" mt={4} type="submit" onClick={submitHandler}>Сделать запрос</Button>
                 </form>
-                {authInfo.message &&
-                <AlertMessage message={authInfo.message} status={authInfo.isError ? "error" : "success"}/>}
             </Box>
         </Box>
     );
