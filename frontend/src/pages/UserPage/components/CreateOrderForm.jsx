@@ -7,7 +7,7 @@ import InputText from "../../../components/InputText";
 import * as thunks from "../../../redux/thunks";
 
 
-export default function CreateOrderForm({casteOptions, futureJobType}) {
+export default function CreateOrderForm({casteOptions, futureJobTypeOptions}) {
     const [caste, setCaste] = useState('');
     const [humanNumber, setCount] = useState('');
     const [futureJobTypes, setFutureJobs] = useState([]);
@@ -59,7 +59,7 @@ export default function CreateOrderForm({casteOptions, futureJobType}) {
                                 placeholder="Дополнительные требования"
                                 isMulti
                                 name="colors"
-                                options={futureJobType}
+                                options={futureJobTypeOptions}
                                 className="basic-multi-select"
                                 classNamePrefix="select"
                         />

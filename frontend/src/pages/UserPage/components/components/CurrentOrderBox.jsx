@@ -2,7 +2,7 @@ import {Box, Heading} from "@chakra-ui/react";
 import Text from "@chakra-ui/core/dist/Text";
 import React from "react";
 
-export default function CurrentOrderBox({casteOptions, currentOrder}) {
+export default function CurrentOrderBox({casteOptions, currentOrder, futureJobTypeOptions}) {
     return (
         <Box textAlign="center">
             <Heading my={3} size="lg">Ваш заказ</Heading>
@@ -16,8 +16,12 @@ export default function CurrentOrderBox({casteOptions, currentOrder}) {
                     <Text><b>Текущий заказ №{currentOrder.id}:</b></Text>
                     <Text>Количество человек: {currentOrder.humanNumber} шт.</Text>
                     <Text>Каста: {casteOptions.find(caste => caste.value.includes(currentOrder.caste)).label}</Text>
-                    <Text>Доп.
-                        требования: {currentOrder.futureJobTypes.length !== 0 ? currentOrder.futureJobTypes.toString() : "Нет"}</Text>
+                    <Text>
+                        {"Доп. требования: "}
+                        {currentOrder.futureJobTypes.length !== 0 ?
+                            currentOrder.futureJobTypes.map(oType => futureJobTypeOptions.find(x => x.value.includes(oType)).label).toString() :
+                            "Нет"}
+                    </Text>
                 </Box>)}
         </Box>
     );

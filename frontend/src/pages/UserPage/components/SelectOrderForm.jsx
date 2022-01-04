@@ -7,7 +7,7 @@ import CurrentOrderBox from "./components/CurrentOrderBox";
 import {changeCurrentOrder} from "../../../redux/actions";
 
 
-export default function SelectOrderForm({casteOptions}) {
+export default function SelectOrderForm({casteOptions, futureJobTypeOptions}) {
     const dispatch = useDispatch();
     const currentOrder = useSelector(state => state.order.currentOrder);
     const orders = useSelector(state => state.order.orders);
@@ -23,7 +23,8 @@ export default function SelectOrderForm({casteOptions}) {
     }, []);
     return (
         <Box mt={5} p={2} px={5} borderWidth={1} borderRadius={14} boxShadow="lg" w="100%" h="100%">
-            <CurrentOrderBox casteOptions={casteOptions} currentOrder={currentOrder}/>
+            <CurrentOrderBox casteOptions={casteOptions} currentOrder={currentOrder}
+                             futureJobTypeOptions={futureJobTypeOptions}/>
             <form>
                 <FormControl my={6}>
                     <FormLabel>Посмотреть заказ</FormLabel>

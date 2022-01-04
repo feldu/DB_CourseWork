@@ -15,7 +15,7 @@ export default function UserPage() {
         {value: 'Delta', label: 'Дельта'},
         {value: 'Epsilon', label: 'Эпсилон'}];
     //todo: get from the server db (value = label)
-    const futureJobType = useSelector(state => state.order.futureJobTypes);
+    const futureJobTypeOptions = useSelector(state => state.order.futureJobTypes);
     // const futureJobType = [{value: 'high-temp', label: 'high-temp'},
     //     {value: 'low-temp', label: 'low-temp'},
     //     {value: 'high-oxxxy', label: 'high-oxxxy'},
@@ -31,8 +31,8 @@ export default function UserPage() {
             <Flex w="100%" align="center" justifyContent="left" alignItems="stretch" flex={1}
                   m={5}>
                 <Flex direction="column" width="25%" alignItems="stretch">
-                    <CreateOrderForm casteOptions={casteOptions} futureJobType={futureJobType}/>
-                    <SelectOrderForm casteOptions={casteOptions}/>
+                    <CreateOrderForm casteOptions={casteOptions} futureJobTypeOptions={futureJobTypeOptions}/>
+                    <SelectOrderForm casteOptions={casteOptions} futureJobTypeOptions={futureJobTypeOptions}/>
                 </Flex>
             </Flex>
         </Flex>
