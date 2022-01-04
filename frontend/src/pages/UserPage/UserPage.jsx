@@ -5,21 +5,18 @@ import {useDispatch, useSelector} from "react-redux";
 import {getFutureJobTypes, getUserInfo} from "../../redux/thunks";
 import CreateOrderForm from "./components/CreateOrderForm";
 import SelectOrderForm from "./components/SelectOrderForm";
+import SelectedOrderBox from "./components/components/SelectedOrderBox";
 
 
 export default function UserPage() {
     const dispatch = useDispatch();
+    //todo: get from the server enum
     const casteOptions = [{value: 'Alpha', label: 'Альфа'},
         {value: 'Beta', label: 'Бета'},
         {value: 'Gamma', label: 'Гамма'},
         {value: 'Delta', label: 'Дельта'},
         {value: 'Epsilon', label: 'Эпсилон'}];
-    //todo: get from the server db (value = label)
     const futureJobTypeOptions = useSelector(state => state.order.futureJobTypes);
-    // const futureJobType = [{value: 'high-temp', label: 'high-temp'},
-    //     {value: 'low-temp', label: 'low-temp'},
-    //     {value: 'high-oxxxy', label: 'high-oxxxy'},
-    //     {value: 'low-oxxxy', label: 'low-oxxxy'}];
     useEffect(() => {
         dispatch(getUserInfo());
         dispatch(getFutureJobTypes());
@@ -28,11 +25,14 @@ export default function UserPage() {
     return (
         <Flex direction="column">
             <MainHeader/>
-            <Flex w="100%" align="center" justifyContent="left" alignItems="stretch" flex={1}
-                  m={5}>
+            <Flex w="full" align="center" justifyContent="left" alignItems="stretch" flex={1}
+                  p={5}>
                 <Flex direction="column" width="25%" alignItems="stretch">
                     <CreateOrderForm casteOptions={casteOptions} futureJobTypeOptions={futureJobTypeOptions}/>
                     <SelectOrderForm casteOptions={casteOptions} futureJobTypeOptions={futureJobTypeOptions}/>
+                </Flex>
+                <Flex direction="column" bg="black" w="100%" ml={5}>
+                    <SelectedOrderBox/>
                 </Flex>
             </Flex>
         </Flex>
