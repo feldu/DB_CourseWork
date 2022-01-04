@@ -12,12 +12,17 @@ export const hideMessage = () => ({
     type: constants.HIDE_MESSAGE,
 });
 
+export const changeCurrentOrder = order => ({
+    type: constants.CHANGE_CURRENT_ORDER,
+    payload: order
+});
+
 export const updateOrders = orders => ({
     type: constants.UPDATE_ORDERS,
     payload: orders
 });
 
-export const changeCurrentOrder = order => ({
-    type: constants.CHANGE_CURRENT_ORDER,
-    payload: order
+export const updateFutureJobTypes = types => ({
+    type: constants.UPDATE_FUTURE_JOB_TYPES,
+    payload: types
 });

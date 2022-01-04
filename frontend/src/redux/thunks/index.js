@@ -1,5 +1,5 @@
 import * as actions from "../actions";
-import {changeCurrentOrder, updateOrders} from "../actions";
+import {changeCurrentOrder, updateFutureJobTypes, updateOrders} from "../actions";
 import * as constants from "../constants";
 import axios from "axios";
 
@@ -88,6 +88,18 @@ export function getOrders() {
             .post('/user/get_orders')
             .then(response => {
                 dispatch(updateOrders(response.data));
+            })
+            .catch(e => console.log(e));
+    }
+}
+
+export function getFutureJobTypes() {
+    return function (dispatch) {
+        axios
+            .post('/user/get_future_job_types')
+            .then(response => {
+                console.log(response.data);
+                dispatch(updateFutureJobTypes(response.data));
             })
             .catch(e => console.log(e));
     }
