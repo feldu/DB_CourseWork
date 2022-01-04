@@ -5,6 +5,7 @@ import db.coursework.entities.User;
 import db.coursework.services.UserService;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.ArrayList;
 
+@Slf4j
 @Controller
 @RequestMapping("/")
 public class MainController {
@@ -48,7 +50,6 @@ public class MainController {
             User user = userService.loadUserByUsername(authentication.getName());
             Role role = new ArrayList<>(user.getHuman().getRoles()).get(0);
             UserDTO userDto = new UserDTO(user.getUsername(), user.getPassword(), user.getHuman().getFullname(), role.getName().split("_")[1]);
-            authentication.getAuthorities().forEach(System.err::println);
             return new ResponseEntity<>(userDto, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>((UserDTO) null, HttpStatus.BAD_REQUEST);

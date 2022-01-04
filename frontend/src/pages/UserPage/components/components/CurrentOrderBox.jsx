@@ -13,11 +13,12 @@ export default function CurrentOrderBox({casteOptions, currentOrder, futureJobTy
                     </Box>)
                 :
                 (<Box>
-                    <Text><b>Текущий заказ №{currentOrder.id}:</b></Text>
-                    <Text>Количество человек: {currentOrder.humanNumber} шт.</Text>
-                    <Text>Каста: {casteOptions.find(caste => caste.value.includes(currentOrder.caste)).label}</Text>
+                    <Text mb={2}><b>Текущий заказ №{currentOrder.id}:</b></Text>
+                    <Text><b>Количество человек: </b>{currentOrder.humanNumber} шт.</Text>
+                    <Text><b>Каста: </b>{casteOptions.find(caste => caste.value.includes(currentOrder.caste)).label}
+                    </Text>
                     <Text>
-                        {"Доп. требования: "}
+                        <b>Доп. требования: </b>
                         {currentOrder.futureJobTypes.length !== 0 ?
                             currentOrder.futureJobTypes.map(oType => futureJobTypeOptions.find(x => x.value.includes(oType)).label).toString() :
                             "Нет"}

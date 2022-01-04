@@ -98,7 +98,6 @@ export function getFutureJobTypes() {
         axios
             .post('/user/get_future_job_types')
             .then(response => {
-                console.log(response.data);
                 dispatch(updateFutureJobTypes(response.data));
             })
             .catch(e => console.log(e));
@@ -114,7 +113,6 @@ export function addOrder(order) {
                 futureJobTypes: order.futureJobTypes.length === 0 ? [null] : order.futureJobTypes
             })
             .then(response => {
-                console.log(response);
                 if (response.status === 200) {
                     const id = response.data;
                     dispatch(changeCurrentOrder({...order, id: id}));
