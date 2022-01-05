@@ -1,7 +1,8 @@
-import {CHANGE_CURRENT_ORDER, UPDATE_FUTURE_JOB_TYPES, UPDATE_ORDERS} from "../constants";
+import {CHANGE_CURRENT_ORDER, UPDATE_CASTES, UPDATE_FUTURE_JOB_TYPES, UPDATE_ORDERS} from "../constants";
 
 const initialState = {
     orders: [],
+    castes: [],
     currentOrder: {
         id: null,
         humanNumber: null,
@@ -21,6 +22,8 @@ export const orderReducer = (state = initialState, action) => {
             return {...state, currentOrder: action.payload};
         case UPDATE_FUTURE_JOB_TYPES:
             return {...state, futureJobTypes: action.payload};
+        case UPDATE_CASTES:
+            return {...state, castes: action.payload};
         default:
             return state;
     }

@@ -8,6 +8,11 @@ export const signOut = () => ({
     type: constants.SIGN_OUT,
 });
 
+export const showMessage = message => ({
+    type: constants.SHOW_MESSAGE,
+    payload: message
+});
+
 export const hideMessage = () => ({
     type: constants.HIDE_MESSAGE,
 });
@@ -25,4 +30,9 @@ export const updateOrders = orders => ({
 export const updateFutureJobTypes = types => ({
     type: constants.UPDATE_FUTURE_JOB_TYPES,
     payload: types
+});
+
+export const updateCastes = castes => ({
+    type: constants.UPDATE_CASTES,
+    payload: castes
 });

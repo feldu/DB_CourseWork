@@ -3,6 +3,7 @@ package db.coursework.controllers;
 import db.coursework.entities.Human;
 import db.coursework.entities.Order;
 import db.coursework.entities.enums.FutureJobTypeName;
+import db.coursework.entities.enums.OrderCaste;
 import db.coursework.services.OrderService;
 import db.coursework.services.UserService;
 import lombok.AllArgsConstructor;
@@ -68,8 +69,20 @@ public class UserController {
     public ResponseEntity<List<FutureJobTypesDTO>> getAllFutureJobTypesNames() {
         try {
             List<FutureJobTypeName> futureJobTypeNameList = Arrays.asList(FutureJobTypeName.values());
-            List<FutureJobTypesDTO> futureJobTypesDTOList = futureJobTypeNameList.stream().map(type -> new FutureJobTypesDTO(type.getValue(), type.getLabel())).collect(Collectors.toList());
+            List<FutureJobTypesDTO> futureJobTypesDTOList = futureJobTypeNameList.stream().map(type -> new FutureJobTypesDTO(type.name(), type.getLabel())).collect(Collectors.toList());
             return new ResponseEntity<>(futureJobTypesDTOList, HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PostMapping("/get_castes")
+    public ResponseEntity<List<CasteDTO>> getCaste() {
+        try {
+            List<OrderCaste> orderCastes = Arrays.asList(OrderCaste.values());
+            List<CasteDTO> casteDTOList = orderCastes.stream().map(type -> new CasteDTO(type.name(), type.getLabel())).collect(Collectors.toList());
+            return new ResponseEntity<>(casteDTOList, HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
@@ -92,6 +105,13 @@ public class UserController {
     @Data
     @AllArgsConstructor
     private static class FutureJobTypesDTO {
+        String value;
+        String label;
+    }
+
+    @Data
+    @AllArgsConstructor
+    private static class CasteDTO {
         String value;
         String label;
     }

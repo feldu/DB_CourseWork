@@ -1,13 +1,11 @@
 import * as actions from "../actions";
-import {changeCurrentOrder, updateFutureJobTypes, updateOrders} from "../actions";
-import * as constants from "../constants";
 import axios from "axios";
 
 axios.defaults.baseURL = "http://localhost:31510";
 
-export function showMessage(payload) {
+export function showMessage(message) {
     return function (dispatch) {
-        dispatch({type: constants.SHOW_MESSAGE, payload});
+        dispatch(actions.showMessage(message));
         setTimeout(() => dispatch(actions.hideMessage()), 3000)
     };
 }
@@ -87,7 +85,7 @@ export function getOrders() {
         axios
             .post('/user/get_orders')
             .then(response => {
-                dispatch(updateOrders(response.data));
+                dispatch(actions.updateOrders(response.data));
             })
             .catch(e => console.log(e));
     }
@@ -98,12 +96,22 @@ export function getFutureJobTypes() {
         axios
             .post('/user/get_future_job_types')
             .then(response => {
-                dispatch(updateFutureJobTypes(response.data));
+                dispatch(actions.updateFutureJobTypes(response.data));
             })
             .catch(e => console.log(e));
     }
 }
 
+export function getCastes() {
+    return function (dispatch) {
+        axios
+            .post('/user/get_castes')
+            .then(response => {
+                dispatch(actions.updateCastes(response.data));
+            })
+            .catch(e => console.log(e));
+    }
+}
 
 export function addOrder(order) {
     return function (dispatch) {
@@ -115,7 +123,7 @@ export function addOrder(order) {
             .then(response => {
                 if (response.status === 200) {
                     const id = response.data;
-                    dispatch(changeCurrentOrder({...order, id: id}));
+                    dispatch(actions.changeCurrentOrder({...order, id: id}));
                     dispatch(getOrders());
                     //todo: add to user page message like this "Ваш запрос обработан. Отследить его вы можете по № %id"
                 }
