@@ -28,7 +28,7 @@ public class Appointment {
     private Human surgeon;
 
     @NotNull
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "reviewer_id")
     private Human reviewer;
 
