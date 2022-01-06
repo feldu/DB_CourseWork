@@ -1,5 +1,6 @@
 package db.coursework.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -27,6 +28,8 @@ public class Role implements GrantedAuthority {
     @NotEmpty
     @Column(name = "name")
     private String name;
+
+    @JsonIgnoreProperties("roles")
     @ManyToMany(mappedBy = "roles", fetch = FetchType.EAGER)
     private Set<Human> humans = new HashSet<>();
 

@@ -131,3 +131,26 @@ export function addOrder(order) {
             .catch(e => console.log(e));
     }
 }
+
+
+export function getPredeterminers() {
+    return function (dispatch) {
+        axios
+            .post('/admin/get_predeterminers')
+            .then(response => {
+                dispatch(actions.updatePredeterminers(response.data));
+            })
+            .catch(e => console.log(e));
+    }
+}
+
+export function getOrdersByFullname(fullname) {
+    return function (dispatch) {
+        axios
+            .post('/admin/get_orders', fullname)
+            .then(response => {
+                dispatch(actions.updatePredeterminersOrders(response.data));
+            })
+            .catch(e => console.log(e));
+    }
+}

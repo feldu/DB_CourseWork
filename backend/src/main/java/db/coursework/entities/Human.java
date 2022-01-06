@@ -1,5 +1,6 @@
 package db.coursework.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -27,6 +28,7 @@ public class Human {
     @Column(name = "full_name", nullable = false)
     private String fullname;
 
+    @JsonIgnoreProperties("humans")
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "human_role",
             joinColumns = {
