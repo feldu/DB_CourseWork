@@ -3,10 +3,6 @@ import * as constants from "../constants";
 
 const initialState = {
     currentUser: {username: null, password: null, fullname: null, role: null},
-    authorizationInfo: {
-        message: null,
-        isError: null
-    }
 };
 
 export const authorizationReducer = (state = initialState, action) => {
