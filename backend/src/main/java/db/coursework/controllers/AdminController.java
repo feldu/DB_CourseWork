@@ -4,6 +4,7 @@ import db.coursework.entities.Human;
 import db.coursework.entities.Order;
 import db.coursework.services.HumanService;
 import db.coursework.services.OrderService;
+import db.coursework.services.OvumService;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
@@ -28,11 +29,13 @@ public class AdminController {
 
     private final HumanService humanService;
     private final OrderService orderService;
+    private final OvumService ovumService;
 
     @Autowired
-    public AdminController(HumanService humanService, OrderService orderService) {
+    public AdminController(HumanService humanService, OrderService orderService, OvumService ovumService) {
         this.humanService = humanService;
         this.orderService = orderService;
+        this.ovumService = ovumService;
     }
 
     @PostMapping("/get_predeterminers")
@@ -56,6 +59,17 @@ public class AdminController {
             List<OrderDTO> orderDTOS = orders.stream().map(order -> new OrderDTO(order.getId(), order.getHumanNumber(), order.getCaste().name(), order.getFutureJobTypes().stream().map(type -> type.getName().toString()).collect(Collectors.toList()))).collect(Collectors.toList());
             log.debug("Sending {} orders of {}", orderDTOS.size(), fullname);
             return new ResponseEntity<>(orderDTOS, HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PostMapping("/get_free_ovum_count")
+    public ResponseEntity<Long> getFreeOvumCount() {
+        try {
+            Long count = ovumService.getOvumCountByOvumContainerAndFertilizationTime(null);
+            return new ResponseEntity<>(count, HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);

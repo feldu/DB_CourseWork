@@ -17,6 +17,11 @@ public class Ovum {
     @Column(name = "id")
     private long id;
 
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "order_id")
+    private Order order;
+
+
     @NotNull
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "volunteer_id")

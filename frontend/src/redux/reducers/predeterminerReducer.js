@@ -1,6 +1,7 @@
 import {
     CHANGE_CURRENT_PREDETERMINER,
     CHANGE_CURRENT_PREDETERMINER_ORDER,
+    UPDATE_FREE_OVUM_COUNT,
     UPDATE_PREDETERMINER_ORDERS,
     UPDATE_PREDETERMINERS
 } from "../constants";
@@ -8,6 +9,7 @@ import {
 const initialState = {
     predeterminers: [],
     orders: [],
+    freeOvumCount: null,
     currentOrder: {
         id: null,
         humanNumber: null,
@@ -31,6 +33,8 @@ export const predeterminerReducer = (state = initialState, action) => {
             return {...state, orders: action.payload};
         case CHANGE_CURRENT_PREDETERMINER_ORDER:
             return {...state, currentOrder: action.payload};
+        case UPDATE_FREE_OVUM_COUNT:
+            return {...state, freeOvumCount: action.payload};
         default:
             return state;
     }

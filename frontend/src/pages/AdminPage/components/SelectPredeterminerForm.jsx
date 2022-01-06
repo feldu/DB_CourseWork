@@ -35,7 +35,7 @@ export default function SelectPredeterminerForm({predeterminers}) {
                     options={currentPredeterminerOptions}
                 />
             </form>
-            {currentPredeterminer.id !== null &&
+            {currentPredeterminer.id &&
             <SelectCurrentPredeterminerOrder/>}
         </Box>
     );

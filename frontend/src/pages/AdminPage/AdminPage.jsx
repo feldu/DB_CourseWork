@@ -13,9 +13,10 @@ export default function AdminPage() {
 
     useEffect(() => {
         dispatch(thunks.getUserInfo());
-        dispatch(thunks.getPredeterminers());
-        dispatch(thunks.getFutureJobTypes());
         dispatch(thunks.getCastes());
+        dispatch(thunks.getFutureJobTypes());
+        dispatch(thunks.getPredeterminers());
+        dispatch(thunks.getFreeOvumCount());
     }, []);
 
     return (

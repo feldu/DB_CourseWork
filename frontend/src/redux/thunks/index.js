@@ -154,3 +154,14 @@ export function getOrdersByFullname(fullname) {
             .catch(e => console.log(e));
     }
 }
+
+export function getFreeOvumCount() {
+    return function (dispatch) {
+        axios
+            .post('/admin/get_free_ovum_count')
+            .then(response => {
+                dispatch(actions.updateFreeOvumCount(response.data));
+            })
+            .catch(e => console.log(e));
+    }
+}
