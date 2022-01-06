@@ -1,21 +1,16 @@
 import {Box} from "@chakra-ui/react";
 import React, {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import * as thunks from "../../../../redux/thunks";
 import InputSelect from "../../../../components/InputSelect";
 import * as actions from "../../../../redux/actions";
 import Text from "@chakra-ui/core/dist/Text";
 
 
-export default function SelectCurrentPredeterminerOrder({currentPredeterminer}) {
+export default function SelectCurrentPredeterminerOrder() {
     const dispatch = useDispatch();
     const orders = useSelector(state => state.predeterminer.orders);
     const [currentOrderOptions, setCurrentOrderOptions] = useState([]);
 
-    useEffect(() => {
-        if (currentPredeterminer.fullname !== null)
-            dispatch(thunks.getOrdersByFullname({fullname: currentPredeterminer.fullname}));
-    }, [currentPredeterminer]);
 
     useEffect(() => {
         setCurrentOrderOptions(orders.map(order => ({

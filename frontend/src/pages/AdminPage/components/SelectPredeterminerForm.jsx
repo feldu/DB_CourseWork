@@ -5,6 +5,7 @@ import InputSelect from "../../../components/InputSelect";
 import {changeCurrentPredeterminer} from "../../../redux/actions";
 import CurrentPredeterminerBox from "./components/CurrentPredeterminerBox";
 import SelectCurrentPredeterminerOrder from "./components/SelectCurrentPredeterminerOrder";
+import * as thunks from "../../../redux/thunks";
 
 export default function SelectPredeterminerForm({predeterminers}) {
     const dispatch = useDispatch();
@@ -18,6 +19,11 @@ export default function SelectPredeterminerForm({predeterminers}) {
         })))
     }, [predeterminers]);
 
+    useEffect(() => {
+        if (currentPredeterminer.fullname !== null)
+            dispatch(thunks.getOrdersByFullname({fullname: currentPredeterminer.fullname}));
+    }, [currentPredeterminer]);
+
     return (
         <Box py={2} px={5} borderWidth={1} borderRadius={14} boxShadow="lg" w="100%" h="100%">
             <CurrentPredeterminerBox currentPredeterminer={currentPredeterminer}/>
@@ -30,7 +36,7 @@ export default function SelectPredeterminerForm({predeterminers}) {
                 />
             </form>
             {currentPredeterminer.id !== null &&
-            <SelectCurrentPredeterminerOrder currentPredeterminer={currentPredeterminer}/>}
+            <SelectCurrentPredeterminerOrder/>}
         </Box>
     );
 }
