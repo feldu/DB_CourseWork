@@ -17,7 +17,7 @@ export default function SignInForm() {
     const [role, setRole] = useState();
     const [error, setError] = useState(false);
     const [errorMsg, setErrorMsg] = useState('');
-    const authInfo = useSelector(state => state.authorization.authorizationInfo);
+    const authInfo = useSelector(state => state.message.messageInfo);
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const rolesOptions = [{value: "PREDETERMINER", label: "Предопределитель"}];

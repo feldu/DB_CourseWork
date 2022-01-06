@@ -125,7 +125,6 @@ export function addOrder(order) {
                     const id = response.data;
                     dispatch(actions.changeCurrentOrder({...order, id: id}));
                     dispatch(getOrders());
-                    //todo: add to user page message like this "Ваш запрос обработан. Отследить его вы можете по № %id"
                 }
             })
             .catch(e => console.log(e));
@@ -161,6 +160,17 @@ export function getFreeOvumCount() {
             .post('/admin/get_free_ovum_count')
             .then(response => {
                 dispatch(actions.updateFreeOvumCount(response.data));
+            })
+            .catch(e => console.log(e));
+    }
+}
+
+export function bindFreeOvumToOrder(orderId, count) {
+    return function (dispatch) {
+        axios
+            .post('/admin/bind_free_ovum', {orderId, count})
+            .then(() => {
+                dispatch(showMessage({message: `Началось выполнение заказа №${orderId}`, isError: false}))
             })
             .catch(e => console.log(e));
     }

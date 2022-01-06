@@ -14,7 +14,7 @@ export default function SignInForm() {
     const [password, setPassword] = useState('');
     const [error, setError] = useState(false);
     const [errorMsg, setErrorMsg] = useState('');
-    const authInfo = useSelector(state => state.authorization.authorizationInfo);
+    const authInfo = useSelector(state => state.message.messageInfo);
     const dispatch = useDispatch();
 
 
