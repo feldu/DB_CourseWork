@@ -1,10 +1,17 @@
 package db.coursework.entities.keys;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import java.io.Serializable;
 import java.util.Date;
 
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Embeddable
 public class UseMachineByOvumContainerKey implements Serializable {
     @Column(name = "machine_id")
@@ -15,7 +22,4 @@ public class UseMachineByOvumContainerKey implements Serializable {
 
     @Column(name = "start_time")
     Date startTime;
-
-    // standard constructors, getters, and setters
-    // hashcode and equals implementation
 }

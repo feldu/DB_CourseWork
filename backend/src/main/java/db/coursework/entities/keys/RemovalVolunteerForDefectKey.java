@@ -1,10 +1,17 @@
 package db.coursework.entities.keys;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import java.io.Serializable;
 import java.util.Date;
 
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Embeddable
 public class RemovalVolunteerForDefectKey implements Serializable {
     @Column(name = "defect_id")
@@ -15,7 +22,4 @@ public class RemovalVolunteerForDefectKey implements Serializable {
 
     @Column(name = "removal_time")
     Date removalTime;
-
-    // standard constructors, getters, and setters
-    // hashcode and equals implementation
 }

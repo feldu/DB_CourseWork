@@ -1,10 +1,17 @@
 package db.coursework.entities.keys;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import java.io.Serializable;
 import java.util.Date;
 
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Embeddable
 public class MoveOvumContainerToRoomKey implements Serializable {
 
@@ -16,7 +23,4 @@ public class MoveOvumContainerToRoomKey implements Serializable {
 
     @Column(name = "arrival_time")
     Date arrivalTime;
-
-    // standard constructors, getters, and setters
-    // hashcode and equals implementation
 }
