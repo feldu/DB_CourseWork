@@ -46,7 +46,6 @@ public class AdminController {
             log.debug("Sending {} predeterminers", predeterminersDTO.size());
             return new ResponseEntity<>(predeterminersDTO, HttpStatus.OK);
         } catch (Exception e) {
-            e.printStackTrace();
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
     }
@@ -61,7 +60,6 @@ public class AdminController {
             log.debug("Sending {} orders of {}", orderDTOS.size(), fullname);
             return new ResponseEntity<>(orderDTOS, HttpStatus.OK);
         } catch (Exception e) {
-            e.printStackTrace();
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
     }
@@ -73,7 +71,6 @@ public class AdminController {
             log.debug("Sending {} free ovum", count);
             return new ResponseEntity<>(count, HttpStatus.OK);
         } catch (Exception e) {
-            e.printStackTrace();
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
     }
@@ -84,11 +81,11 @@ public class AdminController {
             Long orderId = payload.get("orderId");
             Long count = payload.get("count");
             log.debug("Bind {} ovum to order №{}", count, orderId);
-            ovumService.bindFreeOvumToOrder(orderId, count);
+            ovumService.bindFreeOvum(orderId, count);
             return new ResponseEntity<>("Началось выполнение заказа №" + orderId, HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
-            return new ResponseEntity<>("Не удалось выделить свободные яйцеклетки.", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 

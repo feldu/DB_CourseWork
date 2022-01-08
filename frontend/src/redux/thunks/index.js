@@ -177,16 +177,15 @@ export function bindFreeOvumToOrder(orderId, count) {
                     dispatch(getFreeOvumCount());
                     dispatch(getOrdersByFullname(currentPredeterminer.fullname));
                     dispatch(actions.changeCurrentPredeterminerOrder({...currentOrder, processing: true}));
-                } else
-                    dispatch(showMessage({
-                        message: response.data, isError: true
-                    }));
+                }
             })
             .catch(e => {
-                console.log(e);
-                dispatch(showMessage({
-                    message: "Не удалось выделить свободные яйцеклетки для заказа", isError: true
-                }));
+                if (e.response.status === 400)
+                    dispatch(showMessage({message: e.response.data, isError: true}));
+                else
+                    dispatch(showMessage({
+                        message: "Не удалось выделить свободные яйцеклетки для заказа", isError: true
+                    }));
             });
     }
 }

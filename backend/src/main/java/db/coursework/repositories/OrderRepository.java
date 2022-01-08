@@ -15,7 +15,6 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
 
     @Transactional
     @Modifying(clearAutomatically = true)
-    @Query(value = "UPDATE \"order\" SET is_processing = :value WHERE id = :id",
-            nativeQuery = true)
+    @Query(value = "update order SET isProcessing = :value WHERE id = :id")
     void updateIsProcessingById(@Param(value = "value") Boolean value, @Param(value = "id") Long id);
 }
