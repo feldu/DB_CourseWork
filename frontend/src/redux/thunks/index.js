@@ -154,6 +154,17 @@ export function getOrdersByFullname(fullname) {
     }
 }
 
+export function getOvumByOrderId(orderId) {
+    return function (dispatch) {
+        axios
+            .post('/admin/get_ovum_by_order', {orderId})
+            .then(response => {
+                dispatch(actions.updateOvumByOrder(response.data));
+            })
+            .catch(e => console.log(e));
+    }
+}
+
 export function getFreeOvumCount() {
     return function (dispatch) {
         axios

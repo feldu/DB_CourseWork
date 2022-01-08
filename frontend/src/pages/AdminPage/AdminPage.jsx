@@ -3,8 +3,8 @@ import Flex from "@chakra-ui/core/dist/Flex";
 import MainHeader from "../../components/MainHeader";
 import {useDispatch, useSelector} from "react-redux";
 import * as thunks from "../../redux/thunks";
-import SelectedOrderBox from "../UserPage/components/components/SelectedOrderBox";
 import SelectPredeterminerForm from "./components/SelectPredeterminerForm";
+import AdminSelectedOrderBox from "./components/AdminSelectedOrderBox";
 
 
 export default function AdminPage() {
@@ -27,8 +27,8 @@ export default function AdminPage() {
                 <Flex direction="column" width="25%" alignItems="stretch">
                     <SelectPredeterminerForm predeterminers={predeterminers}/>
                 </Flex>
-                <Flex direction="column" bg="black" w="100%" ml={5}>
-                    <SelectedOrderBox/>
+                <Flex direction="column" w="100%" ml={5}>
+                    <AdminSelectedOrderBox/>
                 </Flex>
             </Flex>
         </Flex>

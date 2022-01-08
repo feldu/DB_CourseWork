@@ -61,3 +61,8 @@ export const changeCurrentPredeterminerOrder = order => ({
     type: constants.CHANGE_CURRENT_PREDETERMINER_ORDER,
     payload: order
 });
+
+export const updateOvumByOrder = ovum => ({
+    type: constants.UPDATE_OVUM_BY_ORDER,
+    payload: ovum
+});

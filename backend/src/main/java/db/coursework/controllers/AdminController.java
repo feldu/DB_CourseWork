@@ -2,6 +2,7 @@ package db.coursework.controllers;
 
 import db.coursework.entities.Human;
 import db.coursework.entities.Order;
+import db.coursework.entities.Ovum;
 import db.coursework.services.HumanService;
 import db.coursework.services.OrderService;
 import db.coursework.services.OvumService;
@@ -86,6 +87,20 @@ public class AdminController {
         } catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PostMapping("/get_ovum_by_order")
+    public ResponseEntity<List<Ovum>> getOvumByOrder(@RequestBody Map<String, Long> payload) {
+        try {
+            Long orderId = payload.get("orderId");
+            List<Ovum> ovumList = ovumService.findAllOvumByOrder_Id(orderId);
+            log.debug("Sending {} ovum of {} order", ovumList.size(), orderId);
+            return new ResponseEntity<>(ovumList, HttpStatus.OK);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
     }
 

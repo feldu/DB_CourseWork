@@ -1,6 +1,7 @@
 package db.coursework.services;
 
 import db.coursework.entities.Order;
+import db.coursework.entities.Ovum;
 import db.coursework.entities.OvumContainer;
 import db.coursework.repositories.OrderRepository;
 import db.coursework.repositories.OvumContainerRepository;
@@ -8,6 +9,8 @@ import db.coursework.repositories.OvumRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 public class OvumService {
@@ -24,6 +27,10 @@ public class OvumService {
 
     public Long getOvumCountByOvumContainerAndFertilizationTime(Order order) {
         return ovumRepository.countAllByOrder(order);
+    }
+
+    public List<Ovum> findAllOvumByOrder_Id(Long orderId) {
+        return ovumRepository.findAllOvumByOrder_Id(orderId);
     }
 
     @Transactional

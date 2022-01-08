@@ -1,5 +1,6 @@
 package db.coursework.entities;
 
+import com.fasterxml.jackson.annotation.JsonIncludeProperties;
 import db.coursework.entities.enums.FutureJobTypeName;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -27,6 +28,7 @@ public class FutureJobType {
     @Enumerated(EnumType.STRING)
     @Column(name = "name")
     private FutureJobTypeName name;
+    @JsonIncludeProperties(value = "futureJobTypes")
     @ManyToMany(mappedBy = "futureJobTypes", fetch = FetchType.EAGER)
     private List<Order> orders = new ArrayList<>();
 

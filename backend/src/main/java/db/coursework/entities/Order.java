@@ -1,5 +1,6 @@
 package db.coursework.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import db.coursework.entities.enums.OrderCaste;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -38,6 +39,7 @@ public class Order {
     @Column(name = "human_number")
     int humanNumber;
 
+    @JsonIgnoreProperties(value = "orders")
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "future_job_type_order",
             joinColumns = {

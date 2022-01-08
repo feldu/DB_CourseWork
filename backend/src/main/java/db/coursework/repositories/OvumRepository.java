@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 public interface OvumRepository extends JpaRepository<Ovum, Long> {
-    List<Ovum> findAllByOvumContainer_Id(Long id);
+    List<Ovum> findAllOvumByOrder_Id(Long orderId);
 
     @Transactional
     @Modifying(clearAutomatically = true)
