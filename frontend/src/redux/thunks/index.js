@@ -146,7 +146,7 @@ export function getPredeterminers() {
 export function getOrdersByFullname(fullname) {
     return function (dispatch) {
         axios
-            .post('/admin/get_orders', fullname)
+            .post('/admin/get_orders', {fullname})
             .then(response => {
                 dispatch(actions.updatePredeterminersOrders(response.data));
             })
@@ -166,12 +166,27 @@ export function getFreeOvumCount() {
 }
 
 export function bindFreeOvumToOrder(orderId, count) {
-    return function (dispatch) {
+    return function (dispatch, getState) {
         axios
             .post('/admin/bind_free_ovum', {orderId, count})
-            .then(() => {
-                dispatch(showMessage({message: `Началось выполнение заказа №${orderId}`, isError: false}))
+            .then(response => {
+                if (response.status === 200) {
+                    const currentPredeterminer = getState().predeterminer.currentPredeterminer;
+                    const currentOrder = getState().predeterminer.currentOrder;
+                    dispatch(showMessage({message: response.data, isError: false}));
+                    dispatch(getFreeOvumCount());
+                    dispatch(getOrdersByFullname(currentPredeterminer.fullname));
+                    dispatch(actions.changeCurrentPredeterminerOrder({...currentOrder, processing: true}));
+                } else
+                    dispatch(showMessage({
+                        message: response.data, isError: true
+                    }));
             })
-            .catch(e => console.log(e));
+            .catch(e => {
+                console.log(e);
+                dispatch(showMessage({
+                    message: "Не удалось выделить свободные яйцеклетки для заказа", isError: true
+                }));
+            });
     }
 }

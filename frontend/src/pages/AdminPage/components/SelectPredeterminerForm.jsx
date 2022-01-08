@@ -21,7 +21,7 @@ export default function SelectPredeterminerForm({predeterminers}) {
 
     useEffect(() => {
         if (currentPredeterminer.fullname !== null)
-            dispatch(thunks.getOrdersByFullname({fullname: currentPredeterminer.fullname}));
+            dispatch(thunks.getOrdersByFullname(currentPredeterminer.fullname));
     }, [currentPredeterminer]);
 
     return (

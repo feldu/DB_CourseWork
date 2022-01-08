@@ -14,7 +14,8 @@ const initialState = {
         id: null,
         humanNumber: null,
         caste: null,
-        futureJobTypes: null
+        futureJobTypes: null,
+        processing: null
     },
     currentPredeterminer: {
         id: null,

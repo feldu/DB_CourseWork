@@ -35,7 +35,7 @@ export default function SelectCurrentPredeterminerOrder() {
                     />
                 }
             </form>
-            {currentOrder.id && <CurrentOrderRequirements/>}
+            {(currentOrder.id && orders.length) ? <CurrentOrderRequirements/> : ""}
         </Box>
     );
 }

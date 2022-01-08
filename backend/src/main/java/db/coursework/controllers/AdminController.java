@@ -43,6 +43,7 @@ public class AdminController {
         try {
             List<Human> predeterminers = humanService.findAllHumanByRoleName("ROLE_PREDETERMINER");
             List<HumanDTO> predeterminersDTO = predeterminers.stream().map(h -> new HumanDTO(h.getId(), h.getFullname())).collect(Collectors.toList());
+            log.debug("Sending {} predeterminers", predeterminersDTO.size());
             return new ResponseEntity<>(predeterminersDTO, HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
@@ -56,7 +57,7 @@ public class AdminController {
             String fullname = payload.get("fullname");
             Human human = humanService.findHumanByFullname(fullname);
             List<Order> orders = orderService.findAllOrdersByHuman(human);
-            List<OrderDTO> orderDTOS = orders.stream().map(order -> new OrderDTO(order.getId(), order.getHumanNumber(), order.getCaste().name(), order.getFutureJobTypes().stream().map(type -> type.getName().toString()).collect(Collectors.toList()))).collect(Collectors.toList());
+            List<OrderDTO> orderDTOS = orders.stream().map(order -> new OrderDTO(order.getId(), order.getHumanNumber(), order.getCaste().name(), order.getFutureJobTypes().stream().map(type -> type.getName().toString()).collect(Collectors.toList()), order.isProcessing())).collect(Collectors.toList());
             log.debug("Sending {} orders of {}", orderDTOS.size(), fullname);
             return new ResponseEntity<>(orderDTOS, HttpStatus.OK);
         } catch (Exception e) {
@@ -69,10 +70,25 @@ public class AdminController {
     public ResponseEntity<Long> getFreeOvumCount() {
         try {
             Long count = ovumService.getOvumCountByOvumContainerAndFertilizationTime(null);
+            log.debug("Sending {} free ovum", count);
             return new ResponseEntity<>(count, HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PostMapping("/bind_free_ovum")
+    public ResponseEntity<String> bindFreeOvum(@RequestBody Map<String, Long> payload) {
+        try {
+            Long orderId = payload.get("orderId");
+            Long count = payload.get("count");
+            log.debug("Bind {} ovum to order №{}", count, orderId);
+            ovumService.bindFreeOvumToOrder(orderId, count);
+            return new ResponseEntity<>("Началось выполнение заказа №" + orderId, HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>("Не удалось выделить свободные яйцеклетки.", HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -94,5 +110,7 @@ public class AdminController {
         private String caste;
         @NotNull
         private List<String> futureJobTypes;
+        @NotNull
+        private boolean isProcessing;
     }
 }

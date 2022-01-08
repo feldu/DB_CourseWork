@@ -56,4 +56,8 @@ public class OrderService {
     public FutureJobType findFutureJobTypeByName(FutureJobTypeName name) {
         return futureJobTypeRepository.findByName(name);
     }
+
+    public void updateIsProcessingById(boolean value, Long id) {
+        orderRepository.updateIsProcessingById(value, id);
+    }
 }

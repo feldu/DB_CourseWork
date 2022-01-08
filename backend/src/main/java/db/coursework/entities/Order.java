@@ -21,6 +21,10 @@ import java.util.List;
 public class Order {
 
     @NotNull
+    @Column(name = "is_processing")
+    boolean isProcessing;
+
+    @NotNull
     @Enumerated(value = EnumType.STRING)
     OrderCaste caste;
 
@@ -33,10 +37,6 @@ public class Order {
     @Min(value = 1)
     @Column(name = "human_number")
     int humanNumber;
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private long id;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "future_job_type_order",
@@ -48,6 +48,10 @@ public class Order {
                     @JoinColumn(name = "future_job_type_id", referencedColumnName = "id",
                             nullable = false)})
     private List<FutureJobType> futureJobTypes = new ArrayList<>();
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private long id;
 
     public Order(@NotNull Human human, @NotNull @Min(value = 1) int humanNumber, @NotNull OrderCaste caste) {
         this.human = human;
