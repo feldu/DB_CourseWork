@@ -2,11 +2,10 @@ import React, {useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import * as thunks from "../../../redux/thunks";
 import {Box, Text} from "@chakra-ui/core";
-
+import AdminOvumTable from "./components/AdminOvumTable";
 
 export default function AdminSelectedOrderBox() {
     const dispatch = useDispatch();
-    const ovumList = useSelector(state => state.predeterminer.ovumByOrder);
     const currentOrder = useSelector(state => state.predeterminer.currentOrder);
 
     useEffect(() => {
@@ -17,7 +16,7 @@ export default function AdminSelectedOrderBox() {
     return (
         <Box py={2} px={5} borderWidth={1} borderRadius={14} boxShadow="lg" w="100%" h="100%">
             <Text>Order: {JSON.stringify(currentOrder, null, 2)}</Text>
-            <Text>OvumList: {ovumList.map(o => <Text mt={5}>{JSON.stringify(o, null, 2)}</Text>)}</Text>
+            <AdminOvumTable/>
         </Box>
     )
 }
