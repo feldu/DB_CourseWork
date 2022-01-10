@@ -2,10 +2,8 @@ import React, {useMemo} from "react";
 import {chakra, Table, Tbody, Td, Th, Thead, Tr} from '@chakra-ui/react'
 import {TriangleDownIcon, TriangleUpIcon} from "@chakra-ui/icons";
 import {useSortBy, useTable} from "react-table";
-import {useSelector} from "react-redux";
 
-export default function AdminOvumTable() {
-    const ovumList = useSelector(state => state.predeterminer.ovumByOrder);
+export default function AdminOvumTable({ovumList}) {
     const ovumContainerTypes = [{value: "OVUMRECEIVER", label: "Яйцеприемник"},
         {value: "BOTTLE", label: "Бутыль"}];
 
@@ -50,16 +48,12 @@ export default function AdminOvumTable() {
         useTable({columns, data: ovumTableData}, useSortBy);
 
     return (
-        ovumList.length !== 0 &&
         <Table borderWidth={1} borderRadius={14} boxShadow="lg" {...getTableProps()}>
             <Thead>
                 {headerGroups.map((headerGroup) => (
                     <Tr {...headerGroup.getHeaderGroupProps()}>
                         {headerGroup.headers.map((column) => (
-                            <Th
-                                {...column.getHeaderProps(column.getSortByToggleProps())}
-                                isNumeric={column.isNumeric}
-                            >
+                            <Th {...column.getHeaderProps(column.getSortByToggleProps())}>
                                 {column.render('Header')}
                                 <chakra.span pl='4'>
                                     {column.isSorted ? (column.isSortedDesc ?
@@ -77,7 +71,7 @@ export default function AdminOvumTable() {
                     return (
                         <Tr {...row.getRowProps()}>
                             {row.cells.map((cell) => (
-                                <Td {...cell.getCellProps()} isNumeric={cell.column.isNumeric}>
+                                <Td {...cell.getCellProps()}>
                                     {cell.render('Cell')}
                                 </Td>
                             ))}

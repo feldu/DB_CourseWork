@@ -1,12 +1,13 @@
 import React, {useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import * as thunks from "../../../redux/thunks";
-import {Box, Text} from "@chakra-ui/core";
+import {Box, Heading, Text} from "@chakra-ui/react";
 import AdminOvumTable from "./components/AdminOvumTable";
 
 export default function AdminSelectedOrderBox() {
     const dispatch = useDispatch();
     const currentOrder = useSelector(state => state.predeterminer.currentOrder);
+    const ovumList = useSelector(state => state.predeterminer.ovumByOrder);
 
     useEffect(() => {
         if (currentOrder.id !== null && currentOrder.processing === true)
@@ -14,9 +15,16 @@ export default function AdminSelectedOrderBox() {
     }, [currentOrder]);
 
     return (
-        <Box py={2} px={5} borderWidth={1} borderRadius={14} boxShadow="lg" w="100%" h="100%">
-            <Text>Order: {JSON.stringify(currentOrder, null, 2)}</Text>
-            <AdminOvumTable/>
+        <Box py={3} px={10} borderWidth={1} borderRadius={14} boxShadow="lg" w="100%" h="100%">
+            {currentOrder.id !== null ? <>
+                    <Heading textAlign="center" mb={8}>
+                        {`Заказ №${currentOrder.id}: ${currentOrder.humanNumber} человек касты ${currentOrder.caste}`}
+                    </Heading>
+                    {(ovumList.length !== 0 && currentOrder.processing === true)
+                        ? <AdminOvumTable ovumList={ovumList}/>
+                        : <Text>У данного заказа нет яйцеклеток</Text>}
+                </>
+                : <Heading textAlign="center" mt={3} mb={8}>Заказ не выбран</Heading>}
         </Box>
     )
 }
