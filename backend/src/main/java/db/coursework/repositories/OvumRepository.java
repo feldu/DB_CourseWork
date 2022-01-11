@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 
 public interface OvumRepository extends JpaRepository<Ovum, Long> {
@@ -26,4 +27,17 @@ public interface OvumRepository extends JpaRepository<Ovum, Long> {
     void bindOrderOvumToOvumContainer(@Param(value = "orderId") Long orderId, @Param(value = "ovumContainer") OvumContainer ovumContainer);
 
     Long countAllByOrder(Order order);
+
+    @Transactional
+    @Modifying(clearAutomatically = true)
+    @Query(value = "update ovum SET isBud = :isBud, " +
+            " fertilizationTime = :fertilizationTime, " +
+            "embryoTime = :embryoTime," +
+            "babyTime = :babyTime " +
+            "WHERE id = :id")
+    void updateOvumByOvumDTOFields(@Param(value = "id") long id,
+                                   @Param(value = "isBud") boolean isBud,
+                                   @Param(value = "fertilizationTime") Date fertilizationTime,
+                                   @Param(value = "embryoTime") Date embryoTime,
+                                   @Param(value = "babyTime") Date babyTime);
 }

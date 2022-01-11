@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -104,11 +105,36 @@ public class AdminController {
         }
     }
 
+    @PostMapping("/update_ovum")
+    public ResponseEntity<String> updateOvum(@RequestBody OvumDTO ovumDTO) {
+        try {
+            log.debug("Обновляем яйцеклетку с id {}", ovumDTO.id);
+            ovumService.updateOvumByOvumDTOFields(ovumDTO.getId(), ovumDTO.isBud(), ovumDTO.getFertilizationTime(), ovumDTO.getEmbryoTime(), ovumDTO.getBabyTime());
+            return new ResponseEntity<>("Яйцеклетка успешно обновлена", HttpStatus.OK);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>("Не удалось обновить яйцеклетку", HttpStatus.BAD_REQUEST);
+        }
+    }
+
     @Data
     @AllArgsConstructor
     private static class HumanDTO {
         Long id;
         String fullname;
+    }
+
+    @Data
+    @AllArgsConstructor
+    private static class OvumDTO {
+        @NotNull
+        Long id;
+        @NotNull
+        private boolean isBud;
+        private Date fertilizationTime;
+        private Date embryoTime;
+        private Date babyTime;
     }
 
     @Data

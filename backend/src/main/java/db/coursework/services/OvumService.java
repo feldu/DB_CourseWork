@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -41,5 +42,9 @@ public class OvumService {
             throw new RuntimeException("Не удалось начать выполнение заказа: нет свободных яйцеприемников");
         orderRepository.updateIsProcessingById(true, orderId);
         ovumRepository.bindOrderOvumToOvumContainer(orderId, freeOvumreceiver);
+    }
+
+    public void updateOvumByOvumDTOFields(long id, boolean isBud, Date fertilizationTime, Date embryoTime, Date babyTime) {
+        ovumRepository.updateOvumByOvumDTOFields(id, isBud, fertilizationTime, embryoTime, babyTime);
     }
 }

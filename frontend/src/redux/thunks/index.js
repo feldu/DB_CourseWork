@@ -200,3 +200,22 @@ export function bindFreeOvumToOrder(orderId, count) {
             });
     }
 }
+
+export function updateOvum(ovum) {
+    return function (dispatch, getState) {
+        axios
+            .post('/admin/update_ovum', ovum)
+            .then(response => {
+                if (response.status === 200) {
+                    dispatch(showMessage({message: response.data, isError: false}));
+                    dispatch(getOvumByOrderId(getState().predeterminer.currentOrder.id));
+                }
+            })
+            .catch(e => {
+                if (e.response.status === 400)
+                    dispatch(showMessage({message: e.response.data, isError: true}));
+                else
+                    dispatch(showMessage({message: "Произошла какая-то хуйня...", isError: true}));
+            });
+    }
+}
