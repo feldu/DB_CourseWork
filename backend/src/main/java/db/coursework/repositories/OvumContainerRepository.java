@@ -3,6 +3,7 @@ package db.coursework.repositories;
 import db.coursework.entities.OvumContainer;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 
 public interface OvumContainerRepository extends JpaRepository<OvumContainer, Long> {
@@ -11,4 +12,10 @@ public interface OvumContainerRepository extends JpaRepository<OvumContainer, Lo
             "AND oc.name = 'OVUMRECEIVER' LIMIT 1",
             nativeQuery = true)
     OvumContainer getFreeOvumreceiver();
+
+    @Query(value = "select oc from ovum_container oc " +
+            "join ovum o on (o.ovumContainer = oc) " +
+            "WHERE o.order.id = :orderId " +
+            "AND oc.name = 'OVUMRECEIVER'")
+    OvumContainer getOrderOvumreceiver(@Param(value = "orderId") Long orderId);
 }

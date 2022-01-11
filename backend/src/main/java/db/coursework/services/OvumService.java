@@ -47,4 +47,8 @@ public class OvumService {
     public void updateOvumByOvumDTOFields(long id, boolean isBud, Date fertilizationTime, Date embryoTime, Date babyTime) {
         ovumRepository.updateOvumByOvumDTOFields(id, isBud, fertilizationTime, embryoTime, babyTime);
     }
+
+    public void updateOvumInOvumContainerByFertilizationTime(Long ovumContainerId, Date fertilizationTime) {
+        ovumRepository.updateOvumInOvumContainerByFertilizationTime(ovumContainerId, fertilizationTime);
+    }
 }

@@ -22,7 +22,7 @@ export default function SelectPredeterminerForm({predeterminers}) {
     useEffect(() => {
         if (currentPredeterminer.fullname !== null)
             dispatch(thunks.getOrdersByFullname(currentPredeterminer.fullname));
-    }, [currentPredeterminer]);
+    }, [currentPredeterminer, dispatch]);
 
     return (
         <Box py={2} px={5} borderWidth={1} borderRadius={14} boxShadow="lg" w="100%" h="100%">

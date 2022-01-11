@@ -5,6 +5,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {calculateOvumCount} from "../../../../utils/calculations";
 import * as thunks from "../../../../redux/thunks";
 import AlertMessage from "../../../../components/AlertMessage";
+import StageStarterForms from "./components/StageStarterForms";
 
 export default function CurrentOrderRequirements() {
     const dispatch = useDispatch();
@@ -20,7 +21,11 @@ export default function CurrentOrderRequirements() {
     return (
         <Box>
             {currentOrder.processing ?
-                <Text textAlign="center">Заказ выполняется...</Text>
+                <>
+                    <Text textAlign="center">Заказ выполняется...</Text>
+                    <StageStarterForms/>
+                </>
+
                 :
                 <Box textAlign="left">
                     <Box>

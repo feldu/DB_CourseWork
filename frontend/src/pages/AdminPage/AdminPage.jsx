@@ -17,7 +17,7 @@ export default function AdminPage() {
         dispatch(thunks.getFutureJobTypes());
         dispatch(thunks.getPredeterminers());
         dispatch(thunks.getFreeOvumCount());
-    }, []);
+    }, [dispatch]);
 
     return (
         <Flex direction="column">

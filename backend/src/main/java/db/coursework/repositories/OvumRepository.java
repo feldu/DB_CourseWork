@@ -40,4 +40,9 @@ public interface OvumRepository extends JpaRepository<Ovum, Long> {
                                    @Param(value = "fertilizationTime") Date fertilizationTime,
                                    @Param(value = "embryoTime") Date embryoTime,
                                    @Param(value = "babyTime") Date babyTime);
+
+    @Transactional
+    @Modifying(clearAutomatically = true)
+    @Query(value = "update ovum SET fertilizationTime = :fertilizationTime WHERE ovumContainer.id = :ovumContainerId")
+    void updateOvumInOvumContainerByFertilizationTime(@Param(value = "ovumContainerId") Long ovumContainerId, @Param(value = "fertilizationTime") Date fertilizationTime);
 }
