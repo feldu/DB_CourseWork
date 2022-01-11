@@ -6,11 +6,11 @@ export default function InputPassword({label, placeholder, value, setValue}) {
     const [show, setShow] = React.useState(false);
     return (
         <FormControl m6={6} isRequired={true}>
-            <FormLabel>Пароль</FormLabel>
+            {label && <FormLabel>{label}</FormLabel>}
             <InputGroup size='md'>
                 <Input
                     type={show ? 'text' : 'password'}
-                    placeholder="От 4 до 20 символов"
+                    placeholder={placeholder}
                     value={value}
                     onChange={e => {
                         setValue(e.target.value)

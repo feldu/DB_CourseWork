@@ -2,10 +2,10 @@ import {FormControl, FormLabel} from "@chakra-ui/react";
 import Select from 'react-select'
 import React from "react";
 
-export default function InputSelect({label, placeholder, options, onChangeHandler, isMulti = false, isRequired = false}) {
+export default function InputSelect({label, placeholder, options, onChangeHandler, isMulti = false, isRequired = false, w, mx}) {
     return (
-        <FormControl my={6} isRequired={isRequired}>
-            <FormLabel>{label}</FormLabel>
+        <FormControl w={w} mx={mx} my={6} isRequired={isRequired}>
+            {label && <FormLabel>{label}</FormLabel>}
             <Select onChange={onChangeHandler}
                     isMulti={isMulti}
                     placeholder={placeholder}
