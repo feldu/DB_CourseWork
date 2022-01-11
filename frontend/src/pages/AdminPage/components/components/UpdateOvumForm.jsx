@@ -4,6 +4,7 @@ import InputSelect from "../../../../components/InputSelect";
 import InputText from "../../../../components/InputText";
 import * as thunks from "../../../../redux/thunks";
 import {useDispatch} from "react-redux";
+import AlertMessage from "../../../../components/AlertMessage";
 
 export default function UpdateOvumForm({ovumList}) {
     const dispatch = useDispatch();
@@ -12,6 +13,9 @@ export default function UpdateOvumForm({ovumList}) {
     const [fertilizationTime, setFertilizationTime] = useState("");
     const [embryoTime, setEmbryoTime] = useState("");
     const [babyTime, setBabyTime] = useState("");
+
+    const [error, setError] = useState(false);
+    const [errorMsg, setErrorMsg] = useState('');
 
     const idChangeHandler = e => {
         const ovumFromList = ovumList.find(o => o.id === e.value);
@@ -24,12 +28,14 @@ export default function UpdateOvumForm({ovumList}) {
 
     const onClickHandler = e => {
         e.preventDefault();
+        //todo: client validation
         dispatch(thunks.updateOvum({id, bud, fertilizationTime, embryoTime, babyTime}));
     };
 
     return (
         <Box textAlign="center">
             <Heading mt={6} size="lg">Обновить яйцеклетку</Heading>
+            {error && <AlertMessage status="error" message={errorMsg} maxW="100%"/>}
             <form>
                 <Flex justifyContent="space-between">
                     <InputSelect w={"25%"} mx={5} options={ovumList.map(o => ({value: o.id, label: `№${o.id}`}))}
