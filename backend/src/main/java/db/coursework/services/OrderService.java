@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -57,7 +58,7 @@ public class OrderService {
         return futureJobTypeRepository.findByName(name);
     }
 
-    public void updateIsProcessingById(boolean value, Long id) {
-        orderRepository.updateIsProcessingById(value, id);
+    public Optional<Order> findOrderById(Long id) {
+        return orderRepository.findById(id);
     }
 }

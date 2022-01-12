@@ -45,4 +45,12 @@ public interface OvumRepository extends JpaRepository<Ovum, Long> {
     @Modifying(clearAutomatically = true)
     @Query(value = "update ovum SET fertilizationTime = :fertilizationTime WHERE ovumContainer.id = :ovumContainerId")
     void updateOvumInOvumContainerByFertilizationTime(@Param(value = "ovumContainerId") Long ovumContainerId, @Param(value = "fertilizationTime") Date fertilizationTime);
+
+    @Transactional
+    @Modifying(clearAutomatically = true)
+    @Query(value = "DELETE FROM ovum WHERE id IN (SELECT id FROM ovum WHERE order_id = :orderId LIMIT :count)",
+            nativeQuery = true)
+    void removeExtraOvumByOrderId(@Param(value = "orderId") Long orderId, @Param(value = "count") Long count);
+
+
 }

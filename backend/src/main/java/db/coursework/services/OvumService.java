@@ -26,7 +26,7 @@ public class OvumService {
         this.ovumContainerRepository = ovumContainerRepository;
     }
 
-    public Long getOvumCountByOvumContainerAndFertilizationTime(Order order) {
+    public Long getOvumCountByOrder(Order order) {
         return ovumRepository.countAllByOrder(order);
     }
 
@@ -50,5 +50,9 @@ public class OvumService {
 
     public void updateOvumInOvumContainerByFertilizationTime(Long ovumContainerId, Date fertilizationTime) {
         ovumRepository.updateOvumInOvumContainerByFertilizationTime(ovumContainerId, fertilizationTime);
+    }
+
+    public void removeExtraOvumByOrderId(Long orderId, Long count) {
+        ovumRepository.removeExtraOvumByOrderId(orderId, count);
     }
 }

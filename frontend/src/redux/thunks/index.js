@@ -238,3 +238,40 @@ export function startFirstStep(orderId) {
             });
     }
 }
+
+export function startSecondStep(orderId) {
+    return function (dispatch) {
+        axios
+            .post('/admin/start/second_step', {orderId})
+            .then(response => {
+                if (response.status === 200) {
+                    dispatch(showMessage({message: response.data, isError: false}));
+                    dispatch(removeExtraOvum(orderId));
+                }
+            })
+            .catch(e => {
+                if (e.response.status === 400)
+                    dispatch(showMessage({message: e.response.data, isError: true}));
+                else
+                    dispatch(showMessage({message: "Произошла какая-то хуйня...", isError: true}));
+            });
+    }
+}
+
+export function removeExtraOvum(orderId) {
+    return function (dispatch) {
+        axios
+            .post('/admin/remove_extra_ovum_by_order', {orderId})
+            .then(response => {
+                if (response.status === 200) {
+                    dispatch(getOvumByOrderId(orderId));
+                }
+            })
+            .catch(e => {
+                if (e.response.status === 400)
+                    dispatch(showMessage({message: e.response.data, isError: true}));
+                else
+                    dispatch(showMessage({message: "Произошла какая-то хуйня...", isError: true}));
+            });
+    }
+}

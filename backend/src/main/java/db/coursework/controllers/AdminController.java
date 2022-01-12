@@ -69,11 +69,31 @@ public class AdminController {
     @PostMapping("/get_free_ovum_count")
     public ResponseEntity<Long> getFreeOvumCount() {
         try {
-            Long count = ovumService.getOvumCountByOvumContainerAndFertilizationTime(null);
+            Long count = ovumService.getOvumCountByOrder(null);
             log.debug("Sending {} free ovum", count);
             return new ResponseEntity<>(count, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PostMapping("/remove_extra_ovum_by_order")
+    public ResponseEntity<String> removeExtraOvumByOrder(@RequestBody Map<String, Long> payload) {
+        try {
+            Long orderId = payload.get("orderId");
+            Order order = orderService.findOrderById(orderId).orElse(null);
+            if (order == null)
+                throw new RuntimeException("Заказа не существует");
+            //Уничтожаем "лишние"
+            Long ovumCount = ovumService.getOvumCountByOrder(order);
+            if (ovumCount > order.getHumanNumber()) {
+                log.debug("Количество яйцеклеток: {}. Требуется людей: {}", ovumCount, order.getHumanNumber());
+                ovumService.removeExtraOvumByOrderId(orderId, ovumCount - order.getHumanNumber());
+                log.debug("Удалено {} яйцеклеток.", ovumCount - order.getHumanNumber());
+            }
+            return new ResponseEntity<>("Удаление прошло успешно", HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
