@@ -21,6 +21,11 @@ public interface OvumContainerRepository extends JpaRepository<OvumContainer, Lo
             "AND oc.name = 'OVUMRECEIVER'")
     OvumContainer getOrderOvumreceiver(@Param(value = "orderId") Long orderId);
 
+    @Query(value = "select oc from ovum_container oc " +
+            "where oc.id in (select o.ovumContainer.id from ovum o " +
+            "where o.ovumContainer.id = oc.id and o.order.id = :orderId)")
+    List<OvumContainer> getAllOrderOvumContainers(@Param(value = "orderId") Long orderId);
+
     @Query(value = "SELECT oc.id, oc.name FROM ovum_container oc " +
             "WHERE NOT EXISTS (SELECT 1 FROM ovum o where o.ovum_container_id = oc.id) " +
             "AND oc.name = 'BOTTLE' LIMIT :count",

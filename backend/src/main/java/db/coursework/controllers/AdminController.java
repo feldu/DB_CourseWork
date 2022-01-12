@@ -1,11 +1,7 @@
 package db.coursework.controllers;
 
-import db.coursework.entities.Human;
-import db.coursework.entities.Order;
-import db.coursework.entities.Ovum;
-import db.coursework.services.HumanService;
-import db.coursework.services.OrderService;
-import db.coursework.services.OvumService;
+import db.coursework.entities.*;
+import db.coursework.services.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
@@ -19,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -32,12 +29,18 @@ public class AdminController {
     private final HumanService humanService;
     private final OrderService orderService;
     private final OvumService ovumService;
+    private final OvumContainerService ovumContainerService;
+    private final UseMachineByOvumContainerService useMachineByOvumContainerService;
+    private final MoveOvumContainerToRoomService moveOvumContainerToRoomService;
 
     @Autowired
-    public AdminController(HumanService humanService, OrderService orderService, OvumService ovumService) {
+    public AdminController(HumanService humanService, OrderService orderService, OvumService ovumService, OvumContainerService ovumContainerService, UseMachineByOvumContainerService useMachineByOvumContainerService, MoveOvumContainerToRoomService moveOvumContainerToRoomService) {
         this.humanService = humanService;
         this.orderService = orderService;
         this.ovumService = ovumService;
+        this.ovumContainerService = ovumContainerService;
+        this.useMachineByOvumContainerService = useMachineByOvumContainerService;
+        this.moveOvumContainerToRoomService = moveOvumContainerToRoomService;
     }
 
     @PostMapping("/get_predeterminers")
@@ -136,6 +139,78 @@ public class AdminController {
             e.printStackTrace();
             return new ResponseEntity<>("Не удалось обновить яйцеклетку", HttpStatus.BAD_REQUEST);
         }
+    }
+
+    @PostMapping("/get_use_machine")
+    public ResponseEntity<List<UseMachineByOvumContainerDTO>> getUseMachine(@RequestBody Map<String, Long> payload) {
+        try {
+            Long orderId = payload.get("orderId");
+            log.debug("Получаем журнал использования машин контейнерами заказа {}", orderId);
+            Order order = orderService.findOrderById(orderId).orElse(null);
+            if (order == null) return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+            List<OvumContainer> ovumContainers = ovumContainerService.getAllOrderOvumContainers(orderId);
+            List<UseMachineByOvumContainer> useMachineByOvumContainerList = new ArrayList<>(ovumContainers.size());
+            for (OvumContainer ovumContainer : ovumContainers) {
+                List<UseMachineByOvumContainer> useMachineForCurrentOvumContainer = useMachineByOvumContainerService.findAllByOvumContainer_Id(ovumContainer.getId());
+                useMachineByOvumContainerList.addAll(useMachineForCurrentOvumContainer);
+            }
+            List<UseMachineByOvumContainerDTO> useDTO = useMachineByOvumContainerList.stream().map(entry -> new UseMachineByOvumContainerDTO(entry.getMachine(), entry.getOvumContainer(), entry.getId().getStartTime(), entry.getEndTime(), entry.getTotalBudsCount())).collect(Collectors.toList());
+            log.debug("Извлечено {} записей для {} контейнеров", useMachineByOvumContainerList.size(), ovumContainers.size());
+            return new ResponseEntity<>(useDTO, HttpStatus.OK);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PostMapping("/get_move_container")
+    public ResponseEntity<List<MoveOvumContainerToRoomDTO>> getMoveContainer(@RequestBody Map<String, Long> payload) {
+        try {
+            Long orderId = payload.get("orderId");
+            log.debug("Получаем журнал использования машин контейнерами заказа {}", orderId);
+            Order order = orderService.findOrderById(orderId).orElse(null);
+            if (order == null) return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+            List<OvumContainer> ovumContainers = ovumContainerService.getAllOrderOvumContainers(orderId);
+            List<MoveOvumContainerToRoom> moveOvumContainerToRoomList = new ArrayList<>(ovumContainers.size());
+            for (OvumContainer ovumContainer : ovumContainers) {
+                List<MoveOvumContainerToRoom> moveForCurrentOvumContainer = moveOvumContainerToRoomService.findAllByOvumContainer_Id(ovumContainer.getId());
+                moveOvumContainerToRoomList.addAll(moveForCurrentOvumContainer);
+            }
+            List<MoveOvumContainerToRoomDTO> moveDTO = moveOvumContainerToRoomList.stream().map(entry -> new MoveOvumContainerToRoomDTO(entry.getOvumContainer(), entry.getRoom(), entry.getId().getArrivalTime())).collect(Collectors.toList());
+            log.debug("Извлечено {} записей для {} контейнеров", moveOvumContainerToRoomList.size(), ovumContainers.size());
+            return new ResponseEntity<>(moveDTO, HttpStatus.OK);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+
+    @Data
+    @AllArgsConstructor
+    private static class UseMachineByOvumContainerDTO {
+        @NotNull
+        Machine machine;
+        @NotNull
+        OvumContainer ovumContainer;
+        @NotNull
+        Date startTime;
+        @NotNull
+        Date endTime;
+        Integer totalBudsCount;
+    }
+
+    @Data
+    @AllArgsConstructor
+    private static class MoveOvumContainerToRoomDTO {
+        @NotNull
+        OvumContainer ovumContainer;
+        @NotNull
+        Room room;
+        @NotNull
+        Date arrivalTime;
     }
 
     @Data

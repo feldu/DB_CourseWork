@@ -26,4 +26,8 @@ public class OvumContainerService {
         return ovumContainerRepository.getFreeBottles(count);
     }
 
+    public List<OvumContainer> getAllOrderOvumContainers(Long orderId) {
+        return ovumContainerRepository.getAllOrderOvumContainers(orderId);
+    }
+
 }

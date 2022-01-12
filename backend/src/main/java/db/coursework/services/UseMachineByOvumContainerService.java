@@ -5,6 +5,8 @@ import db.coursework.repositories.UseMachineByOvumContainerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class UseMachineByOvumContainerService {
 
@@ -18,4 +20,9 @@ public class UseMachineByOvumContainerService {
     public UseMachineByOvumContainer save(UseMachineByOvumContainer useMachineByOvumContainer) {
         return useMachineByOvumContainerRepository.save(useMachineByOvumContainer);
     }
+
+    public List<UseMachineByOvumContainer> findAllByOvumContainer_Id(Long id) {
+        return useMachineByOvumContainerRepository.findAllByOvumContainer_Id(id);
+    }
+
 }
