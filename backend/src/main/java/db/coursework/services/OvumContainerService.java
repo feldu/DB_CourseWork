@@ -5,6 +5,8 @@ import db.coursework.repositories.OvumContainerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class OvumContainerService {
 
@@ -19,4 +21,9 @@ public class OvumContainerService {
     public OvumContainer getOrderOvumreceiver(Long orderId) {
         return ovumContainerRepository.getOrderOvumreceiver(orderId);
     }
+
+    public List<OvumContainer> getFreeBottles(Integer count) {
+        return ovumContainerRepository.getFreeBottles(count);
+    }
+
 }

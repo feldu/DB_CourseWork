@@ -9,6 +9,9 @@ export default function StageStarterForms() {
     const dispatch = useDispatch();
     const currentOrder = useSelector(state => state.predeterminer.currentOrder);
     const ovumList = useSelector(state => state.predeterminer.ovumByOrder);
+    const firstComplete = ovumList.filter(o => o.fertilizationTime !== null).length === ovumList.length;
+    const secondComplete = ovumList.length === currentOrder.humanNumber || ["Alpha", "Beta"].includes(currentOrder.caste);
+    const thirdComplete = ovumList.filter(o => o.babyTime !== null).length === ovumList.length;
     useEffect(() => {
         if (ovumList.length !== 0 && currentOrder.id !== null)
             if (ovumList.length > currentOrder.humanNumber)
@@ -20,7 +23,7 @@ export default function StageStarterForms() {
                 <Heading textAlign="center" size="md" my={4}>Этап 1: "Оплодотворение"</Heading>
                 <form>
                     {ovumList.filter(o => o.fertilizationTime === null).length !== ovumList.length ?
-                        (ovumList.filter(o => o.fertilizationTime !== null).length === ovumList.length ?
+                        (firstComplete ?
                                 <Text>Все яйцеклетки оплодотворены. Первый этап завершён.</Text>
                                 :
                                 <Text>Есть оплодовторённые яйцеклетки. Не возможно начать первый этап.</Text>
@@ -37,10 +40,10 @@ export default function StageStarterForms() {
                     {["Alpha", "Beta"].includes(currentOrder.caste) ?
                         <Text>Для каст Альфа и Бета не требуется выполнение второго этапа.</Text>
                         :
-                        (ovumList.filter(o => o.fertilizationTime !== null).length !== ovumList.length ?
+                        (!firstComplete ?
                             <Text>Сначала завершите выполнение первого этапа.</Text>
                             :
-                            (ovumList.length === currentOrder.humanNumber ?
+                            (secondComplete ?
                                 <Text>Дробление выполнено. Второй этап завершён.</Text>
                                 :
                                 <Button colorScheme='teal' variant='solid' type="submit" onClick={e => {
@@ -51,10 +54,17 @@ export default function StageStarterForms() {
                 </form>
                 <Heading textAlign="center" size="md" my={4} mt={6}>Этап 3: "Набутыливание"</Heading>
                 <form>
-                    <Button colorScheme='teal' variant='solid' type="submit" onClick={e => {
-                    }}>
-                        Запустить
-                    </Button>
+                    {!secondComplete ?
+                        <Text>Сначала завершите выполнение второго этапа.</Text>
+                        :
+                        (thirdComplete ? <Text>Третий этап завершён. Заказ выполнен.</Text>
+                            :
+                            <Button colorScheme='teal' variant='solid' type="submit" onClick={e => {
+                                e.preventDefault();
+                                dispatch(thunks.startThirdStep(currentOrder.id));
+                            }}>
+                                Запустить
+                            </Button>)}
                 </form>
             </Flex>
         </Box>

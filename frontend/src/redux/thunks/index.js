@@ -275,3 +275,22 @@ export function removeExtraOvum(orderId) {
             });
     }
 }
+
+export function startThirdStep(orderId) {
+    return function (dispatch) {
+        axios
+            .post('/admin/start/third_step', {orderId})
+            .then(response => {
+                if (response.status === 200) {
+                    dispatch(showMessage({message: response.data, isError: false}));
+                    dispatch(getOvumByOrderId(orderId));
+                }
+            })
+            .catch(e => {
+                if (e.response.status === 400)
+                    dispatch(showMessage({message: e.response.data, isError: true}));
+                else
+                    dispatch(showMessage({message: "Произошла какая-то хуйня...", isError: true}));
+            });
+    }
+}

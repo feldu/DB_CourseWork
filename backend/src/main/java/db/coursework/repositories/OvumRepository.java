@@ -28,6 +28,8 @@ public interface OvumRepository extends JpaRepository<Ovum, Long> {
 
     Long countAllByOrder(Order order);
 
+    List<Ovum> findAllByOrder_Id(Long id);
+
     @Transactional
     @Modifying(clearAutomatically = true)
     @Query(value = "update ovum SET isBud = :isBud, " +

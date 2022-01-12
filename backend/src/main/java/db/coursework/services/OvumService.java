@@ -30,6 +30,10 @@ public class OvumService {
         return ovumRepository.countAllByOrder(order);
     }
 
+    public List<Ovum> findAllByOrder_Id(Long id) {
+        return ovumRepository.findAllOvumByOrder_Id(id);
+    }
+
     public List<Ovum> findAllOvumByOrder_Id(Long orderId) {
         return ovumRepository.findAllOvumByOrder_Id(orderId);
     }
@@ -54,5 +58,9 @@ public class OvumService {
 
     public void removeExtraOvumByOrderId(Long orderId, Long count) {
         ovumRepository.removeExtraOvumByOrderId(orderId, count);
+    }
+
+    public Ovum save(Ovum ovum) {
+        return ovumRepository.save(ovum);
     }
 }

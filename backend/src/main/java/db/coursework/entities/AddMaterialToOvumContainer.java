@@ -1,6 +1,7 @@
 package db.coursework.entities;
 
 import db.coursework.entities.keys.AddMaterialToOvumContainerKey;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -11,6 +12,7 @@ import java.util.Date;
 @Data
 @Entity(name = "add_material_to_ovum_container")
 @NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "add_material_to_ovum_container")
 public class AddMaterialToOvumContainer {
     @EmbeddedId

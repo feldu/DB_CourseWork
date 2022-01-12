@@ -1,5 +1,6 @@
 package db.coursework.entities;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -11,6 +12,7 @@ import javax.validation.constraints.NotNull;
 @Data
 @Entity(name = "label")
 @NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "label")
 public class Label {
     @Id
@@ -31,5 +33,11 @@ public class Label {
     @Min(value = 72)
     @Max(value = 96)
     @Column(name = "Bokanovsky_group")
-    private int bokanovskyGroup;
+    private Integer bokanovskyGroup;
+
+    public Label(@NotNull Order additionalInformation, @NotNull OvumContainer ovumContainer, @Min(value = 72) @Max(value = 96) Integer bokanovskyGroup) {
+        this.additionalInformation = additionalInformation;
+        this.ovumContainer = ovumContainer;
+        this.bokanovskyGroup = bokanovskyGroup;
+    }
 }
