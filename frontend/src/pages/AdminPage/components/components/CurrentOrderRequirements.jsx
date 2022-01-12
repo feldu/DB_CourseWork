@@ -9,8 +9,8 @@ import StageStarterForms from "./components/StageStarterForms";
 
 export default function CurrentOrderRequirements() {
     const dispatch = useDispatch();
-    const currentOrder = useSelector(state => state.predeterminer.currentOrder);
-    const freeOvumCount = useSelector(state => state.predeterminer.freeOvumCount);
+    const currentOrder = useSelector(state => state.order.currentOrder);
+    const freeOvumCount = useSelector(state => state.ovum.freeOvumCount);
     const bindInfo = useSelector(state => state.message.messageInfo);
     const neededOvumCount = calculateOvumCount(currentOrder.humanNumber, currentOrder.caste);
 

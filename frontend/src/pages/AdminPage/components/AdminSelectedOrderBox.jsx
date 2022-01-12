@@ -7,13 +7,13 @@ import UpdateOvumForm from "./components/UpdateOvumForm";
 
 export default function AdminSelectedOrderBox() {
     const dispatch = useDispatch();
-    const currentOrder = useSelector(state => state.predeterminer.currentOrder);
-    const ovumList = useSelector(state => state.predeterminer.ovumByOrder);
+    const currentOrder = useSelector(state => state.order.currentOrder);
+    const ovumList = useSelector(state => state.ovum.ovumByOrder);
 
     useEffect(() => {
         if (currentOrder.id !== null && currentOrder.processing === true)
             dispatch(thunks.getOvumByOrderId(currentOrder.id));
-    }, [currentOrder]);
+    }, [currentOrder, dispatch]);
 
     return (
         <Box py={3} px={10} borderWidth={1} borderRadius={14} boxShadow="lg" w="100%" h="100%">

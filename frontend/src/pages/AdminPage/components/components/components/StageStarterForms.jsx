@@ -7,8 +7,9 @@ import * as thunks from "../../../../../redux/thunks";
 
 export default function StageStarterForms() {
     const dispatch = useDispatch();
-    const currentOrder = useSelector(state => state.predeterminer.currentOrder);
-    const ovumList = useSelector(state => state.predeterminer.ovumByOrder);
+    const currentOrder = useSelector(state => state.order.currentOrder);
+    const ovumList = useSelector(state => state.ovum.ovumByOrder);
+
     const firstComplete = ovumList.filter(o => o.fertilizationTime !== null).length === ovumList.length;
     const secondComplete = ovumList.length === currentOrder.humanNumber || ["Alpha", "Beta"].includes(currentOrder.caste);
     const thirdComplete = ovumList.filter(o => o.babyTime !== null).length === ovumList.length;
@@ -16,7 +17,7 @@ export default function StageStarterForms() {
         if (ovumList.length !== 0 && currentOrder.id !== null)
             if (ovumList.length > currentOrder.humanNumber)
                 dispatch(thunks.removeExtraOvum(currentOrder.id));
-    }, [ovumList, currentOrder]);
+    }, [ovumList, currentOrder, dispatch]);
     return (
         <Box mt={5} w="100%" h="100%">
             <Flex justifyContent="center" flexDirection="column" alignItems="center">

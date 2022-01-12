@@ -9,8 +9,8 @@ import CurrentOrderRequirements from "./CurrentOrderRequirements";
 
 export default function SelectCurrentPredeterminerOrder() {
     const dispatch = useDispatch();
-    const currentOrder = useSelector(state => state.predeterminer.currentOrder);
-    const orders = useSelector(state => state.predeterminer.orders);
+    const currentOrder = useSelector(state => state.order.currentOrder);
+    const orders = useSelector(state => state.order.orders);
     const [currentOrderOptions, setCurrentOrderOptions] = useState([]);
 
 

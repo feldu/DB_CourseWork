@@ -48,7 +48,7 @@ export const changeCurrentPredeterminer = predeterminer => ({
 });
 
 export const updatePredeterminersOrders = orders => ({
-    type: constants.UPDATE_PREDETERMINER_ORDERS,
+    type: constants.UPDATE_ORDERS,
     payload: orders
 });
 
@@ -58,7 +58,7 @@ export const updateFreeOvumCount = ovumCount => ({
 });
 
 export const changeCurrentPredeterminerOrder = order => ({
-    type: constants.CHANGE_CURRENT_PREDETERMINER_ORDER,
+    type: constants.CHANGE_CURRENT_ORDER,
     payload: order
 });
 

@@ -5,9 +5,6 @@ import {usePagination, useSortBy, useTable} from "react-table";
 import Select from 'react-select'
 
 export default function AdminOvumTable({ovumList}) {
-    const ovumContainerTypes = [{value: "OVUMRECEIVER", label: "Яйцеприемник"},
-        {value: "BOTTLE", label: "Бутыль"}];
-
     const ovumTableData = useMemo(() =>
         ovumList.map(ovum => ({
             id: ovum.id,
@@ -16,7 +13,8 @@ export default function AdminOvumTable({ovumList}) {
             embryoTime: ovum.embryoTime === null ? "Не зародыш" : ovum.embryoTime,
             babyTime: ovum.babyTime === null ? "Не ребенок" : ovum.embryoTime,
             ovumContainerId: ovum.ovumContainer.id,
-            ovumContainerName: ovumContainerTypes.find(o => o.value.includes(ovum.ovumContainer.name)).label,
+            ovumContainerName: [{value: "OVUMRECEIVER", label: "Яйцеприемник"},
+                {value: "BOTTLE", label: "Бутыль"}].find(o => o.value.includes(ovum.ovumContainer.name)).label,
             volunteerId: ovum.volunteer.id,
             volunteerName: ovum.volunteer.fullname,
         })), [ovumList]);
@@ -48,7 +46,7 @@ export default function AdminOvumTable({ovumList}) {
     const {
         getTableProps, getTableBodyProps, headerGroups, prepareRow, page,
         canPreviousPage, canNextPage, pageOptions, pageCount, gotoPage, nextPage, previousPage, setPageSize,
-        state: {pageIndex, pageSize},
+        state: {pageIndex},
     } =
         useTable({columns, data: ovumTableData}, useSortBy, usePagination);
 
