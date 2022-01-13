@@ -183,7 +183,7 @@ export function bindFreeOvumToOrder(orderId, count) {
             .then(response => {
                 if (response.status === 200) {
                     const currentPredeterminer = getState().predeterminer.currentPredeterminer;
-                    const currentOrder = getState().predeterminer.currentOrder;
+                    const currentOrder = getState().order.currentOrder;
                     dispatch(showMessage({message: response.data, isError: false}));
                     dispatch(getFreeOvumCount());
                     dispatch(getOrdersByFullname(currentPredeterminer.fullname));
@@ -208,14 +208,14 @@ export function updateOvum(ovum) {
             .then(response => {
                 if (response.status === 200) {
                     dispatch(showMessage({message: response.data, isError: false}));
-                    dispatch(getOvumByOrderId(getState().predeterminer.currentOrder.id));
+                    dispatch(getOvumByOrderId(getState().order.currentOrder.id));
                 }
             })
             .catch(e => {
                 if (e.response.status === 400)
                     dispatch(showMessage({message: e.response.data, isError: true}));
                 else
-                    dispatch(showMessage({message: "Произошла какая-то хуйня...", isError: true}));
+                    dispatch(showMessage({message: "Произошла какая-то...", isError: true}));
             });
     }
 }
@@ -228,13 +228,15 @@ export function startFirstStep(orderId) {
                 if (response.status === 200) {
                     dispatch(showMessage({message: response.data, isError: false}));
                     dispatch(getOvumByOrderId(orderId));
+                    dispatch(getMovingListByOrderId(orderId));
+                    dispatch(getUsingListByOrderId(orderId));
                 }
             })
             .catch(e => {
                 if (e.response.status === 400)
                     dispatch(showMessage({message: e.response.data, isError: true}));
                 else
-                    dispatch(showMessage({message: "Произошла какая-то хуйня...", isError: true}));
+                    dispatch(showMessage({message: "Произошла какая-то...", isError: true}));
             });
     }
 }
@@ -247,13 +249,15 @@ export function startSecondStep(orderId) {
                 if (response.status === 200) {
                     dispatch(showMessage({message: response.data, isError: false}));
                     dispatch(removeExtraOvum(orderId));
+                    dispatch(getMovingListByOrderId(orderId));
+                    dispatch(getUsingListByOrderId(orderId));
                 }
             })
             .catch(e => {
                 if (e.response.status === 400)
                     dispatch(showMessage({message: e.response.data, isError: true}));
                 else
-                    dispatch(showMessage({message: "Произошла какая-то хуйня...", isError: true}));
+                    dispatch(showMessage({message: "Невозможно выполнить первый этап...", isError: true}));
             });
     }
 }
@@ -271,7 +275,7 @@ export function removeExtraOvum(orderId) {
                 if (e.response.status === 400)
                     dispatch(showMessage({message: e.response.data, isError: true}));
                 else
-                    dispatch(showMessage({message: "Произошла какая-то хуйня...", isError: true}));
+                    dispatch(showMessage({message: "Произошла какая-то...", isError: true}));
             });
     }
 }
@@ -284,13 +288,37 @@ export function startThirdStep(orderId) {
                 if (response.status === 200) {
                     dispatch(showMessage({message: response.data, isError: false}));
                     dispatch(getOvumByOrderId(orderId));
+                    dispatch(getMovingListByOrderId(orderId));
+                    dispatch(getUsingListByOrderId(orderId));
                 }
             })
             .catch(e => {
                 if (e.response.status === 400)
                     dispatch(showMessage({message: e.response.data, isError: true}));
                 else
-                    dispatch(showMessage({message: "Произошла какая-то хуйня...", isError: true}));
+                    dispatch(showMessage({message: "Невозможно выполнить третий этап...", isError: true}));
             });
+    }
+}
+
+export function getMovingListByOrderId(orderId) {
+    return function (dispatch) {
+        axios
+            .post('/admin/get_move_container', {orderId})
+            .then(response => {
+                dispatch(actions.updateMovingByOrder(response.data));
+            })
+            .catch(e => console.log(e));
+    }
+}
+
+export function getUsingListByOrderId(orderId) {
+    return function (dispatch) {
+        axios
+            .post('/admin/get_use_machine', {orderId})
+            .then(response => {
+                dispatch(actions.updateUsingByOrder(response.data));
+            })
+            .catch(e => console.log(e));
     }
 }

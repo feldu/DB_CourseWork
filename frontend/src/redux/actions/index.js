@@ -66,3 +66,13 @@ export const updateOvumByOrder = ovum => ({
     type: constants.UPDATE_OVUM_BY_ORDER,
     payload: ovum
 });
+
+export const updateMovingByOrder = movingList => ({
+    type: constants.UPDATE_MOVING,
+    payload: movingList
+});
+
+export const updateUsingByOrder = usingList => ({
+    type: constants.UPDATE_USING,
+    payload: usingList
+});
