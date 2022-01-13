@@ -186,7 +186,7 @@ public class StepsHandlingService {
             ovum.setBabyTime(new Date());
             ovumService.save(ovum);
         }
-        log.debug("Все яйцеклетки теперь эмбрионы");
+        log.debug("Все яйцеклетки теперь младенцы");
     }
 
     private Integer bokanovskyGroupMagicCalc(Order order) {
