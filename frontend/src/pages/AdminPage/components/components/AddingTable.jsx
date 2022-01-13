@@ -6,7 +6,8 @@ export default function AddingTable({addingList}) {
     const data = useMemo(() =>
         addingList.map(entry => ({
             ovumContainerId: entry.ovumContainer.id,
-            ovumContainerName: entry.ovumContainer.name,
+            ovumContainerName: [{value: "OVUMRECEIVER", label: "Яйцеприемник"},
+                {value: "BOTTLE", label: "Бутыль"}].find(o => o.value.includes(entry.ovumContainer.name)).label,
             materialId: entry.material.id,
             materialName: entry.material.name,
             materialCurrentSize: entry.material.currentSize,
