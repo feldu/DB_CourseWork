@@ -29,7 +29,7 @@ export default function SelectCurrentPredeterminerOrder() {
                     :
                     < InputSelect
                         label={"Сделал заказы:"}
-                        onChangeHandler={e => dispatch(actions.changeCurrentPredeterminerOrder(orders.find(o => o.id === e.value)))}
+                        onChangeHandler={e => dispatch(actions.changeCurrentOrder(orders.find(o => o.id === e.value)))}
                         placeholder={"Выберите заказ"}
                         options={currentOrderOptions}
                     />

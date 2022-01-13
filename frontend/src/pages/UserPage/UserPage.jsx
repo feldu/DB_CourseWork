@@ -5,7 +5,7 @@ import {useDispatch, useSelector} from "react-redux";
 import * as thunks from "../../redux/thunks";
 import CreateOrderForm from "./components/CreateOrderForm";
 import SelectOrderForm from "./components/SelectOrderForm";
-import UserSelectedOrderBox from "./components/components/UserSelectedOrderBox";
+import UserSelectedOrderBox from "./components/UserSelectedOrderBox";
 
 
 export default function UserPage() {
@@ -17,7 +17,7 @@ export default function UserPage() {
         dispatch(thunks.getUserInfo());
         dispatch(thunks.getFutureJobTypes());
         dispatch(thunks.getCastes());
-    }, []);
+    }, [dispatch]);
 
     return (
         <Flex direction="column">
@@ -28,7 +28,7 @@ export default function UserPage() {
                     <CreateOrderForm casteOptions={casteOptions} futureJobTypeOptions={futureJobTypeOptions}/>
                     <SelectOrderForm casteOptions={casteOptions} futureJobTypeOptions={futureJobTypeOptions}/>
                 </Flex>
-                <Flex direction="column" bg="black" w="100%" ml={5}>
+                <Flex direction="column" w="100%" ml={5}>
                     <UserSelectedOrderBox/>
                 </Flex>
             </Flex>

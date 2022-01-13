@@ -15,14 +15,15 @@ export default function SelectOrderForm({casteOptions, futureJobTypeOptions}) {
 
     useEffect(() => {
         dispatch(thunks.getOrders());
-    }, []);
+    }, [dispatch]);
 
     useEffect(() => {
-        setCurrentOrderOptions(orders.map(order => ({
-            value: order.id,
-            label: `№${order.id}: ${order.humanNumber} шт. касты ${casteOptions.find(caste => caste.value.includes(order.caste)).label}`
-        })))
-    }, [casteOptions]);
+        if (casteOptions.length !== 0)
+            setCurrentOrderOptions(orders.map(order => ({
+                value: order.id,
+                label: `№${order.id}: ${order.humanNumber} шт. касты ${casteOptions.find(caste => caste.value.includes(order.caste)).label}`
+            })))
+    }, [casteOptions, orders]);
 
     return (
         <Box mt={5} p={2} px={5} borderWidth={1} borderRadius={14} boxShadow="lg" w="100%" h="100%">
