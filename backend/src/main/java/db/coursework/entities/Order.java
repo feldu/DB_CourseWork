@@ -20,7 +20,6 @@ import java.util.List;
 @NoArgsConstructor
 @Table(name = "\"order\"")
 public class Order {
-
     @NotNull
     @Column(name = "is_processing")
     boolean isProcessing;

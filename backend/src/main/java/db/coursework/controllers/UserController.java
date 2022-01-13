@@ -56,7 +56,7 @@ public class UserController {
         try {
             Human human = userService.loadUserByUsername(authentication.getName()).getHuman();
             List<Order> orders = orderService.findAllOrdersByHuman(human);
-            List<OrderDTO> orderDTOS = orders.stream().map(order -> new OrderDTO(order.getId(), order.getHumanNumber(), order.getCaste().name(), order.getFutureJobTypes().stream().map(type -> type.getName().toString()).collect(Collectors.toList()))).collect(Collectors.toList());
+            List<OrderDTO> orderDTOS = orders.stream().map(order -> new OrderDTO(order.getId(), order.getHumanNumber(), order.getCaste().name(), order.getFutureJobTypes().stream().map(type -> type.getName().toString()).collect(Collectors.toList()), order.isProcessing())).collect(Collectors.toList());
             log.debug("Sending {} orders", orderDTOS.size());
             return new ResponseEntity<>(orderDTOS, HttpStatus.OK);
         } catch (Exception e) {
@@ -100,6 +100,8 @@ public class UserController {
         private String caste;
         @NotNull
         private List<String> futureJobTypes;
+        @NotNull
+        private boolean isProcessing;
     }
 
     @Data
