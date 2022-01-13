@@ -168,7 +168,7 @@ public class AdminController {
     public ResponseEntity<List<MoveOvumContainerToRoomDTO>> getMoveContainer(@RequestBody Map<String, Long> payload) {
         try {
             Long orderId = payload.get("orderId");
-            log.debug("Получаем журнал использования машин контейнерами заказа {}", orderId);
+            log.debug("Получаем журнал передвижения контейнеров заказа {}", orderId);
             Order order = orderService.findOrderById(orderId).orElse(null);
             if (order == null) return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
             List<OvumContainer> ovumContainers = ovumContainerService.getAllOrderOvumContainers(orderId);
