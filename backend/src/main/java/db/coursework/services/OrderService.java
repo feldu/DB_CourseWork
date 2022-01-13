@@ -32,6 +32,7 @@ public class OrderService {
 
     public Order saveOrderFromRequest(Human human, Integer count, String caste, List<String> types) {
         Order order = new Order(human, count, OrderCaste.valueOf(caste));
+        order.setProcessing(false);
         for (String type : types) {
             if (type != null) {
                 FutureJobType currentFutureJobType = getFutureJobTypeFromDB(type);
