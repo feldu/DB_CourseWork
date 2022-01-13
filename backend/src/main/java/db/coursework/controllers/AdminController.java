@@ -32,15 +32,17 @@ public class AdminController {
     private final OvumContainerService ovumContainerService;
     private final UseMachineByOvumContainerService useMachineByOvumContainerService;
     private final MoveOvumContainerToRoomService moveOvumContainerToRoomService;
+    private final AddMaterialToOvumContainerService addMaterialToOvumContainerService;
 
     @Autowired
-    public AdminController(HumanService humanService, OrderService orderService, OvumService ovumService, OvumContainerService ovumContainerService, UseMachineByOvumContainerService useMachineByOvumContainerService, MoveOvumContainerToRoomService moveOvumContainerToRoomService) {
+    public AdminController(HumanService humanService, OrderService orderService, OvumService ovumService, OvumContainerService ovumContainerService, UseMachineByOvumContainerService useMachineByOvumContainerService, MoveOvumContainerToRoomService moveOvumContainerToRoomService, AddMaterialToOvumContainerService addMaterialToOvumContainerService) {
         this.humanService = humanService;
         this.orderService = orderService;
         this.ovumService = ovumService;
         this.ovumContainerService = ovumContainerService;
         this.useMachineByOvumContainerService = useMachineByOvumContainerService;
         this.moveOvumContainerToRoomService = moveOvumContainerToRoomService;
+        this.addMaterialToOvumContainerService = addMaterialToOvumContainerService;
     }
 
     @PostMapping("/get_predeterminers")
@@ -173,6 +175,29 @@ public class AdminController {
         }
     }
 
+    @PostMapping("/get_add_material")
+    public ResponseEntity<List<AddMaterialToOvumContainerDTO>> getAddMaterial(@RequestBody Map<String, Long> payload) {
+        try {
+            Long orderId = payload.get("orderId");
+            log.debug("Получаем журнал добавления материалов в контейнеры заказа {}", orderId);
+            Order order = orderService.findOrderById(orderId).orElse(null);
+            if (order == null) return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+            List<OvumContainer> ovumContainers = ovumContainerService.getAllOrderOvumContainers(orderId);
+            List<AddMaterialToOvumContainer> addMaterialToOvumContainerList = new ArrayList<>(ovumContainers.size());
+            for (OvumContainer ovumContainer : ovumContainers) {
+                List<AddMaterialToOvumContainer> addMaterialToOvumContainers = addMaterialToOvumContainerService.findAllByOvumContainer_Id(ovumContainer.getId());
+                addMaterialToOvumContainerList.addAll(addMaterialToOvumContainers);
+            }
+            List<AddMaterialToOvumContainerDTO> addDTO = addMaterialToOvumContainerList.stream().map(entry -> new AddMaterialToOvumContainerDTO(entry.getMaterial(), entry.getOvumContainer(), entry.getInsertionTime())).collect(Collectors.toList());
+            log.debug("Извлечено {} записей для {} контейнеров", addMaterialToOvumContainerList.size(), ovumContainers.size());
+            return new ResponseEntity<>(addDTO, HttpStatus.OK);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+    }
+
     @PostMapping("/remove_order_info")
     public ResponseEntity<String> removeOrder(@RequestBody Map<String, Long> payload) {
         try {
@@ -209,6 +234,17 @@ public class AdminController {
         Room room;
         @NotNull
         Date arrivalTime;
+    }
+
+    @Data
+    @AllArgsConstructor
+    private static class AddMaterialToOvumContainerDTO {
+        @NotNull
+        Material material;
+        @NotNull
+        OvumContainer ovumContainer;
+        @NotNull
+        Date insertionTime;
     }
 
     @Data
