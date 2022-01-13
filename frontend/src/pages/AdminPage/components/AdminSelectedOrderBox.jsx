@@ -6,6 +6,7 @@ import AdminOvumTable from "./components/AdminOvumTable";
 import UpdateOvumForm from "./components/UpdateOvumForm";
 import MovingTable from "./components/MovingTable";
 import UsingTable from "./components/UsingTable";
+import AddingTable from "./components/AddingTable";
 
 export default function AdminSelectedOrderBox() {
     const dispatch = useDispatch();
@@ -13,12 +14,15 @@ export default function AdminSelectedOrderBox() {
     const ovumList = useSelector(state => state.ovum.ovumByOrder);
     const movingList = useSelector(state => state.history.movingList);
     const usingList = useSelector(state => state.history.usingList);
+    const addingList = useSelector(state => state.history.addingList);
 
     useEffect(() => {
         if (currentOrder.id !== null && currentOrder.processing === true) {
             dispatch(thunks.getOvumByOrderId(currentOrder.id));
             dispatch(thunks.getMovingListByOrderId(currentOrder.id));
             dispatch(thunks.getUsingListByOrderId(currentOrder.id));
+            dispatch(thunks.getAddingListByOrderId(currentOrder.id));
+
         }
     }, [currentOrder, dispatch]);
 
@@ -35,6 +39,7 @@ export default function AdminSelectedOrderBox() {
                             {ovumList.length !== 0 && <UpdateOvumForm ovumList={ovumList}/>}
                             {movingList.length !== 0 && <MovingTable movingList={movingList}/>}
                             {usingList.length !== 0 && <UsingTable usingList={usingList}/>}
+                            {addingList.length !== 0 && <AddingTable addingList={addingList}/>}
                         </>
                         : <Text>Данный заказ не выполняется</Text>}
                 </>

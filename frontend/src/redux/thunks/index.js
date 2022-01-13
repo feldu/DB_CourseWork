@@ -289,6 +289,7 @@ export function startThirdStep(orderId) {
                     dispatch(getOvumByOrderId(orderId));
                     dispatch(getMovingListByOrderId(orderId));
                     dispatch(getUsingListByOrderId(orderId));
+                    dispatch(getAddingListByOrderId(orderId));
                 }
             })
             .catch(e => {
@@ -317,6 +318,17 @@ export function getUsingListByOrderId(orderId) {
             .post('/admin/get_use_machine', {orderId})
             .then(response => {
                 dispatch(actions.updateUsingByOrder(response.data));
+            })
+            .catch(e => console.log(e));
+    }
+}
+
+export function getAddingListByOrderId(orderId) {
+    return function (dispatch) {
+        axios
+            .post('/admin/get_add_material', {orderId})
+            .then(response => {
+                dispatch(actions.updateAddingByOrder(response.data));
             })
             .catch(e => console.log(e));
     }

@@ -26,13 +26,16 @@ export default function MovingTable({movingList}) {
                 {Header: 'Тип', accessor: 'ovumContainerName'},
             ]
         },
-        {Header: 'Время прибытия', accessor: 'arrivalTime'},
-
+        {
+            Header: 'Время', columns: [
+                {Header: 'Время прибытия', accessor: 'arrivalTime'}
+            ]
+        },
     ], []);
 
     return (
         <>
-            <Heading my={6} size="lg">История перемещений контейнеров яйцеклеток заказчика</Heading>
+            <Heading my={6} size="lg" textAlign="center">История перемещений контейнеров яйцеклеток заказчика</Heading>
             <TableWithPagination data={data} columns={columns}/>
         </>
     )

@@ -68,3 +68,8 @@ export const updateUsingByOrder = usingList => ({
     type: constants.UPDATE_USING,
     payload: usingList
 });
+
+export const updateAddingByOrder = addingList => ({
+    type: constants.UPDATE_ADDING,
+    payload: addingList
+});

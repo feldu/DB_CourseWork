@@ -35,12 +35,16 @@ export default function UsingTable({usingList}) {
                 {Header: 'Тип', accessor: 'ovumContainerName'},
             ]
         },
-        {Header: 'Время начала', accessor: 'startTime'},
-        {Header: 'Время завершения', accessor: 'endTime'},
+        {
+            Header: 'Время', columns: [
+                {Header: 'Время начала', accessor: 'startTime'},
+                {Header: 'Время завершения', accessor: 'endTime'},
+            ]
+        },
     ], []);
     return (
         <>
-            <Heading my={6} size="lg">Использование машин контейнерами яйцеклеток заказчика</Heading>
+            <Heading my={6} size="lg" textAlign="center">Использование машин контейнерами яйцеклеток заказчика</Heading>
             <TableWithPagination data={data} columns={columns}/>
         </>
     )
