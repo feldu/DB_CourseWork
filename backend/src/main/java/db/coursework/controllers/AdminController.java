@@ -114,20 +114,6 @@ public class AdminController {
         }
     }
 
-    @PostMapping("/get_ovum_by_order")
-    public ResponseEntity<List<Ovum>> getOvumByOrder(@RequestBody Map<String, Long> payload) {
-        try {
-            Long orderId = payload.get("orderId");
-            List<Ovum> ovumList = ovumService.findAllOvumByOrder_Id(orderId);
-            log.debug("Sending {} ovum of {} order", ovumList.size(), orderId);
-            return new ResponseEntity<>(ovumList, HttpStatus.OK);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-        }
-    }
-
     @PostMapping("/update_ovum")
     public ResponseEntity<String> updateOvum(@RequestBody OvumDTO ovumDTO) {
         try {
@@ -184,6 +170,18 @@ public class AdminController {
         } catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PostMapping("/remove_order_info")
+    public ResponseEntity<String> removeOrder(@RequestBody Map<String, Long> payload) {
+        try {
+            Long orderId = payload.get("orderId");
+            orderService.removeOrderInfo(orderId);
+            return new ResponseEntity<>("Сведения о заказе удалены", HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>("Не удалось удалить заказ))))", HttpStatus.BAD_REQUEST);
         }
     }
 

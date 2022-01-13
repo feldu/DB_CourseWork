@@ -2,9 +2,11 @@ package db.coursework.controllers;
 
 import db.coursework.entities.Human;
 import db.coursework.entities.Order;
+import db.coursework.entities.Ovum;
 import db.coursework.entities.enums.FutureJobTypeName;
 import db.coursework.entities.enums.OrderCaste;
 import db.coursework.services.OrderService;
+import db.coursework.services.OvumService;
 import db.coursework.services.UserService;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -22,6 +24,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -30,12 +33,14 @@ import java.util.stream.Collectors;
 public class UserController {
 
     private final UserService userService;
-    private OrderService orderService;
+    private final OrderService orderService;
+    private final OvumService ovumService;
 
     @Autowired
-    public UserController(UserService userService, OrderService orderService) {
+    public UserController(UserService userService, OrderService orderService, OvumService ovumService) {
         this.userService = userService;
         this.orderService = orderService;
+        this.ovumService = ovumService;
     }
 
     @PostMapping("/add_order")
@@ -83,6 +88,20 @@ public class UserController {
             List<OrderCaste> orderCastes = Arrays.asList(OrderCaste.values());
             List<CasteDTO> casteDTOList = orderCastes.stream().map(type -> new CasteDTO(type.name(), type.getLabel())).collect(Collectors.toList());
             return new ResponseEntity<>(casteDTOList, HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PostMapping("/get_ovum_by_order")
+    public ResponseEntity<List<Ovum>> getOvumByOrder(@RequestBody Map<String, Long> payload) {
+        try {
+            Long orderId = payload.get("orderId");
+            List<Ovum> ovumList = ovumService.findAllOvumByOrder_Id(orderId);
+            log.debug("Sending {} ovum of {} order", ovumList.size(), orderId);
+            return new ResponseEntity<>(ovumList, HttpStatus.OK);
+
         } catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);

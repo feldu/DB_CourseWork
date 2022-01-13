@@ -12,7 +12,7 @@ export default function StageStarterForms() {
 
     const firstComplete = ovumList.filter(o => o.fertilizationTime !== null).length === ovumList.length;
     const secondComplete = ovumList.length === currentOrder.humanNumber || ["Alpha", "Beta"].includes(currentOrder.caste);
-    const thirdComplete = ovumList.filter(o => o.babyTime !== null).length === ovumList.length;
+    const thirdComplete = ovumList.length !== 0 && ovumList.filter(o => o.babyTime !== null).length === ovumList.length;
     useEffect(() => {
         if (ovumList.length !== 0 && currentOrder.id !== null)
             if (ovumList.length > currentOrder.humanNumber)
@@ -66,6 +66,16 @@ export default function StageStarterForms() {
                             }}>
                                 Запустить
                             </Button>)}
+                </form>
+                {thirdComplete && <Text mt={6} mb={4}><b>Удалить информацию о заказе?</b></Text>}
+                <form>
+                    {thirdComplete &&
+                    <Button colorScheme='red' variant='solid' type="submit" onClick={e => {
+                        e.preventDefault();
+                        dispatch(thunks.removeOrderById(currentOrder.id));
+                    }}>
+                        Удалить
+                    </Button>}
                 </form>
             </Flex>
         </Box>

@@ -131,6 +131,16 @@ export function addOrder(order) {
     }
 }
 
+export function getOvumByOrderId(orderId) {
+    return function (dispatch) {
+        axios
+            .post('/user/get_ovum_by_order', {orderId})
+            .then(response => {
+                dispatch(actions.updateOvumByOrder(response.data));
+            })
+            .catch(e => console.log(e));
+    }
+}
 
 export function getPredeterminers() {
     return function (dispatch) {
@@ -149,17 +159,6 @@ export function getOrdersByFullname(fullname) {
             .post('/admin/get_orders', {fullname})
             .then(response => {
                 dispatch(actions.updateOrders(response.data));
-            })
-            .catch(e => console.log(e));
-    }
-}
-
-export function getOvumByOrderId(orderId) {
-    return function (dispatch) {
-        axios
-            .post('/admin/get_ovum_by_order', {orderId})
-            .then(response => {
-                dispatch(actions.updateOvumByOrder(response.data));
             })
             .catch(e => console.log(e));
     }
@@ -320,5 +319,31 @@ export function getUsingListByOrderId(orderId) {
                 dispatch(actions.updateUsingByOrder(response.data));
             })
             .catch(e => console.log(e));
+    }
+}
+
+export function removeOrderById(orderId) {
+    return function (dispatch) {
+        axios
+            .post('/admin/remove_order_info', {orderId})
+            .then(response => {
+                if (response.status === 200) {
+                    dispatch(showMessage({message: response.data, isError: false}));
+                    dispatch(getOrders());
+                    dispatch(actions.changeCurrentOrder({
+                        id: null,
+                        humanNumber: null,
+                        caste: null,
+                        futureJobTypes: null,
+                        processing: null
+                    }));
+                }
+            })
+            .catch(e => {
+                if (e.response.status === 400)
+                    dispatch(showMessage({message: e.response.data, isError: true}));
+                else
+                    dispatch(showMessage({message: "Произошла какая-то...", isError: true}));
+            });
     }
 }

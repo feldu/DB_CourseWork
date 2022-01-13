@@ -1,15 +1,13 @@
 package db.coursework.services;
 
-import db.coursework.entities.FutureJobType;
-import db.coursework.entities.Human;
-import db.coursework.entities.Order;
+import db.coursework.entities.*;
 import db.coursework.entities.enums.FutureJobTypeName;
 import db.coursework.entities.enums.OrderCaste;
-import db.coursework.repositories.FutureJobTypeRepository;
-import db.coursework.repositories.OrderRepository;
+import db.coursework.repositories.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -19,11 +17,19 @@ import java.util.Optional;
 public class OrderService {
     private final OrderRepository orderRepository;
     private final FutureJobTypeRepository futureJobTypeRepository;
+    private final OvumContainerRepository ovumContainerRepository;
+    private final MoveOvumContainerToRoomRepository moveOvumContainerToRoomRepository;
+    private final UseMachineByOvumContainerRepository useMachineByOvumContainerRepository;
+    private final AddMaterialToOvumContainerRepository addMaterialToOvumContainerRepository;
 
     @Autowired
-    public OrderService(OrderRepository orderRepository, FutureJobTypeRepository futureJobTypeRepository) {
+    public OrderService(OrderRepository orderRepository, FutureJobTypeRepository futureJobTypeRepository, OvumContainerRepository ovumContainerRepository, MoveOvumContainerToRoomRepository moveOvumContainerToRoomRepository, UseMachineByOvumContainerRepository useMachineByOvumContainerRepository, AddMaterialToOvumContainerRepository addMaterialToOvumContainerRepository) {
         this.orderRepository = orderRepository;
         this.futureJobTypeRepository = futureJobTypeRepository;
+        this.ovumContainerRepository = ovumContainerRepository;
+        this.moveOvumContainerToRoomRepository = moveOvumContainerToRoomRepository;
+        this.useMachineByOvumContainerRepository = useMachineByOvumContainerRepository;
+        this.addMaterialToOvumContainerRepository = addMaterialToOvumContainerRepository;
     }
 
     public List<Order> findAllOrdersByHuman(Human human) {
@@ -61,5 +67,29 @@ public class OrderService {
 
     public Optional<Order> findOrderById(Long id) {
         return orderRepository.findById(id);
+    }
+
+    @Transactional
+    public void deleteOrderById(Long id) {
+        orderRepository.deleteOrderById(id);
+    }
+
+    @Transactional
+    public void removeOrderInfo(Long orderId) {
+        deleteOrderById(orderId);
+        log.debug("Заказ {} удалён", orderId);
+        List<OvumContainer> ovumContainerList = ovumContainerRepository.getAllOrderOvumContainers(orderId);
+        for (OvumContainer ovumContainer : ovumContainerList) {
+            //moving
+            List<MoveOvumContainerToRoom> moveEntries = moveOvumContainerToRoomRepository.findAllByOvumContainer_Id(ovumContainer.getId());
+            moveEntries.forEach(moveOvumContainerToRoomRepository::delete);
+            //using
+            List<UseMachineByOvumContainer> useEntries = useMachineByOvumContainerRepository.findAllByOvumContainer_Id(ovumContainer.getId());
+            useEntries.forEach(useMachineByOvumContainerRepository::delete);
+            //adding
+            List<AddMaterialToOvumContainer> addEntries = addMaterialToOvumContainerRepository.findAllByOvumContainer_Id(orderId);
+            addEntries.forEach(addMaterialToOvumContainerRepository::delete);
+        }
+        log.debug("Информация о контейнерах заказа {} очищена", orderId);
     }
 }
