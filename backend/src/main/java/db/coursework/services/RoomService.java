@@ -15,7 +15,7 @@ public class RoomService {
     }
 
     public Room findRoomByName(String name) {
-        return roomRepository.findRoomByName(name);
+        return roomRepository.findFirstRoomByName(name);
     }
 
 }

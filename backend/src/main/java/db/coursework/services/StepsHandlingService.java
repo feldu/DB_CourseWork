@@ -79,6 +79,7 @@ public class StepsHandlingService {
             return true;
         }
         OvumContainer ovumContainer = ovumContainerService.getOrderOvumreceiver(orderId);
+        //todo: пофиксить бешеные числа
         //Яйцеклетки обрабатывают рентгеновским излучением (multi до x8)
         Integer multi = (int) (Math.random() * (8 - 6) + 6);
         Machine xRay = machineService.getMachineByName(MachineName.Рентген);

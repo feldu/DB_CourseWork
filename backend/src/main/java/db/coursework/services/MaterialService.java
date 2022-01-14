@@ -18,4 +18,12 @@ public class MaterialService {
     public Material getFreeMaterialForBottle() {
         return materialRepository.getFreeMaterialForBottle();
     }
+
+    public Material save(Material material) {
+        return materialRepository.save(material);
+    }
+
+    public void cutMaterial(Integer id, String name) {
+        materialRepository.cutMaterial(id, name);
+    }
 }

@@ -11,8 +11,8 @@ export default function StageStarterForms() {
     const ovumList = useSelector(state => state.ovum.ovumByOrder);
 
     const firstComplete = ovumList.filter(o => o.fertilizationTime !== null).length === ovumList.length;
-    const secondComplete = ovumList.length === currentOrder.humanNumber || ["Alpha", "Beta"].includes(currentOrder.caste);
-    const thirdComplete = ovumList.length !== 0 && ovumList.filter(o => o.babyTime !== null).length === ovumList.length;
+    const secondComplete = (ovumList.length === currentOrder.humanNumber || ["Alpha", "Beta"].includes(currentOrder.caste)) && firstComplete;
+    const thirdComplete = ovumList.length !== 0 && ovumList.filter(o => o.babyTime !== null).length === ovumList.length && secondComplete;
     useEffect(() => {
         if (ovumList.length !== 0 && currentOrder.id !== null)
             if (ovumList.length > currentOrder.humanNumber)

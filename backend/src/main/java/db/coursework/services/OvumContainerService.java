@@ -30,4 +30,7 @@ public class OvumContainerService {
         return ovumContainerRepository.getAllOrderOvumContainers(orderId);
     }
 
+    public OvumContainer save(OvumContainer ovumContainer) {
+        return ovumContainerRepository.save(ovumContainer);
+    }
 }

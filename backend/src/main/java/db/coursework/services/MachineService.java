@@ -16,6 +16,6 @@ public class MachineService {
     }
 
     public Machine getMachineByName(MachineName name) {
-        return machineRepository.getMachineByName(name);
+        return machineRepository.getFirstMachineByName(name);
     }
 }
