@@ -52,7 +52,7 @@ public class ManageService {
             Material material = new Material();
             material.setName(name);
             material.setRequiredSize((int) (Math.random() * (100 - 50)) + 50);
-            material.setCurrentSize((int) (Math.random() * (1000 - 100)) + 100);
+            material.setCurrentSize((int) (Math.random() * (1000 - 500)) + 500);
             material.setQualityPartsPercentage((float) (Math.random() * (100 - 60) + 60));
             Material saved = materialService.save(material);
             try {

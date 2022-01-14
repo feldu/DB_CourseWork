@@ -79,9 +79,8 @@ public class StepsHandlingService {
             return true;
         }
         OvumContainer ovumContainer = ovumContainerService.getOrderOvumreceiver(orderId);
-        //todo: пофиксить бешеные числа
-        //Яйцеклетки обрабатывают рентгеновским излучением (multi до x8)
-        Integer multi = (int) (Math.random() * (8 - 6) + 6);
+        //Яйцеклетки обрабатывают рентгеновским излучением (multi до x16)
+        Integer multi = (int) (Math.random() * (4 - 3) + 3);
         Machine xRay = machineService.getMachineByName(MachineName.Рентген);
         useMachineByOvumContainer(ovumContainer, multi, xRay);
 
@@ -90,13 +89,13 @@ public class StepsHandlingService {
         Machine incubator = machineService.getMachineByName(MachineName.Инкубатор);
         useMachineByOvumContainer(ovumContainer, multi, incubator);
 
-        //Яйцеклетки охлаждают (multi до x6)
-        multi = (int) (Math.random() * (6 - 4) + 4);
+        //Яйцеклетки охлаждают (multi до x8)
+        multi = (int) (Math.random() * (3 - 2) + 2);
         Machine freezer = machineService.getMachineByName(MachineName.Морозилка);
         useMachineByOvumContainer(ovumContainer, multi, freezer);
 
         //Яйцеклетки глушат спиртом (multi до x4)
-        multi = (int) (Math.random() * (4 - 3) + 3);
+        multi = 2;
         Machine alcohol = machineService.getMachineByName(MachineName.Глушитель_спиртом);
         useMachineByOvumContainer(ovumContainer, multi, alcohol);
         log.debug("Второй этап для заказа №{} завершён", orderId);
