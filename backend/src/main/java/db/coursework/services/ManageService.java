@@ -47,18 +47,15 @@ public class ManageService {
     }
 
     @Transactional
-    public void addMaterialAndCut(Long count, String name) {
+    public void addMaterial(Long count) {
         for (int i = 0; i < count; i++) {
             Material material = new Material();
-            material.setName(name);
-            material.setRequiredSize((int) (Math.random() * (100 - 50)) + 50);
-            material.setCurrentSize((int) (Math.random() * (1000 - 500)) + 500);
-            material.setQualityPartsPercentage((float) (Math.random() * (100 - 60) + 60));
-            Material saved = materialService.save(material);
-            try {
-                materialService.cutMaterial(Math.toIntExact(saved.getId()), "Свиной лоскут");
-            } catch (Exception ignored) {
-            }
+            material.setName("Свиной лоскут");
+            int size = (int) (Math.random() * (100 - 50)) + 50;
+            material.setRequiredSize(size);
+            material.setCurrentSize(size);
+            material.setQualityPartsPercentage(100);
+            materialService.save(material);
         }
     }
 }

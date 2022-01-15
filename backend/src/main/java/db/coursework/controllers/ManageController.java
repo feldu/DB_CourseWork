@@ -54,8 +54,7 @@ public class ManageController {
     public ResponseEntity<String> addMaterialAndCut(@RequestBody Map<String, String> payload) {
         try {
             Long count = Long.valueOf(payload.get("count"));
-            String name = payload.get("name");
-            manageService.addMaterialAndCut(count, name);
+            manageService.addMaterial(count);
             return new ResponseEntity<>("Материалы добавлены", HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
