@@ -51,6 +51,15 @@ public class UserService implements UserDetailsService {
         return true;
     }
 
+    public boolean updateUser(User user) {
+        if (userRepository.findByUsername(user.getUsername()) != null) {
+            userRepository.save(user);
+            log.debug("User {} updated", user.getUsername());
+            return true;
+        }
+        return false;
+    }
+
     public Role saveRoleByName(String name) {
         name = "ROLE_" + name.toUpperCase(); //to ROLE_NAME format
         Role roleByName = roleRepository.findByName(name);

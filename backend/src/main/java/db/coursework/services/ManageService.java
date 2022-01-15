@@ -16,13 +16,15 @@ public class ManageService {
     private final OvumService ovumService;
     private final OvumContainerService ovumContainerService;
     private final RoleService roleService;
+    private final UserService userService;
     private final MaterialService materialService;
 
     @Autowired
-    public ManageService(OvumService ovumService, OvumContainerService ovumContainerService, RoleService roleService, MaterialService materialService) {
+    public ManageService(OvumService ovumService, OvumContainerService ovumContainerService, RoleService roleService, UserService userService, MaterialService materialService) {
         this.ovumService = ovumService;
         this.ovumContainerService = ovumContainerService;
         this.roleService = roleService;
+        this.userService = userService;
         this.materialService = materialService;
     }
 
@@ -57,5 +59,15 @@ public class ManageService {
             material.setQualityPartsPercentage(100);
             materialService.save(material);
         }
+    }
+
+    @Transactional
+    public void addAdmin(String username) {
+        Role role = roleService.findByName("ROLE_ADMIN");
+        if (role == null) throw new RuntimeException("Роль не найдена");
+        User user = userService.loadUserByUsername(username);
+        if (user == null) throw new RuntimeException("Юзер не найден");
+        user.getHuman().getRoles().add(role);
+        userService.updateUser(user);
     }
 }
