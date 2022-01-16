@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Slf4j
 @Service
@@ -68,8 +67,8 @@ public class OrderService {
         return futureJobTypeRepository.findByName(name);
     }
 
-    public Optional<Order> findOrderById(Long id) {
-        return orderRepository.findById(id);
+    public Order findOrderById(Long id) {
+        return orderRepository.findById(id).orElse(null);
     }
 
     @Transactional

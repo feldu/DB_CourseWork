@@ -61,7 +61,7 @@ public class StepsHandlingService {
 
     @Transactional
     public boolean secondStepHandling(Long orderId) {
-        Order order = orderService.findOrderById(orderId).orElse(null);
+        Order order = orderService.findOrderById(orderId);
         if (order == null) throw new RuntimeException("Невозможно найти заказ");
         if (Arrays.asList(new String[]{"Alpha", "Beta"}).contains(order.getCaste().name())) {
             log.debug("Невозможно исполнить заказ №{}. Каста заказа: {}", orderId, order.getCaste());
@@ -104,7 +104,7 @@ public class StepsHandlingService {
 
     @Transactional
     public void thirdStepHandling(Long orderId) {
-        Order order = orderService.findOrderById(orderId).orElse(null);
+        Order order = orderService.findOrderById(orderId);
         if (order == null) throw new RuntimeException("Невозможно найти заказ");
         List<OvumContainer> bottles = ovumContainerService.getFreeBottles(order.getHumanNumber());
         List<Ovum> ovumList = ovumService.findAllByOrder_Id(orderId);

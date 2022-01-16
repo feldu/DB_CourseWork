@@ -86,7 +86,7 @@ public class AdminController {
     public ResponseEntity<String> removeExtraOvumByOrder(@RequestBody Map<String, Long> payload) {
         try {
             Long orderId = payload.get("orderId");
-            Order order = orderService.findOrderById(orderId).orElse(null);
+            Order order = orderService.findOrderById(orderId);
             if (order == null)
                 throw new RuntimeException("Заказа не существует");
             //Уничтожаем "лишние"
@@ -134,7 +134,7 @@ public class AdminController {
         try {
             Long orderId = payload.get("orderId");
             log.debug("Получаем журнал использования машин контейнерами заказа {}", orderId);
-            Order order = orderService.findOrderById(orderId).orElse(null);
+            Order order = orderService.findOrderById(orderId);
             if (order == null) return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
             List<OvumContainer> ovumContainers = ovumContainerService.getAllOrderOvumContainers(orderId);
             List<UseMachineByOvumContainer> useMachineByOvumContainerList = new ArrayList<>(ovumContainers.size());
@@ -157,7 +157,7 @@ public class AdminController {
         try {
             Long orderId = payload.get("orderId");
             log.debug("Получаем журнал передвижения контейнеров заказа {}", orderId);
-            Order order = orderService.findOrderById(orderId).orElse(null);
+            Order order = orderService.findOrderById(orderId);
             if (order == null) return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
             List<OvumContainer> ovumContainers = ovumContainerService.getAllOrderOvumContainers(orderId);
             List<MoveOvumContainerToRoom> moveOvumContainerToRoomList = new ArrayList<>(ovumContainers.size());
@@ -180,7 +180,7 @@ public class AdminController {
         try {
             Long orderId = payload.get("orderId");
             log.debug("Получаем журнал добавления материалов в контейнеры заказа {}", orderId);
-            Order order = orderService.findOrderById(orderId).orElse(null);
+            Order order = orderService.findOrderById(orderId);
             if (order == null) return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
             List<OvumContainer> ovumContainers = ovumContainerService.getAllOrderOvumContainers(orderId);
             List<AddMaterialToOvumContainer> addMaterialToOvumContainerList = new ArrayList<>(ovumContainers.size());
