@@ -149,8 +149,7 @@ public class StepsHandlingService {
         log.debug("Этикетки расклеены");
 
         //В зависимости от запроса Предопределителя каждую бутыль определяют на один из пятнадцати конвейеров
-        //todo: распределение на нужные дорожки в зависимости от FutureJobType'ов
-        Machine lane = machineService.getMachineByName(MachineName.Дорожка_01);
+        Machine lane = getLaneByOrder();
         for (OvumContainer bottle : bottles) {
             UseMachineByOvumContainer interactBottleWithRoad = new UseMachineByOvumContainer(new UseMachineByOvumContainerKey(lane.getId(), bottle.getId(), new Date()), lane, bottle, new Date(), null);
             useMachineByOvumContainerService.save(interactBottleWithRoad);
@@ -187,6 +186,12 @@ public class StepsHandlingService {
             ovumService.save(ovum);
         }
         log.debug("Все яйцеклетки теперь младенцы");
+    }
+
+    private Machine getLaneByOrder() {
+        //todo: распределение на нужные дорожки в зависимости от FutureJobType'ов
+        String laneName = String.format("Дорожка_%02d", (int) (Math.random() * 14) + 1);
+        return machineService.getMachineByName(MachineName.valueOf(laneName));
     }
 
     private Integer bokanovskyGroupMagicCalc(Order order) {
