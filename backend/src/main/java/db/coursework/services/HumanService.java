@@ -20,8 +20,8 @@ public class HumanService {
         return humanRepository.findAllHumanByRoleName(name);
     }
 
-    public Human findHumanByFullname(String fullname) {
-        return humanRepository.findByFullname(fullname);
+    public Human findHumanById(Long id) {
+        return humanRepository.findById(id).orElse(null);
     }
 
 }

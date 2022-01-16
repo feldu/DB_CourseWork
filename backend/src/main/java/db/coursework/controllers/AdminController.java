@@ -58,13 +58,13 @@ public class AdminController {
     }
 
     @PostMapping("/get_orders")
-    public ResponseEntity<List<OrderDTO>> getAllHumanOrdersByFullname(@RequestBody Map<String, String> payload) {
+    public ResponseEntity<List<OrderDTO>> getAllHumanOrdersByFullname(@RequestBody Map<String, Long> payload) {
         try {
-            String fullname = payload.get("fullname");
-            Human human = humanService.findHumanByFullname(fullname);
+            Long id = payload.get("id");
+            Human human = humanService.findHumanById(id);
             List<Order> orders = orderService.findAllOrdersByHuman(human);
             List<OrderDTO> orderDTOS = orders.stream().map(order -> new OrderDTO(order.getId(), order.getHumanNumber(), order.getCaste().name(), order.getFutureJobTypes().stream().map(type -> type.getName().toString()).collect(Collectors.toList()), order.isProcessing())).collect(Collectors.toList());
-            log.debug("Sending {} orders of {}", orderDTOS.size(), fullname);
+            log.debug("Sending {} orders of {}", orderDTOS.size(), human.getFullname());
             return new ResponseEntity<>(orderDTOS, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);

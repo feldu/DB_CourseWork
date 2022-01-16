@@ -153,10 +153,10 @@ export function getPredeterminers() {
     }
 }
 
-export function getOrdersByFullname(fullname) {
+export function getOrdersById(id) {
     return function (dispatch) {
         axios
-            .post('/admin/get_orders', {fullname})
+            .post('/admin/get_orders', {id})
             .then(response => {
                 dispatch(actions.updateOrders(response.data));
             })
@@ -185,7 +185,7 @@ export function bindFreeOvumToOrder(orderId, count) {
                     const currentOrder = getState().order.currentOrder;
                     dispatch(showMessage({message: response.data, isError: false}));
                     dispatch(getFreeOvumCount());
-                    dispatch(getOrdersByFullname(currentPredeterminer.fullname));
+                    dispatch(getOrdersById(currentPredeterminer.id));
                     dispatch(actions.changeCurrentOrder({...currentOrder, processing: true}));
                 }
             })
