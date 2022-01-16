@@ -1,6 +1,9 @@
 package db.coursework.services;
 
-import db.coursework.entities.*;
+import db.coursework.entities.FutureJobType;
+import db.coursework.entities.Human;
+import db.coursework.entities.Order;
+import db.coursework.entities.OvumContainer;
 import db.coursework.entities.enums.FutureJobTypeName;
 import db.coursework.entities.enums.OrderCaste;
 import db.coursework.repositories.*;
@@ -76,20 +79,14 @@ public class OrderService {
 
     @Transactional
     public void removeOrderInfo(Long orderId) {
-        deleteOrderById(orderId);
-        log.debug("Заказ {} удалён", orderId);
         List<OvumContainer> ovumContainerList = ovumContainerRepository.getAllOrderOvumContainers(orderId);
         for (OvumContainer ovumContainer : ovumContainerList) {
-            //moving
-            List<MoveOvumContainerToRoom> moveEntries = moveOvumContainerToRoomRepository.findAllByOvumContainer_Id(ovumContainer.getId());
-            moveEntries.forEach(moveOvumContainerToRoomRepository::delete);
-            //using
-            List<UseMachineByOvumContainer> useEntries = useMachineByOvumContainerRepository.findAllByOvumContainer_Id(ovumContainer.getId());
-            useEntries.forEach(useMachineByOvumContainerRepository::delete);
-            //adding
-            List<AddMaterialToOvumContainer> addEntries = addMaterialToOvumContainerRepository.findAllByOvumContainer_Id(orderId);
-            addEntries.forEach(addMaterialToOvumContainerRepository::delete);
+            moveOvumContainerToRoomRepository.deleteByOvumContainerId(ovumContainer.getId());
+            useMachineByOvumContainerRepository.deleteByOvumContainerId(ovumContainer.getId());
+            addMaterialToOvumContainerRepository.deleteByOvumContainerId(ovumContainer.getId());
         }
         log.debug("Информация о контейнерах заказа {} очищена", orderId);
+        deleteOrderById(orderId);
+        log.debug("Заказ {} удалён", orderId);
     }
 }
