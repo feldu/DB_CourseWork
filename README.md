@@ -116,7 +116,7 @@
 ![info](./db/images/Info_cw.drawio.png)
 
 Даталогическая модель:
-![data](./db/images/Info_cw.drawio.png)
+![data](./db/images/Data_cw.drawio.png)
 
 <h5>Этап 3</h5>
 
