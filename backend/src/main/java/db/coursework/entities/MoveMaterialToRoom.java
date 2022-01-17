@@ -1,16 +1,37 @@
 package db.coursework.entities;
 
-import db.coursework.entities.keys.MoveMaterialToRoomKey;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.io.Serializable;
+import java.util.Date;
 
 @Data
 @Entity(name = "move_material_to_room")
 @NoArgsConstructor
 @Table(name = "move_material_to_room")
+@EqualsAndHashCode
 public class MoveMaterialToRoom {
+
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Embeddable
+    public static class MoveMaterialToRoomKey implements Serializable {
+
+        @Column(name = "material_id")
+        Long materialId;
+
+        @Column(name = "room_id")
+        Long roomId;
+
+        @Column(name = "arrival_time")
+        Date arrivalTime;
+    }
+
     @EmbeddedId
     MoveMaterialToRoomKey id;
 

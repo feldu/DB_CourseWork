@@ -1,18 +1,38 @@
 package db.coursework.entities;
 
-import db.coursework.entities.keys.MoveOvumContainerToRoomKey;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.io.Serializable;
+import java.util.Date;
 
 @Data
 @Entity(name = "move_ovum_container_to_room")
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "move_ovum_container_to_room")
+@EqualsAndHashCode
 public class MoveOvumContainerToRoom {
+
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Embeddable
+    public static class MoveOvumContainerToRoomKey implements Serializable {
+
+        @Column(name = "ovum_container_id")
+        Long ovumContainerId;
+
+        @Column(name = "room_id")
+        Long roomId;
+
+        @Column(name = "arrival_time")
+        Date arrivalTime;
+    }
+
     @EmbeddedId
     MoveOvumContainerToRoomKey id;
 

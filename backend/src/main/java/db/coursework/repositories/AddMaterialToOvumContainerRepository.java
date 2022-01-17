@@ -1,7 +1,6 @@
 package db.coursework.repositories;
 
 import db.coursework.entities.AddMaterialToOvumContainer;
-import db.coursework.entities.keys.AddMaterialToOvumContainerKey;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -10,7 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-public interface AddMaterialToOvumContainerRepository extends JpaRepository<AddMaterialToOvumContainer, AddMaterialToOvumContainerKey> {
+public interface AddMaterialToOvumContainerRepository extends JpaRepository<AddMaterialToOvumContainer, AddMaterialToOvumContainer.AddMaterialToOvumContainerKey> {
     List<AddMaterialToOvumContainer> findAllByOvumContainer_Id(Long id);
 
     @Transactional

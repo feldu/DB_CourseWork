@@ -2,9 +2,6 @@ package db.coursework.services;
 
 import db.coursework.entities.*;
 import db.coursework.entities.enums.MachineName;
-import db.coursework.entities.keys.AddMaterialToOvumContainerKey;
-import db.coursework.entities.keys.MoveOvumContainerToRoomKey;
-import db.coursework.entities.keys.UseMachineByOvumContainerKey;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -49,7 +46,7 @@ public class StepsHandlingService {
         //Яйцеприемник в бульон со сперматазоидами
         OvumContainer ovumContainer = ovumContainerService.getOrderOvumreceiver(orderId);
         Machine machine = machineService.getMachineByName(MachineName.Бульон_со_сперматозоидами);
-        UseMachineByOvumContainer useMachineByOvumContainer = new UseMachineByOvumContainer(new UseMachineByOvumContainerKey(machine.getId(), ovumContainer.getId(), new Date()), machine, ovumContainer, null, null);
+        UseMachineByOvumContainer useMachineByOvumContainer = new UseMachineByOvumContainer(new UseMachineByOvumContainer.UseMachineByOvumContainerKey(machine.getId(), ovumContainer.getId(), new Date()), machine, ovumContainer, null, null);
         useMachineByOvumContainerService.save(useMachineByOvumContainer);
         log.debug("Яйцеприемник №{} погрузился в резрвуар с бульоном со сперматазоидами №{}", ovumContainer.getId(), machine.getId());
         //После оплодотворения яйцеприёмник вынимают из бульона
@@ -117,7 +114,7 @@ public class StepsHandlingService {
         if (room == null)
             throw new RuntimeException("Укупорочный зал не найден...");
         for (OvumContainer bottle : bottles) {
-            MoveOvumContainerToRoom moveOvumContainerToRoom = new MoveOvumContainerToRoom(new MoveOvumContainerToRoomKey(bottle.getId(), room.getId(), new Date()), bottle, room);
+            MoveOvumContainerToRoom moveOvumContainerToRoom = new MoveOvumContainerToRoom(new MoveOvumContainerToRoom.MoveOvumContainerToRoomKey(bottle.getId(), room.getId(), new Date()), bottle, room);
             moveOvumContainerToRoomService.save(moveOvumContainerToRoom);
         }
         IntStream.range(0, ovumList.size()).forEachOrdered(i -> ovumList.get(i).setOvumContainer(bottles.get(i)));
@@ -136,7 +133,7 @@ public class StepsHandlingService {
         for (OvumContainer bottle : bottles) {
             Material material = materialService.getFreeMaterialForBottle();
             if (material == null) throw new RuntimeException("Нет свободного материала для добавления в бутылку");
-            AddMaterialToOvumContainer addMaterialToOvumContainer = new AddMaterialToOvumContainer(new AddMaterialToOvumContainerKey(material.getId(), bottle.getId()), material, bottle, new Date());
+            AddMaterialToOvumContainer addMaterialToOvumContainer = new AddMaterialToOvumContainer(new AddMaterialToOvumContainer.AddMaterialToOvumContainerKey(material.getId(), bottle.getId()), material, bottle, new Date());
             addMaterialToOvumContainerService.save(addMaterialToOvumContainer);
         }
         log.debug("Свиные лоскуты помещены в бутыли");
@@ -151,7 +148,7 @@ public class StepsHandlingService {
         //В зависимости от запроса Предопределителя каждую бутыль определяют на один из пятнадцати конвейеров
         Machine lane = getLaneByOrder();
         for (OvumContainer bottle : bottles) {
-            UseMachineByOvumContainer interactBottleWithRoad = new UseMachineByOvumContainer(new UseMachineByOvumContainerKey(lane.getId(), bottle.getId(), new Date()), lane, bottle, new Date(), null);
+            UseMachineByOvumContainer interactBottleWithRoad = new UseMachineByOvumContainer(new UseMachineByOvumContainer.UseMachineByOvumContainerKey(lane.getId(), bottle.getId(), new Date()), lane, bottle, new Date(), null);
             useMachineByOvumContainerService.save(interactBottleWithRoad);
         }
         log.debug("Бутыли распределены на {}", lane.getName());
@@ -161,7 +158,7 @@ public class StepsHandlingService {
         if (room == null)
             throw new RuntimeException("Эмбрионарий не найден...");
         for (OvumContainer bottle : bottles) {
-            MoveOvumContainerToRoom moveOvumContainerToRoom = new MoveOvumContainerToRoom(new MoveOvumContainerToRoomKey(bottle.getId(), room.getId(), new Date()), bottle, room);
+            MoveOvumContainerToRoom moveOvumContainerToRoom = new MoveOvumContainerToRoom(new MoveOvumContainerToRoom.MoveOvumContainerToRoomKey(bottle.getId(), room.getId(), new Date()), bottle, room);
             moveOvumContainerToRoomService.save(moveOvumContainerToRoom);
         }
         log.debug("Бутыли прибыли в эмбрионарий");
@@ -176,7 +173,7 @@ public class StepsHandlingService {
         if (room == null)
             throw new RuntimeException("Младопитомник не найден...");
         for (OvumContainer bottle : bottles) {
-            MoveOvumContainerToRoom moveOvumContainerToRoom = new MoveOvumContainerToRoom(new MoveOvumContainerToRoomKey(bottle.getId(), room.getId(), new Date()), bottle, room);
+            MoveOvumContainerToRoom moveOvumContainerToRoom = new MoveOvumContainerToRoom(new MoveOvumContainerToRoom.MoveOvumContainerToRoomKey(bottle.getId(), room.getId(), new Date()), bottle, room);
             moveOvumContainerToRoomService.save(moveOvumContainerToRoom);
         }
         log.debug("Бутыли прибыли в младопитомник");
@@ -199,7 +196,7 @@ public class StepsHandlingService {
     }
 
     private void useMachineByOvumContainer(OvumContainer ovumContainer, Integer multi, Machine machine) {
-        UseMachineByOvumContainer interactWithIncubator = new UseMachineByOvumContainer(new UseMachineByOvumContainerKey(machine.getId(), ovumContainer.getId(), new Date()), machine, ovumContainer, null, multi);
+        UseMachineByOvumContainer interactWithIncubator = new UseMachineByOvumContainer(new UseMachineByOvumContainer.UseMachineByOvumContainerKey(machine.getId(), ovumContainer.getId(), new Date()), machine, ovumContainer, null, multi);
         useMachineByOvumContainerService.save(interactWithIncubator);
         log.debug("Яйцеприемник №{} используется {} №{}. Коэффициент: {}", ovumContainer.getId(), machine.getName(), machine.getId(), multi);
         interactWithIncubator.setEndTime(new Date());

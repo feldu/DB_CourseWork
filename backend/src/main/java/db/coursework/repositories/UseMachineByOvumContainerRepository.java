@@ -1,7 +1,6 @@
 package db.coursework.repositories;
 
 import db.coursework.entities.UseMachineByOvumContainer;
-import db.coursework.entities.keys.UseMachineByOvumContainerKey;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -10,7 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-public interface UseMachineByOvumContainerRepository extends JpaRepository<UseMachineByOvumContainer, UseMachineByOvumContainerKey> {
+public interface UseMachineByOvumContainerRepository extends JpaRepository<UseMachineByOvumContainer, UseMachineByOvumContainer.UseMachineByOvumContainerKey> {
     List<UseMachineByOvumContainer> findAllByOvumContainer_Id(Long id);
 
     @Transactional

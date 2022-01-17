@@ -1,11 +1,12 @@
 package db.coursework.entities;
 
-import db.coursework.entities.keys.UseMachineByOvumContainerKey;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 
 @Data
@@ -13,7 +14,24 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "use_machine_by_ovum_container")
+@EqualsAndHashCode
 public class UseMachineByOvumContainer {
+
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Embeddable
+    public static class UseMachineByOvumContainerKey implements Serializable {
+        @Column(name = "machine_id")
+        Long machineId;
+
+        @Column(name = "ovum_container_id")
+        Long ovumContainerId;
+
+        @Column(name = "start_time")
+        Date startTime;
+    }
+
     @EmbeddedId
     UseMachineByOvumContainerKey id;
 
