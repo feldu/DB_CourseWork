@@ -14,12 +14,12 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "move_ovum_container_to_room")
-@EqualsAndHashCode
 public class MoveOvumContainerToRoom {
 
     @Data
     @NoArgsConstructor
     @AllArgsConstructor
+    @EqualsAndHashCode
     @Embeddable
     public static class MoveOvumContainerToRoomKey implements Serializable {
 

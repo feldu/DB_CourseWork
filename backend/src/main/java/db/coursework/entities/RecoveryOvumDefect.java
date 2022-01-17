@@ -14,12 +14,12 @@ import java.util.Date;
 @Entity(name = "recovery_ovum_defect")
 @NoArgsConstructor
 @Table(name = "recovery_ovum_defect")
-@EqualsAndHashCode
 public class RecoveryOvumDefect {
 
     @Data
     @NoArgsConstructor
     @AllArgsConstructor
+    @EqualsAndHashCode
     @Embeddable
     public static class RecoveryOvumDefectKey implements Serializable {
         @Column(name = "ovum_id")

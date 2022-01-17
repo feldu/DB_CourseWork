@@ -14,12 +14,12 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "use_machine_by_ovum_container")
-@EqualsAndHashCode
 public class UseMachineByOvumContainer {
 
     @Data
     @NoArgsConstructor
     @AllArgsConstructor
+    @EqualsAndHashCode
     @Embeddable
     public static class UseMachineByOvumContainerKey implements Serializable {
         @Column(name = "machine_id")

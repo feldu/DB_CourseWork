@@ -15,12 +15,12 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "add_material_to_ovum_container")
-@EqualsAndHashCode
 public class AddMaterialToOvumContainer {
 
     @Data
     @NoArgsConstructor
     @AllArgsConstructor
+    @EqualsAndHashCode
     @Embeddable
     public static class AddMaterialToOvumContainerKey implements Serializable {
         @Column(name = "material_id")

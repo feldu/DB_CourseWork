@@ -13,12 +13,12 @@ import java.util.Date;
 @Entity(name = "move_material_to_room")
 @NoArgsConstructor
 @Table(name = "move_material_to_room")
-@EqualsAndHashCode
 public class MoveMaterialToRoom {
 
     @Data
     @NoArgsConstructor
     @AllArgsConstructor
+    @EqualsAndHashCode
     @Embeddable
     public static class MoveMaterialToRoomKey implements Serializable {
 

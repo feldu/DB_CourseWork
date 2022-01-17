@@ -14,12 +14,12 @@ import java.util.Date;
 @Entity(name = "removal_volunteer_for_defect")
 @NoArgsConstructor
 @Table(name = "removal_volunteer_for_defect")
-@EqualsAndHashCode
 public class RemovalVolunteerForDefect {
 
     @Data
     @NoArgsConstructor
     @AllArgsConstructor
+    @EqualsAndHashCode
     @Embeddable
     public static class RemovalVolunteerForDefectKey implements Serializable {
         @Column(name = "defect_id")
