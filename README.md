@@ -152,3 +152,9 @@
         * Декомпозиция классов и методов (например, вынесение сущностей DTO из контроллеров, вынос однотипного кода и
           прочее)
         * Добавление необходимых транзакций
+
+<h3>Итерация 1:</h3>
+
+* Ссылка на
+  отчёт: [тык](https://docs.google.com/document/d/1Do4NQpC7SSb7K8Ntss9HTSx7_OP7YyInVO_l_bYcFMM/edit?usp=sharing).
+* Ссылка на видео: [тык](https://drive.google.com/file/d/1lLAwqj79Q5328CqRCxr6rjJuGFEL7T89/view?usp=share_link).
