@@ -1,9 +1,8 @@
 package db.coursework.controllers;
 
+import db.coursework.dto.*;
 import db.coursework.entities.*;
 import db.coursework.services.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,10 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Null;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -119,7 +115,7 @@ public class AdminController {
     @PostMapping("/update_ovum")
     public ResponseEntity<String> updateOvum(@RequestBody OvumDTO ovumDTO) {
         try {
-            log.debug("Обновляем яйцеклетку с id {}", ovumDTO.id);
+            log.debug("Обновляем яйцеклетку с id {}", ovumDTO.getId());
             ovumService.updateOvumByOvumDTOFields(ovumDTO.getId(), ovumDTO.isBud(), ovumDTO.getFertilizationTime(), ovumDTO.getEmbryoTime(), ovumDTO.getBabyTime());
             return new ResponseEntity<>("Яйцеклетка успешно обновлена", HttpStatus.OK);
 
@@ -208,76 +204,5 @@ public class AdminController {
             e.printStackTrace();
             return new ResponseEntity<>("Не удалось удалить заказ))))", HttpStatus.BAD_REQUEST);
         }
-    }
-
-
-    @Data
-    @AllArgsConstructor
-    private static class UseMachineByOvumContainerDTO {
-        @NotNull
-        Machine machine;
-        @NotNull
-        OvumContainer ovumContainer;
-        @NotNull
-        Date startTime;
-        @NotNull
-        Date endTime;
-        Integer totalBudsCount;
-    }
-
-    @Data
-    @AllArgsConstructor
-    private static class MoveOvumContainerToRoomDTO {
-        @NotNull
-        OvumContainer ovumContainer;
-        @NotNull
-        Room room;
-        @NotNull
-        Date arrivalTime;
-    }
-
-    @Data
-    @AllArgsConstructor
-    private static class AddMaterialToOvumContainerDTO {
-        @NotNull
-        Material material;
-        @NotNull
-        OvumContainer ovumContainer;
-        @NotNull
-        Date insertionTime;
-    }
-
-    @Data
-    @AllArgsConstructor
-    private static class HumanDTO {
-        Long id;
-        String fullname;
-    }
-
-    @Data
-    @AllArgsConstructor
-    private static class OvumDTO {
-        @NotNull
-        Long id;
-        @NotNull
-        private boolean isBud;
-        private Date fertilizationTime;
-        private Date embryoTime;
-        private Date babyTime;
-    }
-
-    @Data
-    @AllArgsConstructor
-    private static class OrderDTO {
-        @Null
-        private Long id;
-        @NotNull
-        private Integer humanNumber;
-        @NotNull
-        private String caste;
-        @NotNull
-        private List<String> futureJobTypes;
-        @NotNull
-        private boolean isProcessing;
     }
 }

@@ -1,11 +1,10 @@
 package db.coursework.controllers;
 
+import db.coursework.dto.UserDTO;
 import db.coursework.entities.Role;
 import db.coursework.entities.User;
 import db.coursework.services.ManageService;
 import db.coursework.services.UserService;
-import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -70,14 +69,5 @@ public class MainController {
         } catch (Exception e) {
             return new ResponseEntity<>((UserDTO) null, HttpStatus.BAD_REQUEST);
         }
-    }
-
-    @Data
-    @AllArgsConstructor
-    private static class UserDTO {
-        private String username;
-        private String password;
-        private String fullname;
-        private String role;
     }
 }
