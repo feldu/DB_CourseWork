@@ -150,11 +150,11 @@ CREATE TABLE IF NOT EXISTS recovery_ovum_defect
 --trigger for checking not fixable (DONE!)
 CREATE TABLE IF NOT EXISTS removal_volunteer_for_defect
 (
-    volunteer_id INTEGER REFERENCES human ON DELETE CASCADE ON UPDATE CASCADE,
+    ovum_id      INTEGER REFERENCES ovum ON DELETE CASCADE ON UPDATE CASCADE,
     defect_id    INTEGER REFERENCES defect ON DELETE CASCADE ON UPDATE CASCADE,
     reviewer_id  INTEGER NOT NULL REFERENCES human ON DELETE CASCADE ON UPDATE CASCADE,
     removal_time TIMESTAMP DEFAULT NOW() + '35 days'::INTERVAL,
-    Primary Key (volunteer_id, defect_id, removal_time)
+    Primary Key (ovum_id, defect_id, removal_time)
 );
 
 --ограничить имена машины  тогда адекватно прописать взаим-е с бутылём и яйцеприемником. (DONE!)
@@ -300,8 +300,8 @@ BEGIN
     SELECT ovum_id INTO v_ovum FROM defect WHERE (defect.id = NEW.defect_id);
     SELECT volunteer_id INTO v_volunteer FROM ovum WHERE ovum.id = v_ovum;
     --проверить яйцеклетку волонтера на дефект и сравнить с введённым
-    IF (v_volunteer != NEW.volunteer_id) THEN
-        RAISE EXCEPTION 'Волонтер % не иммет дефекта %. (Возможно вы имели в виду волонтёра %)', NEW.volunteer_id, NEW.defect_id, v_volunteer;
+    IF (v_volunteer != NEW.ovum_id) THEN
+        RAISE EXCEPTION 'Яйцеклетка % не иммет дефекта %. (Возможно вы имели в виду яйкеклетку %)', NEW.ovum_id, NEW.defect_id, v_volunteer;
     END IF;
     SELECT COUNT(defect.fixable) = 0
     INTO v_is_all_defects_fixable
