@@ -1,6 +1,5 @@
 package db.coursework.services;
 
-import db.coursework.entities.Order;
 import db.coursework.entities.Ovum;
 import db.coursework.entities.OvumContainer;
 import db.coursework.repositories.OrderRepository;
@@ -26,8 +25,8 @@ public class OvumService {
         this.ovumContainerRepository = ovumContainerRepository;
     }
 
-    public Long getOvumCountByOrder(Order order) {
-        return ovumRepository.countAllByOrder(order);
+    public Long getOvumCountByOrderId(Long id) {
+        return ovumRepository.countAllByOrder_Id(id);
     }
 
     public List<Ovum> findAllByOrder_Id(Long id) {

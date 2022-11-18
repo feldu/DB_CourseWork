@@ -23,6 +23,18 @@ public class ManageController {
         this.manageService = manageService;
     }
 
+    @PostMapping("/new-admin")
+    public ResponseEntity<String> addAdmin(@RequestBody Map<String, String> payload) {
+        try {
+            String username = payload.get("username");
+            manageService.addAdmin(username);
+            return new ResponseEntity<>("Админ добавлен", HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>("Ошибка: " + e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
     @PostMapping("/add_ovum")
     public ResponseEntity<String> addOvum(@RequestBody Map<String, Long> payload) {
         try {
@@ -35,7 +47,6 @@ public class ManageController {
             return new ResponseEntity<>("Ошибка: " + e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
-
 
     @PostMapping("/add_containers")
     public ResponseEntity<String> addOvumContainers(@RequestBody Map<String, String> payload) {

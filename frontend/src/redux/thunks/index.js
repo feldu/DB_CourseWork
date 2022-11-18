@@ -71,7 +71,7 @@ export function logout() {
 export function getUserInfo() {
     return function (dispatch) {
         axios
-            .post('/user_info')
+            .get('/user/authenticated')
             .then(response => {
                 if (response.status === 200) {
                     dispatch(actions.signIn(response.data));
@@ -83,7 +83,7 @@ export function getUserInfo() {
 export function getOrders() {
     return function (dispatch) {
         axios
-            .post('/user/get_orders')
+            .get('/user/orders')
             .then(response => {
                 dispatch(actions.updateOrders(response.data));
             })
@@ -94,7 +94,7 @@ export function getOrders() {
 export function getFutureJobTypes() {
     return function (dispatch) {
         axios
-            .post('/user/get_future_job_types')
+            .get('/user/future-job-types')
             .then(response => {
                 dispatch(actions.updateFutureJobTypes(response.data));
             })
@@ -105,7 +105,7 @@ export function getFutureJobTypes() {
 export function getCastes() {
     return function (dispatch) {
         axios
-            .post('/user/get_castes')
+            .get('/user/castes')
             .then(response => {
                 dispatch(actions.updateCastes(response.data));
             })
@@ -116,7 +116,7 @@ export function getCastes() {
 export function addOrder(order) {
     return function (dispatch) {
         axios
-            .post('/user/add_order', {
+            .post('/user/orders', {
                 ...order,
                 futureJobTypes: order.futureJobTypes.length === 0 ? [null] : order.futureJobTypes
             })
@@ -134,7 +134,7 @@ export function addOrder(order) {
 export function getOvumByOrderId(orderId) {
     return function (dispatch) {
         axios
-            .post('/user/get_ovum_by_order', {orderId})
+            .get(`/user/ovums/order/${orderId}`)
             .then(response => {
                 dispatch(actions.updateOvumByOrder(response.data));
             })
@@ -145,7 +145,7 @@ export function getOvumByOrderId(orderId) {
 export function getPredeterminers() {
     return function (dispatch) {
         axios
-            .post('/admin/get_predeterminers')
+            .get('/admin/users', {params: {roleName: "ROLE_PREDETERMINER"}})
             .then(response => {
                 dispatch(actions.updatePredeterminers(response.data));
             })
@@ -156,7 +156,7 @@ export function getPredeterminers() {
 export function getOrdersById(id) {
     return function (dispatch) {
         axios
-            .post('/admin/get_orders', {id})
+            .get(`/admin/orders/human/${id}`)
             .then(response => {
                 dispatch(actions.updateOrders(response.data));
             })
@@ -167,7 +167,7 @@ export function getOrdersById(id) {
 export function getFreeOvumCount() {
     return function (dispatch) {
         axios
-            .post('/admin/get_free_ovum_count')
+            .get(`admin/ovums/count/order/${null}`)
             .then(response => {
                 dispatch(actions.updateFreeOvumCount(response.data));
             })
@@ -178,7 +178,7 @@ export function getFreeOvumCount() {
 export function bindFreeOvumToOrder(orderId, count) {
     return function (dispatch, getState) {
         axios
-            .post('/admin/bind_free_ovum', {orderId, count})
+            .post(`/admin/ovums/bind/${count}/order/${orderId}`)
             .then(response => {
                 if (response.status === 200) {
                     const currentPredeterminer = getState().predeterminer.currentPredeterminer;
@@ -203,7 +203,7 @@ export function bindFreeOvumToOrder(orderId, count) {
 export function updateOvum(ovum) {
     return function (dispatch, getState) {
         axios
-            .post('/admin/update_ovum', ovum)
+            .put(`/admin/ovums/${ovum.id}`, ovum)
             .then(response => {
                 if (response.status === 200) {
                     dispatch(showMessage({message: response.data, isError: false}));
@@ -264,7 +264,7 @@ export function startSecondStep(orderId) {
 export function removeExtraOvum(orderId) {
     return function (dispatch) {
         axios
-            .post('/admin/remove_extra_ovum_by_order', {orderId})
+            .delete(`/admin/ovums/order/${orderId}`)
             .then(response => {
                 if (response.status === 200) {
                     dispatch(getOvumByOrderId(orderId));
@@ -304,7 +304,7 @@ export function startThirdStep(orderId) {
 export function getMovingListByOrderId(orderId) {
     return function (dispatch) {
         axios
-            .post('/admin/get_move_container', {orderId})
+            .get(`/admin/move-ovum-container-to-room/order/${orderId}`, {orderId})
             .then(response => {
                 dispatch(actions.updateMovingByOrder(response.data));
             })
@@ -315,7 +315,7 @@ export function getMovingListByOrderId(orderId) {
 export function getUsingListByOrderId(orderId) {
     return function (dispatch) {
         axios
-            .post('/admin/get_use_machine', {orderId})
+            .get(`/admin/use-machine-by-ovum-container/order/${orderId}`)
             .then(response => {
                 dispatch(actions.updateUsingByOrder(response.data));
             })
@@ -326,7 +326,7 @@ export function getUsingListByOrderId(orderId) {
 export function getAddingListByOrderId(orderId) {
     return function (dispatch) {
         axios
-            .post('/admin/get_add_material', {orderId})
+            .get(`/admin/add-material-to-ovum-container/order/${orderId}`)
             .then(response => {
                 dispatch(actions.updateAddingByOrder(response.data));
             })
@@ -337,7 +337,7 @@ export function getAddingListByOrderId(orderId) {
 export function removeOrderById(orderId) {
     return function (dispatch) {
         axios
-            .post('/admin/remove_order_info', {orderId})
+            .delete(`/admin/orders/${orderId}`)
             .then(response => {
                 if (response.status === 200) {
                     dispatch(showMessage({message: response.data, isError: false}));

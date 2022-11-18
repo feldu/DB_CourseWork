@@ -64,7 +64,7 @@ public class StepsHandlingService {
             log.debug("Невозможно исполнить заказ №{}. Каста заказа: {}", orderId, order.getCaste());
             throw new RuntimeException("Яйцеклетки для каст Альфа и Бета не дробятся");
         }
-        long ovumCount = ovumService.getOvumCountByOrder(order);
+        long ovumCount = ovumService.getOvumCountByOrderId(order.getId());
         if (ovumCount == order.getHumanNumber()) {
             log.debug("Количество людей совпадает с количеством яйцеклеток и равно {}. Дробление не требуется. Второй этап завершён", ovumCount);
             return true;

@@ -1,6 +1,5 @@
 package db.coursework.repositories;
 
-import db.coursework.entities.Order;
 import db.coursework.entities.Ovum;
 import db.coursework.entities.OvumContainer;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -26,7 +25,7 @@ public interface OvumRepository extends JpaRepository<Ovum, Long> {
     @Query(value = "UPDATE ovum SET ovumContainer = :ovumContainer WHERE order.id = :orderId")
     void bindOrderOvumToOvumContainer(@Param(value = "orderId") Long orderId, @Param(value = "ovumContainer") OvumContainer ovumContainer);
 
-    Long countAllByOrder(Order order);
+    Long countAllByOrder_Id(Long orderId);
 
     List<Ovum> findAllByOrder_Id(Long id);
 

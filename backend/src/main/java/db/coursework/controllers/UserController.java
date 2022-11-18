@@ -2,74 +2,48 @@ package db.coursework.controllers;
 
 import db.coursework.dto.CasteDTO;
 import db.coursework.dto.FutureJobTypesDTO;
-import db.coursework.dto.OrderDTO;
-import db.coursework.entities.Human;
-import db.coursework.entities.Order;
-import db.coursework.entities.Ovum;
+import db.coursework.dto.UserDTO;
+import db.coursework.entities.Role;
+import db.coursework.entities.User;
 import db.coursework.entities.enums.FutureJobTypeName;
 import db.coursework.entities.enums.OrderCaste;
-import db.coursework.services.OrderService;
-import db.coursework.services.OvumService;
 import db.coursework.services.UserService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 @Slf4j
 @Controller
 @RequestMapping("/user")
 public class UserController {
-
     private final UserService userService;
-    private final OrderService orderService;
-    private final OvumService ovumService;
 
-    @Autowired
-    public UserController(UserService userService, OrderService orderService, OvumService ovumService) {
+    public UserController(UserService userService) {
         this.userService = userService;
-        this.orderService = orderService;
-        this.ovumService = ovumService;
     }
 
-    @PostMapping("/add_order")
-    public ResponseEntity<Long> addOrder(@RequestBody OrderDTO orderDto, Authentication authentication) {
+    @GetMapping("/authenticated")
+    public ResponseEntity<UserDTO> getUserInfo(Authentication authentication) {
         try {
-            log.debug("Adding new order. Received data: {}", orderDto);
-            Human human = userService.loadUserByUsername(authentication.getName()).getHuman();
-            Order order = orderService.saveOrderFromRequest(human, orderDto.getHumanNumber(), orderDto.getCaste(), orderDto.getFutureJobTypes());
-            return new ResponseEntity<>(order.getId(), HttpStatus.OK);
+            User user = userService.loadUserByUsername(authentication.getName());
+            Role role = new ArrayList<>(user.getHuman().getRoles()).get(0);
+            UserDTO userDto = new UserDTO(user.getUsername(), user.getPassword(), user.getHuman().getFullname(), role.getName().split("_")[1]);
+            return new ResponseEntity<>(userDto, HttpStatus.OK);
         } catch (Exception e) {
-            e.printStackTrace();
-            return new ResponseEntity<>(-1L, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>((UserDTO) null, HttpStatus.BAD_REQUEST);
         }
     }
 
-    @PostMapping("/get_orders")
-    public ResponseEntity<List<OrderDTO>> getAllHumanOrders(Authentication authentication) {
-        try {
-            Human human = userService.loadUserByUsername(authentication.getName()).getHuman();
-            List<Order> orders = orderService.findAllOrdersByHuman(human);
-            List<OrderDTO> orderDTOS = orders.stream().map(order -> new OrderDTO(order.getId(), order.getHumanNumber(), order.getCaste().name(), order.getFutureJobTypes().stream().map(type -> type.getName().toString()).collect(Collectors.toList()), order.isProcessing())).collect(Collectors.toList());
-            log.debug("Sending {} orders", orderDTOS.size());
-            return new ResponseEntity<>(orderDTOS, HttpStatus.OK);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-        }
-    }
-
-    @PostMapping("/get_future_job_types")
+    @GetMapping("/future-job-types")
     public ResponseEntity<List<FutureJobTypesDTO>> getAllFutureJobTypesNames() {
         try {
             List<FutureJobTypeName> futureJobTypeNameList = Arrays.asList(FutureJobTypeName.values());
@@ -81,26 +55,12 @@ public class UserController {
         }
     }
 
-    @PostMapping("/get_castes")
+    @GetMapping("/castes")
     public ResponseEntity<List<CasteDTO>> getCaste() {
         try {
             List<OrderCaste> orderCastes = Arrays.asList(OrderCaste.values());
             List<CasteDTO> casteDTOList = orderCastes.stream().map(type -> new CasteDTO(type.name(), type.getLabel())).collect(Collectors.toList());
             return new ResponseEntity<>(casteDTOList, HttpStatus.OK);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-        }
-    }
-
-    @PostMapping("/get_ovum_by_order")
-    public ResponseEntity<List<Ovum>> getOvumByOrder(@RequestBody Map<String, Long> payload) {
-        try {
-            Long orderId = payload.get("orderId");
-            List<Ovum> ovumList = ovumService.findAllOvumByOrder_Id(orderId);
-            log.debug("Sending {} ovum of {} order", ovumList.size(), orderId);
-            return new ResponseEntity<>(ovumList, HttpStatus.OK);
-
         } catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
