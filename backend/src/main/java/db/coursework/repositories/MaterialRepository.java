@@ -7,6 +7,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 public interface MaterialRepository extends JpaRepository<Material, Long> {
 
     @Query(value = "SELECT m.id, m.current_size, m.name, m.quality_parts_percentage, m.required_size FROM material m " +
@@ -16,7 +18,7 @@ public interface MaterialRepository extends JpaRepository<Material, Long> {
             "AND m.name = 'Свиной лоскут' " +
             "LIMIT 1",
             nativeQuery = true)
-    Material getFreeMaterialForBottle();
+    Optional<Material> getFreeMaterialForBottle();
 
     @Transactional
     @Modifying(clearAutomatically = true)

@@ -2,6 +2,7 @@ package db.coursework.services;
 
 import db.coursework.entities.Machine;
 import db.coursework.entities.enums.MachineName;
+import db.coursework.exception.DataNotFoundException;
 import db.coursework.repositories.MachineRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,6 +17,6 @@ public class MachineService {
     }
 
     public Machine getMachineByName(MachineName name) {
-        return machineRepository.getFirstMachineByName(name);
+        return machineRepository.getFirstMachineByName(name).orElseThrow(() -> new DataNotFoundException("Machine not found"));
     }
 }

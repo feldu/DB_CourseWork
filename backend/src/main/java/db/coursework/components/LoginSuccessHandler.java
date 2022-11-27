@@ -16,7 +16,6 @@ public class LoginSuccessHandler extends SavedRequestAwareAuthenticationSuccessH
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
-
         User user = (User) authentication.getPrincipal();
         String roleName = "NO ROLES";
         String redirectURL = request.getContextPath();

@@ -68,8 +68,6 @@ public class AdminController {
     @DeleteMapping("/ovums/order/{orderId}")
     public ResponseEntity<String> removeExtraOvumByOrder(@PathVariable Long orderId) {
         Order order = orderService.findOrderById(orderId);
-        if (order == null)
-            throw new RuntimeException("Заказа не существует");
         //Уничтожаем "лишние"
         Long ovumCount = ovumService.getOvumCountByOrderId(order.getId());
         if (ovumCount > order.getHumanNumber()) {
@@ -97,8 +95,7 @@ public class AdminController {
     @GetMapping("/use-machine-by-ovum-container/order/{orderId}")
     public ResponseEntity<List<UseMachineByOvumContainerDTO>> getUseMachine(@PathVariable Long orderId) {
         log.debug("Получаем журнал использования машин контейнерами заказа {}", orderId);
-        Order order = orderService.findOrderById(orderId);
-        if (order == null) return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        orderService.findOrderById(orderId);
         List<OvumContainer> ovumContainers = ovumContainerService.getAllOrderOvumContainers(orderId);
         List<UseMachineByOvumContainer> useMachineByOvumContainerList = new ArrayList<>(ovumContainers.size());
         for (OvumContainer ovumContainer : ovumContainers) {
@@ -113,8 +110,7 @@ public class AdminController {
     @GetMapping("/move-ovum-container-to-room/order/{orderId}")
     public ResponseEntity<List<MoveOvumContainerToRoomDTO>> getMoveContainer(@PathVariable Long orderId) {
         log.debug("Получаем журнал передвижения контейнеров заказа {}", orderId);
-        Order order = orderService.findOrderById(orderId);
-        if (order == null) return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        orderService.findOrderById(orderId);
         List<OvumContainer> ovumContainers = ovumContainerService.getAllOrderOvumContainers(orderId);
         List<MoveOvumContainerToRoom> moveOvumContainerToRoomList = new ArrayList<>(ovumContainers.size());
         for (OvumContainer ovumContainer : ovumContainers) {
@@ -129,8 +125,7 @@ public class AdminController {
     @GetMapping("/add-material-to-ovum-container/order/{orderId}")
     public ResponseEntity<List<AddMaterialToOvumContainerDTO>> getAddMaterial(@PathVariable Long orderId) {
         log.debug("Получаем журнал добавления материалов в контейнеры заказа {}", orderId);
-        Order order = orderService.findOrderById(orderId);
-        if (order == null) return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        orderService.findOrderById(orderId);
         List<OvumContainer> ovumContainers = ovumContainerService.getAllOrderOvumContainers(orderId);
         List<AddMaterialToOvumContainer> addMaterialToOvumContainerList = new ArrayList<>(ovumContainers.size());
         for (OvumContainer ovumContainer : ovumContainers) {

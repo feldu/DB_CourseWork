@@ -1,6 +1,7 @@
 package db.coursework.services;
 
 import db.coursework.entities.Material;
+import db.coursework.exception.DataNotFoundException;
 import db.coursework.repositories.MaterialRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,7 +17,7 @@ public class MaterialService {
     }
 
     public Material getFreeMaterialForBottle() {
-        return materialRepository.getFreeMaterialForBottle();
+        return materialRepository.getFreeMaterialForBottle().orElseThrow(() -> new DataNotFoundException("Material not found"));
     }
 
     public Material save(Material material) {

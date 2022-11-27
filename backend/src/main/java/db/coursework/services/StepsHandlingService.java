@@ -59,7 +59,6 @@ public class StepsHandlingService {
     @Transactional
     public boolean secondStepHandling(Long orderId) {
         Order order = orderService.findOrderById(orderId);
-        if (order == null) throw new RuntimeException("Невозможно найти заказ");
         if (Arrays.asList(new String[]{"Alpha", "Beta"}).contains(order.getCaste().name())) {
             log.debug("Невозможно исполнить заказ №{}. Каста заказа: {}", orderId, order.getCaste());
             throw new RuntimeException("Яйцеклетки для каст Альфа и Бета не дробятся");
@@ -102,7 +101,6 @@ public class StepsHandlingService {
     @Transactional
     public void thirdStepHandling(Long orderId) {
         Order order = orderService.findOrderById(orderId);
-        if (order == null) throw new RuntimeException("Невозможно найти заказ");
         List<OvumContainer> bottles = ovumContainerService.getFreeBottles(order.getHumanNumber());
         List<Ovum> ovumList = ovumService.findAllByOrder_Id(orderId);
         if (bottles.size() < ovumList.size()) {
@@ -111,8 +109,6 @@ public class StepsHandlingService {
         }
         //Яйцеклетки помещают в Укупорочный зал в бутыли
         Room room = roomService.findRoomByName("Укупорочный зал");
-        if (room == null)
-            throw new RuntimeException("Укупорочный зал не найден...");
         for (OvumContainer bottle : bottles) {
             MoveOvumContainerToRoom moveOvumContainerToRoom = new MoveOvumContainerToRoom(new MoveOvumContainerToRoom.MoveOvumContainerToRoomKey(bottle.getId(), room.getId(), new Date()), bottle, room);
             moveOvumContainerToRoomService.save(moveOvumContainerToRoom);
@@ -155,8 +151,6 @@ public class StepsHandlingService {
 
         //Бутыли отправляются в Эмбрионарий на 267 суток
         room = roomService.findRoomByName("Эмбрионарий");
-        if (room == null)
-            throw new RuntimeException("Эмбрионарий не найден...");
         for (OvumContainer bottle : bottles) {
             MoveOvumContainerToRoom moveOvumContainerToRoom = new MoveOvumContainerToRoom(new MoveOvumContainerToRoom.MoveOvumContainerToRoomKey(bottle.getId(), room.getId(), new Date()), bottle, room);
             moveOvumContainerToRoomService.save(moveOvumContainerToRoom);
@@ -170,8 +164,6 @@ public class StepsHandlingService {
 
         //Младенцев привозят в Младопитомник
         room = roomService.findRoomByName("Младопитомник");
-        if (room == null)
-            throw new RuntimeException("Младопитомник не найден...");
         for (OvumContainer bottle : bottles) {
             MoveOvumContainerToRoom moveOvumContainerToRoom = new MoveOvumContainerToRoom(new MoveOvumContainerToRoom.MoveOvumContainerToRoomKey(bottle.getId(), room.getId(), new Date()), bottle, room);
             moveOvumContainerToRoomService.save(moveOvumContainerToRoom);
@@ -186,7 +178,6 @@ public class StepsHandlingService {
     }
 
     private Machine getLaneByOrder() {
-        //todo: распределение на нужные дорожки в зависимости от FutureJobType'ов
         String laneName = String.format("Дорожка_%02d", (int) (Math.random() * 14) + 1);
         return machineService.getMachineByName(MachineName.valueOf(laneName));
     }

@@ -6,6 +6,7 @@ import db.coursework.entities.Order;
 import db.coursework.entities.OvumContainer;
 import db.coursework.entities.enums.FutureJobTypeName;
 import db.coursework.entities.enums.OrderCaste;
+import db.coursework.exception.DataNotFoundException;
 import db.coursework.repositories.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,11 +65,11 @@ public class OrderService {
     }
 
     public FutureJobType findFutureJobTypeByName(FutureJobTypeName name) {
-        return futureJobTypeRepository.findByName(name);
+        return futureJobTypeRepository.findByName(name).orElseThrow(() -> new DataNotFoundException("Future Job Type not found"));
     }
 
     public Order findOrderById(Long id) {
-        return orderRepository.findById(id).orElse(null);
+        return orderRepository.findById(id).orElseThrow(() -> new DataNotFoundException("Order not found"));
     }
 
     @Transactional

@@ -64,9 +64,7 @@ public class ManageService {
     @Transactional
     public void addAdmin(String username) {
         Role role = roleService.findByName("ROLE_ADMIN");
-        if (role == null) throw new RuntimeException("Роль не найдена");
         User user = userService.loadUserByUsername(username);
-        if (user == null) throw new RuntimeException("Юзер не найден");
         user.getHuman().getRoles().add(role);
         userService.updateUser(user);
     }

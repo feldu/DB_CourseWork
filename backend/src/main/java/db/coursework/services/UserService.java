@@ -12,6 +12,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -31,17 +32,13 @@ public class UserService implements UserDetailsService {
     @Override
     @Transactional
     public User loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findByUsername(username);
-        if (user == null) {
-            log.debug("User {} not found in DB", username);
-            throw new UsernameNotFoundException("User not found in DB");
-        }
+        User user = userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("User not found in DB"));
         log.debug("User {} found in DB", username);
         return user;
     }
 
     public boolean saveUser(User user) {
-        if (userRepository.findByUsername(user.getUsername()) != null) {
+        if (userRepository.findByUsername(user.getUsername()).isPresent()) {
             log.debug("User {} already exists in DB", user.getUsername());
             return false;
         }
@@ -52,7 +49,7 @@ public class UserService implements UserDetailsService {
     }
 
     public boolean updateUser(User user) {
-        if (userRepository.findByUsername(user.getUsername()) != null) {
+        if (userRepository.findByUsername(user.getUsername()).isPresent()) {
             userRepository.save(user);
             log.debug("User {} updated", user.getUsername());
             return true;
@@ -62,10 +59,10 @@ public class UserService implements UserDetailsService {
 
     public Role saveRoleByName(String name) {
         name = "ROLE_" + name.toUpperCase(); //to ROLE_NAME format
-        Role roleByName = roleRepository.findByName(name);
-        if (roleByName == null)
+        Optional<Role> roleByName = roleRepository.findByName(name);
+        if (!roleByName.isPresent())
             return roleRepository.save(new Role(name));
-        return roleByName;
+        return roleByName.get();
     }
 
 }
