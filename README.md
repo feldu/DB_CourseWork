@@ -161,3 +161,5 @@
   1: [тык](https://drive.google.com/file/d/1lLAwqj79Q5328CqRCxr6rjJuGFEL7T89/view?usp=share_link).
 * Ссылка на видео итерация
   2: [тык](https://drive.google.com/file/d/1C0y86UmG7HYIChZShLURyi1itOU-Cwan/view?usp=share_link).
+* Ссылка на видео итерация
+  3: [тык](https://drive.google.com/file/d/1vpAO2NYekj56CskELt5CNOwmlUJv62W3/view?usp=share_link).
