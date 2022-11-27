@@ -115,7 +115,7 @@
 ![info](./db/images/Info_cw.drawio.png)
 
 Даталогическая модель:
-![data](./db/images/Info_cw.drawio.png)
+![data](./db/images/Data_cw.drawio.png)
 
 <h5>Этап 3</h5>
 
@@ -123,7 +123,7 @@
 [тут](./db/scripts).
 
 <h5>Этап 4</h5>
-[тут](.).
+[тут](https://github.com/feldu/db_coursework).
 
 # Лабораторная работа по Рефакторингу баз данных и приложений
 
@@ -153,8 +153,11 @@
           прочее)
         * Добавление необходимых транзакций
 
-<h3>Итерация 1:</h3>
+<h3>Выполнение:</h3>
 
-* Ссылка на
-  отчёт: [тык](https://docs.google.com/document/d/1Do4NQpC7SSb7K8Ntss9HTSx7_OP7YyInVO_l_bYcFMM/edit?usp=sharing).
-* Ссылка на видео: [тык](https://drive.google.com/file/d/1lLAwqj79Q5328CqRCxr6rjJuGFEL7T89/view?usp=share_link).
+* Ссылка на отчёт со всеми
+  итерациями: [тык](https://docs.google.com/document/d/1Do4NQpC7SSb7K8Ntss9HTSx7_OP7YyInVO_l_bYcFMM/edit?usp=sharing).
+* Ссылка на видео итерация
+  1: [тык](https://drive.google.com/file/d/1lLAwqj79Q5328CqRCxr6rjJuGFEL7T89/view?usp=share_link).
+* Ссылка на видео итерация
+  2: [тык](https://drive.google.com/file/d/1C0y86UmG7HYIChZShLURyi1itOU-Cwan/view?usp=share_link).
