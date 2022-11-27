@@ -26,13 +26,8 @@ public class UserOvumController {
 
     @GetMapping("/order/{orderId}")
     public ResponseEntity<List<Ovum>> getOvumByOrder(@PathVariable Long orderId) {
-        try {
-            List<Ovum> ovumList = ovumService.findAllOvumByOrder_Id(orderId);
-            log.debug("Sending {} ovum of {} order", ovumList.size(), orderId);
-            return new ResponseEntity<>(ovumList, HttpStatus.OK);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-        }
+        List<Ovum> ovumList = ovumService.findAllOvumByOrder_Id(orderId);
+        log.debug("Sending {} ovum of {} order", ovumList.size(), orderId);
+        return new ResponseEntity<>(ovumList, HttpStatus.OK);
     }
 }

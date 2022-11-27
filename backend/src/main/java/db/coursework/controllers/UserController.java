@@ -33,37 +33,23 @@ public class UserController {
 
     @GetMapping("/authenticated")
     public ResponseEntity<UserDTO> getUserInfo(Authentication authentication) {
-        try {
-            User user = userService.loadUserByUsername(authentication.getName());
-            Role role = new ArrayList<>(user.getHuman().getRoles()).get(0);
-            UserDTO userDto = new UserDTO(user.getUsername(), user.getPassword(), user.getHuman().getFullname(), role.getName().split("_")[1]);
-            return new ResponseEntity<>(userDto, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>((UserDTO) null, HttpStatus.BAD_REQUEST);
-        }
+        User user = userService.loadUserByUsername(authentication.getName());
+        Role role = new ArrayList<>(user.getHuman().getRoles()).get(0);
+        UserDTO userDto = new UserDTO(user.getUsername(), user.getPassword(), user.getHuman().getFullname(), role.getName().split("_")[1]);
+        return new ResponseEntity<>(userDto, HttpStatus.OK);
     }
 
     @GetMapping("/future-job-types")
     public ResponseEntity<List<FutureJobTypesDTO>> getAllFutureJobTypesNames() {
-        try {
-            List<FutureJobTypeName> futureJobTypeNameList = Arrays.asList(FutureJobTypeName.values());
-            List<FutureJobTypesDTO> futureJobTypesDTOList = futureJobTypeNameList.stream().map(type -> new FutureJobTypesDTO(type.name(), type.getLabel())).collect(Collectors.toList());
-            return new ResponseEntity<>(futureJobTypesDTOList, HttpStatus.OK);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-        }
+        List<FutureJobTypeName> futureJobTypeNameList = Arrays.asList(FutureJobTypeName.values());
+        List<FutureJobTypesDTO> futureJobTypesDTOList = futureJobTypeNameList.stream().map(type -> new FutureJobTypesDTO(type.name(), type.getLabel())).collect(Collectors.toList());
+        return new ResponseEntity<>(futureJobTypesDTOList, HttpStatus.OK);
     }
 
     @GetMapping("/castes")
     public ResponseEntity<List<CasteDTO>> getCaste() {
-        try {
-            List<OrderCaste> orderCastes = Arrays.asList(OrderCaste.values());
-            List<CasteDTO> casteDTOList = orderCastes.stream().map(type -> new CasteDTO(type.name(), type.getLabel())).collect(Collectors.toList());
-            return new ResponseEntity<>(casteDTOList, HttpStatus.OK);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-        }
+        List<OrderCaste> orderCastes = Arrays.asList(OrderCaste.values());
+        List<CasteDTO> casteDTOList = orderCastes.stream().map(type -> new CasteDTO(type.name(), type.getLabel())).collect(Collectors.toList());
+        return new ResponseEntity<>(casteDTOList, HttpStatus.OK);
     }
 }

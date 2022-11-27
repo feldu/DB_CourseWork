@@ -30,19 +30,14 @@ public class AuthController {
 
     @PostMapping("/signup")
     public ResponseEntity<String> register(@RequestBody UserDTO dto) {
-        try {
-            Role role = userService.saveRoleByName(dto.getRole());
-            Human human = new Human(dto.getFullname(), (Collections.singleton(role)));
-            User user = new User(dto.getUsername(), dto.getPassword(), human);
-            log.debug("POST request to register user {}", user);
-            log.debug("Associated human {}", human);
-            log.debug("Human role {}", role);
-            boolean isSaved = userService.saveUser(user);
-            return isSaved ? new ResponseEntity<>("Пользователь зарегистрирован. Войдите :)", HttpStatus.OK) :
-                    new ResponseEntity<>("Пользователь с таким именем уже существует", HttpStatus.BAD_REQUEST);
-        } catch (Exception e) {
-            log.error("Unexpected error {}", e.getMessage());
-            return new ResponseEntity<>("Непредвиденная ошибка", HttpStatus.BAD_REQUEST);
-        }
+        Role role = userService.saveRoleByName(dto.getRole());
+        Human human = new Human(dto.getFullname(), (Collections.singleton(role)));
+        User user = new User(dto.getUsername(), dto.getPassword(), human);
+        log.debug("POST request to register user {}", user);
+        log.debug("Associated human {}", human);
+        log.debug("Human role {}", role);
+        boolean isSaved = userService.saveUser(user);
+        return isSaved ? new ResponseEntity<>("Пользователь зарегистрирован. Войдите :)", HttpStatus.OK) :
+                new ResponseEntity<>("Пользователь с таким именем уже существует", HttpStatus.BAD_REQUEST);
     }
 }

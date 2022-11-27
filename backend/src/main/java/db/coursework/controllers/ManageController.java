@@ -25,51 +25,31 @@ public class ManageController {
 
     @PostMapping("/new-admin")
     public ResponseEntity<String> addAdmin(@RequestBody Map<String, String> payload) {
-        try {
-            String username = payload.get("username");
-            manageService.addAdmin(username);
-            return new ResponseEntity<>("Админ добавлен", HttpStatus.OK);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new ResponseEntity<>("Ошибка: " + e.getMessage(), HttpStatus.BAD_REQUEST);
-        }
+        String username = payload.get("username");
+        manageService.addAdmin(username);
+        return new ResponseEntity<>("Админ добавлен", HttpStatus.OK);
     }
 
     @PostMapping("/add_ovum")
     public ResponseEntity<String> addOvum(@RequestBody Map<String, Long> payload) {
-        try {
-            Long ovumCount = payload.get("ovumCount");
-            manageService.addFreeOvum(ovumCount);
-            log.debug("Было добавлено {} яйцеклеток", ovumCount);
-            return new ResponseEntity<>("Яйцеклетки добавлены", HttpStatus.OK);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new ResponseEntity<>("Ошибка: " + e.getMessage(), HttpStatus.BAD_REQUEST);
-        }
+        Long ovumCount = payload.get("ovumCount");
+        manageService.addFreeOvum(ovumCount);
+        log.debug("Было добавлено {} яйцеклеток", ovumCount);
+        return new ResponseEntity<>("Яйцеклетки добавлены", HttpStatus.OK);
     }
 
     @PostMapping("/add_containers")
     public ResponseEntity<String> addOvumContainers(@RequestBody Map<String, String> payload) {
-        try {
-            Long count = Long.valueOf(payload.get("count"));
-            String name = payload.get("name");
-            manageService.addOvumContainers(count, name);
-            return new ResponseEntity<>("Контейнеры добавлены", HttpStatus.OK);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new ResponseEntity<>("Ошибка: " + e.getMessage(), HttpStatus.BAD_REQUEST);
-        }
+        Long count = Long.valueOf(payload.get("count"));
+        String name = payload.get("name");
+        manageService.addOvumContainers(count, name);
+        return new ResponseEntity<>("Контейнеры добавлены", HttpStatus.OK);
     }
 
     @PostMapping("/add_material")
     public ResponseEntity<String> addMaterialAndCut(@RequestBody Map<String, String> payload) {
-        try {
-            Long count = Long.valueOf(payload.get("count"));
-            manageService.addMaterial(count);
-            return new ResponseEntity<>("Материалы добавлены", HttpStatus.OK);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new ResponseEntity<>("Ошибка: " + e.getMessage(), HttpStatus.BAD_REQUEST);
-        }
+        Long count = Long.valueOf(payload.get("count"));
+        manageService.addMaterial(count);
+        return new ResponseEntity<>("Материалы добавлены", HttpStatus.OK);
     }
 }
