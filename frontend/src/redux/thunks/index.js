@@ -25,6 +25,7 @@ export function registerUser(user) {
             .catch(e => {
                 if (e.response.status === 400)
                     dispatch(showMessage({message: e.response.data, isError: true}));
+                else handleError(e, dispatch)
             });
 
     }
@@ -46,9 +47,7 @@ export function loginUser(user) {
                         window.location.href = response.request.responseURL;
                 }
             })
-            .catch(() => {
-                dispatch(showMessage({message: "Ошибка входа", isError: true}));
-            })
+            .catch(e => handleError(e, dispatch));
     }
 }
 
@@ -63,7 +62,7 @@ export function logout() {
                     }
                 }
             )
-            .catch();
+            .catch(e => handleError(e, dispatch));
         dispatch(actions.signOut());
     }
 }
@@ -76,7 +75,7 @@ export function getUserInfo() {
                 if (response.status === 200) {
                     dispatch(actions.signIn(response.data));
                 }
-            }).catch(e => console.log(e));
+            }).catch(e => handleError(e, dispatch));
     }
 }
 
@@ -87,7 +86,7 @@ export function getOrders() {
             .then(response => {
                 dispatch(actions.updateOrders(response.data));
             })
-            .catch(e => console.log(e));
+            .catch(e => handleError(e, dispatch));
     }
 }
 
@@ -98,7 +97,7 @@ export function getFutureJobTypes() {
             .then(response => {
                 dispatch(actions.updateFutureJobTypes(response.data));
             })
-            .catch(e => console.log(e));
+            .catch(e => handleError(e, dispatch));
     }
 }
 
@@ -109,7 +108,7 @@ export function getCastes() {
             .then(response => {
                 dispatch(actions.updateCastes(response.data));
             })
-            .catch(e => console.log(e));
+            .catch(e => handleError(e, dispatch));
     }
 }
 
@@ -127,7 +126,7 @@ export function addOrder(order) {
                     dispatch(getOrders());
                 }
             })
-            .catch(e => console.log(e));
+            .catch(e => handleError(e, dispatch));
     }
 }
 
@@ -138,7 +137,7 @@ export function getOvumByOrderId(orderId) {
             .then(response => {
                 dispatch(actions.updateOvumByOrder(response.data));
             })
-            .catch(e => console.log(e));
+            .catch(e => handleError(e, dispatch));
     }
 }
 
@@ -149,7 +148,7 @@ export function getPredeterminers() {
             .then(response => {
                 dispatch(actions.updatePredeterminers(response.data));
             })
-            .catch(e => console.log(e));
+            .catch(e => handleError(e, dispatch));
     }
 }
 
@@ -160,7 +159,7 @@ export function getOrdersById(id) {
             .then(response => {
                 dispatch(actions.updateOrders(response.data));
             })
-            .catch(e => console.log(e));
+            .catch(e => handleError(e, dispatch));
     }
 }
 
@@ -171,7 +170,7 @@ export function getFreeOvumCount() {
             .then(response => {
                 dispatch(actions.updateFreeOvumCount(response.data));
             })
-            .catch(e => console.log(e));
+            .catch(e => handleError(e, dispatch));
     }
 }
 
@@ -189,14 +188,7 @@ export function bindFreeOvumToOrder(orderId, count) {
                     dispatch(actions.changeCurrentOrder({...currentOrder, processing: true}));
                 }
             })
-            .catch(e => {
-                if (e.response.status === 400)
-                    dispatch(showMessage({message: e.response.data, isError: true}));
-                else
-                    dispatch(showMessage({
-                        message: "Не удалось выделить свободные яйцеклетки для заказа", isError: true
-                    }));
-            });
+            .catch(e => handleError(e, dispatch));
     }
 }
 
@@ -210,12 +202,7 @@ export function updateOvum(ovum) {
                     dispatch(getOvumByOrderId(getState().order.currentOrder.id));
                 }
             })
-            .catch(e => {
-                if (e.response.status === 400)
-                    dispatch(showMessage({message: e.response.data, isError: true}));
-                else
-                    dispatch(showMessage({message: "Произошла какая-то...", isError: true}));
-            });
+            .catch(e => handleError(e, dispatch));
     }
 }
 
@@ -231,12 +218,7 @@ export function startFirstStep(orderId) {
                     dispatch(getUsingListByOrderId(orderId));
                 }
             })
-            .catch(e => {
-                if (e.response.status === 400)
-                    dispatch(showMessage({message: e.response.data, isError: true}));
-                else
-                    dispatch(showMessage({message: "Произошла какая-то...", isError: true}));
-            });
+            .catch(e => handleError(e, dispatch));
     }
 }
 
@@ -252,12 +234,7 @@ export function startSecondStep(orderId) {
                     dispatch(getUsingListByOrderId(orderId));
                 }
             })
-            .catch(e => {
-                if (e.response.status === 400)
-                    dispatch(showMessage({message: e.response.data, isError: true}));
-                else
-                    dispatch(showMessage({message: "Невозможно выполнить первый этап...", isError: true}));
-            });
+            .catch(e => handleError(e, dispatch));
     }
 }
 
@@ -270,12 +247,7 @@ export function removeExtraOvum(orderId) {
                     dispatch(getOvumByOrderId(orderId));
                 }
             })
-            .catch(e => {
-                if (e.response.status === 400)
-                    dispatch(showMessage({message: e.response.data, isError: true}));
-                else
-                    dispatch(showMessage({message: "Произошла какая-то...", isError: true}));
-            });
+            .catch(e => handleError(e, dispatch));
     }
 }
 
@@ -292,23 +264,18 @@ export function startThirdStep(orderId) {
                     dispatch(getAddingListByOrderId(orderId));
                 }
             })
-            .catch(e => {
-                if (e.response.status === 400)
-                    dispatch(showMessage({message: e.response.data, isError: true}));
-                else
-                    dispatch(showMessage({message: "Невозможно выполнить третий этап...", isError: true}));
-            });
+            .catch(e => handleError(e, dispatch));
     }
 }
 
 export function getMovingListByOrderId(orderId) {
     return function (dispatch) {
         axios
-            .get(`/admin/move-ovum-container-to-room/order/${orderId}`, {orderId})
+            .get(`/admin/move-ovum-container-to-room/order/${orderId}`)
             .then(response => {
                 dispatch(actions.updateMovingByOrder(response.data));
             })
-            .catch(e => console.log(e));
+            .catch(e => handleError(e, dispatch));
     }
 }
 
@@ -319,7 +286,7 @@ export function getUsingListByOrderId(orderId) {
             .then(response => {
                 dispatch(actions.updateUsingByOrder(response.data));
             })
-            .catch(e => console.log(e));
+            .catch(e => handleError(e, dispatch));
     }
 }
 
@@ -330,7 +297,7 @@ export function getAddingListByOrderId(orderId) {
             .then(response => {
                 dispatch(actions.updateAddingByOrder(response.data));
             })
-            .catch(e => console.log(e));
+            .catch(e => handleError(e, dispatch));
     }
 }
 
@@ -351,11 +318,15 @@ export function removeOrderById(orderId) {
                     }));
                 }
             })
-            .catch(e => {
-                if (e.response.status === 400)
-                    dispatch(showMessage({message: e.response.data, isError: true}));
-                else
-                    dispatch(showMessage({message: "Произошла какая-то...", isError: true}));
-            });
+            .catch(e => handleError(e, dispatch));
     }
+}
+
+function handleError(e, dispatch) {
+    if (e.response.status === 400)
+        dispatch(showMessage({message: "Ошибка пользовательского ввода", isError: true}));
+    if (e.response.status === 404)
+        dispatch(showMessage({message: "Выбранное вами сущее не существует", isError: true}));
+    if (e.response.status === 500)
+        dispatch(showMessage({message: "Произошла какая-то...", isError: true}));
 }
