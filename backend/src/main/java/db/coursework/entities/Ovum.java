@@ -21,7 +21,6 @@ public class Ovum {
     @JoinColumn(name = "order_id")
     private Order order;
 
-
     @NotNull
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "volunteer_id")

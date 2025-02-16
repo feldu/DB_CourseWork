@@ -33,6 +33,10 @@ public class OvumService {
         return ovumRepository.findAllOvumByOrder_Id(id);
     }
 
+    public List<Ovum> findAllByHumanId(Long id) {
+        return ovumRepository.findAllByVolunteerId(id);
+    }
+
     public List<Ovum> findAllOvumByOrder_Id(Long orderId) {
         return ovumRepository.findAllOvumByOrder_Id(orderId);
     }

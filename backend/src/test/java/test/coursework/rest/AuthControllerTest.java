@@ -27,7 +27,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static test.coursework.constants.ApiConstants.AUTH;
 import static test.coursework.constants.ApiConstants.SINGUP;
 
-@RunWith(SpringRunner.class)
 @AutoConfigureMockMvc
 @SpringBootTest(classes = {DbCourseworkApplication.class})
 @RequiredArgsConstructor

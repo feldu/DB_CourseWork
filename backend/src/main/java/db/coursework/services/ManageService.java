@@ -2,6 +2,7 @@ package db.coursework.services;
 
 import db.coursework.entities.*;
 import db.coursework.entities.enums.OvumContainerName;
+import db.coursework.repositories.HumanRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,14 +19,16 @@ public class ManageService {
     private final RoleService roleService;
     private final UserService userService;
     private final MaterialService materialService;
+    private final HumanRepository humanRepository;
 
     @Autowired
-    public ManageService(OvumService ovumService, OvumContainerService ovumContainerService, RoleService roleService, UserService userService, MaterialService materialService) {
+    public ManageService(OvumService ovumService, OvumContainerService ovumContainerService, RoleService roleService, UserService userService, MaterialService materialService, HumanRepository humanRepository) {
         this.ovumService = ovumService;
         this.ovumContainerService = ovumContainerService;
         this.roleService = roleService;
         this.userService = userService;
         this.materialService = materialService;
+        this.humanRepository = humanRepository;
     }
 
     @Transactional
@@ -37,6 +40,16 @@ public class ManageService {
             ovum.setVolunteer(human);
             ovumService.save(ovum);
         }
+    }
+
+    @Transactional
+    public void addFreeOvum(Human human) {
+        if (ovumService.findAllByHumanId(human.getId()).size() > 1) {
+            throw new RuntimeException("Яйцеклетка уже была вырезана");
+        }
+        Ovum ovum = new Ovum();
+        ovum.setVolunteer(human);
+        ovumService.save(ovum);
     }
 
     @Transactional
@@ -59,6 +72,16 @@ public class ManageService {
             material.setQualityPartsPercentage(100);
             materialService.save(material);
         }
+    }
+
+    @Transactional
+    public void addMaterial(int size) {
+        Material material = new Material();
+        material.setName("Свиной лоскут");
+        material.setRequiredSize(size);
+        material.setCurrentSize(size);
+        material.setQualityPartsPercentage(100);
+        materialService.save(material);
     }
 
     @Transactional

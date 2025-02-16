@@ -1,10 +1,13 @@
 package db.coursework.controllers;
 
+import db.coursework.entities.Human;
 import db.coursework.services.ManageService;
+import db.coursework.services.UserService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,13 +18,11 @@ import java.util.Map;
 @Slf4j
 @Controller
 @RequestMapping("/admin/manage")
+@RequiredArgsConstructor
 public class ManageController {
     private final ManageService manageService;
+    private final UserService userService;
 
-    @Autowired
-    public ManageController(ManageService manageService) {
-        this.manageService = manageService;
-    }
 
     @PostMapping("/new-admin")
     public ResponseEntity<String> addAdmin(@RequestBody Map<String, String> payload) {
@@ -38,6 +39,14 @@ public class ManageController {
         return new ResponseEntity<>("Яйцеклетки добавлены", HttpStatus.OK);
     }
 
+    @PostMapping("/add_solo_ovum")
+    public ResponseEntity<String> addOvum( Authentication authentication) {
+        Human human = userService.loadUserByUsername(authentication.getName()).getHuman();
+        manageService.addFreeOvum(human);
+        log.debug("Было добавлена яйцеклетка  добровольца {}", human.getFullname());
+        return new ResponseEntity<>("Яйцеклетка добавлена", HttpStatus.OK);
+    }
+
     @PostMapping("/add_containers")
     public ResponseEntity<String> addOvumContainers(@RequestBody Map<String, String> payload) {
         Long count = Long.valueOf(payload.get("count"));
@@ -51,5 +60,12 @@ public class ManageController {
         Long count = Long.valueOf(payload.get("count"));
         manageService.addMaterial(count);
         return new ResponseEntity<>("Материалы добавлены", HttpStatus.OK);
+    }
+
+    @PostMapping("/add_solo_material")
+    public ResponseEntity<String> addMaterialWithSize(@RequestBody Map<String, String> payload) {
+        int size = Integer.valueOf(payload.get("size"));
+        manageService.addMaterial(size);
+        return new ResponseEntity<>("Материал добавлен", HttpStatus.OK);
     }
 }

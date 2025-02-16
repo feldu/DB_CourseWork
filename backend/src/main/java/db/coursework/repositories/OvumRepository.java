@@ -1,5 +1,6 @@
 package db.coursework.repositories;
 
+import db.coursework.entities.Human;
 import db.coursework.entities.Ovum;
 import db.coursework.entities.OvumContainer;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -28,6 +29,8 @@ public interface OvumRepository extends JpaRepository<Ovum, Long> {
     Long countAllByOrder_Id(Long orderId);
 
     List<Ovum> findAllByOrder_Id(Long id);
+
+    List<Ovum> findAllByVolunteerId(Long id);
 
     @Transactional
     @Modifying(clearAutomatically = true)

@@ -25,4 +25,7 @@ public class HumanService {
         return humanRepository.findById(id).orElseThrow(() -> new DataNotFoundException("Human not found"));
     }
 
+    public Human save(Human human){
+        return humanRepository.save(human);
+    }
 }
