@@ -697,7 +697,7 @@ CREATE TRIGGER checkSurgeonRoleAppointment
     FOR EACH ROW
 EXECUTE PROCEDURE checkSurgeonRole();
 
-CREATE TRIGGER checkReviewerRoleAppointment
+CREATE TRIGGER checkReviewerRoleAppointmentx
     BEFORE INSERT OR UPDATE
     ON appointment
     FOR EACH ROW
@@ -744,6 +744,11 @@ EXECUTE PROCEDURE checkVolunteerRole();
 
 --#################################################
 
+INSERT INTO "future_job_type" (name) 
+VALUES  ('HIGH_TEMP'),
+        ('LOW_TEMP'),
+        ('HIGH_OXY'),
+        ('LOW_OXY');
 INSERT INTO "role" (name)
 VALUES ('ROLE_ADMIN'),
        ('ROLE_PREDETERMINER'),
