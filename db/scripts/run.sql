@@ -697,7 +697,7 @@ CREATE TRIGGER checkSurgeonRoleAppointment
     FOR EACH ROW
 EXECUTE PROCEDURE checkSurgeonRole();
 
-CREATE TRIGGER checkReviewerRoleAppointmentx
+CREATE TRIGGER checkReviewerRoleAppointment
     BEFORE INSERT OR UPDATE
     ON appointment
     FOR EACH ROW
