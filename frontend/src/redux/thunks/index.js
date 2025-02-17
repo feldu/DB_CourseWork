@@ -130,6 +130,20 @@ export function addOrder(order) {
     }
 }
 
+export function addOvum() {
+    return function (dispatch) {
+        axios
+            .post('/volunteer/ovum')
+            .then(response => {
+                if (response.status === 200)
+                    dispatch(showMessage({message: "Вы записались и ваша яйцеклетка будет вырезана навеки вечные", isError: false}));
+                else
+                    dispatch(showMessage({message: "Ваша яйцеклетка уже вылизана димоном", isError: true}));
+            })
+            .catch(e => handleError(e, dispatch));
+    }
+}
+
 export function getOvumByOrderId(orderId) {
     return function (dispatch) {
         axios

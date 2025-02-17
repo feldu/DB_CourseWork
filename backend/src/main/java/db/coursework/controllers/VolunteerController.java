@@ -23,7 +23,11 @@ public class VolunteerController {
     @PostMapping("/ovum")
     public ResponseEntity<String> addOvum(Authentication authentication) {
         Human human = userService.loadUserByUsername(authentication.getName()).getHuman();
-        manageService.addFreeOvum(human);
+        try {
+            manageService.addFreeOvum(human);
+        } catch (RuntimeException e) {
+            return new ResponseEntity<>("Пошёл нафик", HttpStatus.NO_CONTENT);
+        }
         log.debug("Было добавлена яйцеклетка  добровольца {}", human.getFullname());
         return new ResponseEntity<>("Яйцеклетка добавлена", HttpStatus.OK);
     }

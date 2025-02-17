@@ -23,7 +23,6 @@ export default function SignInForm() {
     const rolesOptions = [
         {value: "PREDETERMINER", label: "Предопределитель"},
         {value: "VOLUNTEER", label: "Доброволец"},
-        {value: "REVIEWER", label: "Эксперт"},
     ];
 
     if (authInfo.message !== null && authInfo.isError === false) navigate("/auth/signin");

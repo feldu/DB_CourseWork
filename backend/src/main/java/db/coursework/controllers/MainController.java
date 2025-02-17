@@ -20,6 +20,12 @@ public class MainController {
         return "/index.html";
     }
 
+    @GetMapping("/volunteer")
+    public String vulva() { return "/index.html";}
+
+    @GetMapping("/reviewer")
+    public String dimon() { return "/index.html";}
+
     @GetMapping("/admin")
     public String admin() {
         return "/index.html";
