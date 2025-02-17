@@ -1,4 +1,4 @@
-package db.coursework.model.login;
+package db.coursework.model.auth;
 
 import db.coursework.model.Component;
 import lombok.AllArgsConstructor;
@@ -7,17 +7,19 @@ import lombok.NoArgsConstructor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
+import static db.coursework.utils.WaitUtils.waitIfNeed;
+
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
 public class LoginForm extends Component {
-    @FindBy(xpath = "/html/body/app-root/app-login/div/mat-card/mat-card-content/form/mat-form-field[1]/div/div[1]/div/input")
+    @FindBy(xpath = "/html/body/div/div/div/div/div[2]/form/div[1]/input")
     private WebElement loginInput;
 
-    @FindBy(xpath = "/html/body/app-root/app-login/div/mat-card/mat-card-content/form/mat-form-field[2]/div/div[1]/div/input")
+    @FindBy(xpath = "/html/body/div/div/div/div/div[2]/form/div[2]/div/input")
     private WebElement passwordInput;
 
-    @FindBy(xpath = "/html/body/app-root/app-login/div/mat-card/mat-card-content/form/button")
+    @FindBy(xpath = "/html/body/div/div/div/div/div[2]/form/button")
     private WebElement signInButton;
 
     public void setLogin(String login) {
@@ -33,9 +35,12 @@ public class LoginForm extends Component {
     }
 
     public void logIn(String login, String password) {
-        driver.get(baseUrl + "/login");
+        driver.get(baseUrl + "/auth/signin");
+        waitIfNeed();
         setLogin(login);
+        waitIfNeed();
         setPassword(password);
+        waitIfNeed();
         clickSignInButton();
     }
 }

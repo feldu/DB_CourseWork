@@ -1,27 +1,32 @@
 package db.coursework;
 
 
-import db.coursework.model.login.LoginForm;
-import db.coursework.utils.PropUtils;
+import db.coursework.model.auth.LoginForm;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.openqa.selenium.By;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class LoginTest extends SeleniumTest {
 
+    private LoginForm loginForm;
+
     @BeforeEach
-    public void init() {
-        driver.get(baseUrl + "/login");
+    void setup() {
+        System.setProperty("webdriver.chrome.driver", "path/to/your/chromedriver.exe"); // Укажите путь к вашему chromedriver
+        loginForm = new LoginForm(); // Инициализация формы входа
     }
 
     @Test
-    public void successLogin() {
-        LoginForm loginForm = new LoginForm();
-        assertTrue(driver.getCurrentUrl().contains("/login"));
+    void testSuccessfulLogin() throws InterruptedException {
+        String username = "admin";
+        String password = "admin";
 
-        loginForm.logIn(PropUtils.get("auth.admin.login"), PropUtils.get("auth.admin.password"));
-        assertTrue(driver.getCurrentUrl().contains("/main"));
+        loginForm.logIn(username, password);
+
+        //проверяем что появилась кнопка выхода
+        assertTrue(driver.findElement(By.xpath("//*[@id=\"root\"]/div/nav/button")).isDisplayed());
     }
-
 }
+

@@ -1,8 +1,13 @@
-package db.coursework.services;
+package java.db.coursework.services;
 
 import db.coursework.entities.*;
 import db.coursework.entities.enums.OvumContainerName;
 import db.coursework.repositories.HumanRepository;
+import db.coursework.services.MaterialService;
+import db.coursework.services.OvumContainerService;
+import db.coursework.services.OvumService;
+import db.coursework.services.RoleService;
+import db.coursework.services.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,10 +19,10 @@ import java.util.Collections;
 @Service
 public class ManageService {
 
-    private final OvumService ovumService;
+    private final db.coursework.services.OvumService ovumService;
     private final OvumContainerService ovumContainerService;
-    private final RoleService roleService;
-    private final UserService userService;
+    private final db.coursework.services.RoleService roleService;
+    private final db.coursework.services.UserService userService;
     private final MaterialService materialService;
     private final HumanRepository humanRepository;
 

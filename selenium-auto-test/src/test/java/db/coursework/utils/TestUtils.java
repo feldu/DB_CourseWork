@@ -1,6 +1,6 @@
 package db.coursework.utils;
 
-import db.coursework.model.login.LoginForm;
+import db.coursework.model.auth.LoginForm;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
