@@ -15,7 +15,7 @@ export default function AuthHeader({buttonText, path}) {
             color="white"
         >
             <Heading as="h1" size="lg" letterSpacing={"tighter"}>
-                <Text>Курсовая работа по ИСБД</Text>
+                <Text>thISIS ANALyze Reality</Text>
             </Heading>
             <Button
                 variant="outline"

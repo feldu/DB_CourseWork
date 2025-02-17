@@ -25,6 +25,12 @@ public class LoginSuccessHandler extends SavedRequestAwareAuthenticationSuccessH
         } else if (user.hasRole("ROLE_PREDETERMINER")) {
             roleName = "PREDETERMINER";
             redirectURL = "/user";
+        } else if (user.hasRole("ROLE_REVIEWER")) {
+            roleName = "REVIEWER";
+            redirectURL = "/reviewer";
+        } else if (user.hasRole("ROLE_VOLUNTEER")) {
+            roleName = "VOLUNTEER";
+            redirectURL = "/volunteer";
         }
         log.debug("user {} has role {}", user, roleName);
         response.sendRedirect(redirectURL);

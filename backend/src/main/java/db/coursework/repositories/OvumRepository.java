@@ -29,6 +29,8 @@ public interface OvumRepository extends JpaRepository<Ovum, Long> {
 
     List<Ovum> findAllByOrder_Id(Long id);
 
+    List<Ovum> findAllByVolunteerId(Long id);
+
     @Transactional
     @Modifying(clearAutomatically = true)
     @Query(value = "update ovum SET isBud = :isBud, " +
