@@ -130,6 +130,21 @@ export function addOrder(order) {
     }
 }
 
+export function addMaterial(material) {
+    return function (dispatch) {
+        axios
+            .post('/reviewer/material', {
+                ...material,
+            })
+            .then(response => {
+                if (response.status === 200) {
+                    dispatch(showMessage({message: "Ваша свинья отправлена", isError: false}));
+                }
+            })
+            .catch(e => handleError(e, dispatch));
+    }
+}
+
 export function addOvum() {
     return function (dispatch) {
         axios

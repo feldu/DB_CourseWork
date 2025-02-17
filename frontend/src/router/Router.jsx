@@ -7,6 +7,7 @@ import SignInPage from "../pages/AuthPages/SignInPage";
 import SignUpPage from "../pages/AuthPages/SignUpPage";
 import AdminPage from "../pages/AdminPage/AdminPage";
 import VolunteerPage from "../pages/VolunteerPage/VolunteerPage";
+import ReviewerPage from "../pages/ReviewerPage/ReviewerPage";
 
 
 export function Router() {
@@ -17,7 +18,7 @@ export function Router() {
                 <Route path='/auth/signup/*' element={<SignUpPage/>}/>
                 <Route path='/user' element={<UserPage/>}/>
                 <Route path='/volunteer' element={<VolunteerPage/>}/>
-                <Route path='/reviewer' element={<UserPage/>}/>
+                <Route path='/reviewer' element={<ReviewerPage/>}/>
                 <Route path='/admin' element={<AdminPage/>}/>
             </Routes>
         </BrowserRouter>
