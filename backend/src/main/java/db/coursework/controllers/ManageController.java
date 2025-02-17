@@ -39,14 +39,6 @@ public class ManageController {
         return new ResponseEntity<>("Яйцеклетки добавлены", HttpStatus.OK);
     }
 
-    @PostMapping("/add_solo_ovum")
-    public ResponseEntity<String> addOvum( Authentication authentication) {
-        Human human = userService.loadUserByUsername(authentication.getName()).getHuman();
-        manageService.addFreeOvum(human);
-        log.debug("Было добавлена яйцеклетка  добровольца {}", human.getFullname());
-        return new ResponseEntity<>("Яйцеклетка добавлена", HttpStatus.OK);
-    }
-
     @PostMapping("/add_containers")
     public ResponseEntity<String> addOvumContainers(@RequestBody Map<String, String> payload) {
         Long count = Long.valueOf(payload.get("count"));
@@ -60,12 +52,5 @@ public class ManageController {
         Long count = Long.valueOf(payload.get("count"));
         manageService.addMaterial(count);
         return new ResponseEntity<>("Материалы добавлены", HttpStatus.OK);
-    }
-
-    @PostMapping("/add_solo_material")
-    public ResponseEntity<String> addMaterialWithSize(@RequestBody Map<String, String> payload) {
-        int size = Integer.valueOf(payload.get("size"));
-        manageService.addMaterial(size);
-        return new ResponseEntity<>("Материал добавлен", HttpStatus.OK);
     }
 }
