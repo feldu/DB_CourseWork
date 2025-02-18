@@ -7,15 +7,16 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 @Testcontainers
-public class TestContainerStarter {
+public abstract class TestContainerStarter {
+
     @Container
-    protected static final PostgreSQLContainer<?> postgresContainer;
+    protected static final PostgreSQLContainer<?> postgresContainer = new PostgreSQLContainer<>("postgres:15-alpine")
+            .withDatabaseName("testdb")
+            .withUsername("test")
+            .withPassword("test");
 
     static {
-        postgresContainer = new PostgreSQLContainer<>("postgres:15-alpine")
-                .withDatabaseName("testdb")
-                .withUsername("test")
-                .withPassword("test");
+        postgresContainer.start(); // Явный запуск контейнера
     }
 
     @DynamicPropertySource

@@ -15,6 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 import test.coursework.TestContainerStarter;
 
@@ -22,12 +24,12 @@ import static org.hamcrest.Matchers.containsString;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static test.coursework.constants.ApiConstants.AUTH;
-import static test.coursework.constants.ApiConstants.SINGUP;
+import static test.coursework.constants.ApiConstants.*;
 
 @AutoConfigureMockMvc
 @SpringBootTest(classes = {DbCourseworkApplication.class})
 @RequiredArgsConstructor
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class AuthControllerTest extends TestContainerStarter {
 
     @Autowired
@@ -35,6 +37,8 @@ public class AuthControllerTest extends TestContainerStarter {
 
     @Autowired
     private UserService userService;
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     private Role role;
     private Human human;
@@ -49,7 +53,7 @@ public class AuthControllerTest extends TestContainerStarter {
     @BeforeEach
     public void setup() {
         // Настройка мока Role
-        role = new Role("PREDETERMINER");
+        role = new Role("ROLE_PREDETERMINER");
 
         // Настройка мока Human
         human = new Human();
@@ -60,7 +64,7 @@ public class AuthControllerTest extends TestContainerStarter {
         user = new User();
         user.setId(1L);
         user.setUsername("testuser");
-        user.setPassword("password");
+        user.setPassword(bCryptPasswordEncoder.encode("test"));
         user.setHuman(human);
     }
 
@@ -70,7 +74,7 @@ public class AuthControllerTest extends TestContainerStarter {
         // Выполнение POST-запроса
         mockMvc.perform(post(AUTH + SINGUP)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"fullname\":\"Test User\",\"username\":\"testuser\",\"password\":\"password\",\"role\":\"DEFAULT_ROLE\"}"))
+                        .content("{\"fullname\":\"Test User\",\"username\":\"testuser\",\"password\":\"test\",\"role\":\"DEFAULT_ROLE\"}"))
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("Пользователь зарегистрирован. Войдите :)")));
     }
@@ -78,13 +82,12 @@ public class AuthControllerTest extends TestContainerStarter {
     @Test
     public void testRegisterUserAlreadyExists() throws Exception {
         roleRepository.save(role);
-        humanRepository.save(human);
-        userRepository.save(user);
+        userService.saveUser(user);
 
         // Выполнение POST-запроса
         mockMvc.perform(post(AUTH + SINGUP)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"fullname\":\"Test User\",\"username\":\"testuser\",\"password\":\"password\",\"role\":\"DEFAULT_ROLE\"}"))
+                        .content("{\"fullname\":\"Test User\",\"username\":\"testuser\",\"password\":\"test\",\"role\":\"DEFAULT_ROLE\"}"))
                 .andExpect(status().isBadRequest())
                 .andExpect(content().string(containsString("Пользователь с таким именем уже существует")));
     }
