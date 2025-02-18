@@ -61,7 +61,7 @@ export default function ReviewerPage() {
             <Box p={2} px={5} borderWidth={1} borderRadius={14} boxShadow="lg" w="100%" maxW={500}>
                 <Box textAlign="center">
                     <Heading size="lg">Оценка свиной туши</Heading>
-                    <Text>Свиная туша <b>BIG-FAT-PIG-L1488</b> прибыла в размере <b>{randomPig} кв.м.</b></Text>
+                    <Text>Свиная туша <b>LITTLE-STUPID-PIG</b> прибыла в размере <b>{randomPig} кв.м.</b></Text>
                 </Box>
                 {error && <AlertMessage status="error" message={errorMsg} maxW="100%"/>}
                 <Box my={4} textAlign="left">

@@ -37,7 +37,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 //Доступ только для пользователей с ролью Администратор
                 .antMatchers("/admin/**").hasRole("ADMIN")
                 //Доступ только для пользователей с ролью Предопределителя
-                .antMatchers("/user/**").hasRole("PREDETERMINER")
+                .antMatchers("/user/**").hasAnyRole("PREDETERMINER", "ADMIN")
                 //Доступ только для пользователей с ролью Добровольца
                 .antMatchers("/volunteer/**").hasRole("VOLUNTEER")
                 //Доступ только для пользователей с ролью Добровольца

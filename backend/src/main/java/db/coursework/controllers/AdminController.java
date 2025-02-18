@@ -103,7 +103,7 @@ public class AdminController {
             useMachineByOvumContainerList.addAll(useMachineForCurrentOvumContainer);
         }
         List<UseMachineByOvumContainerDTO> useDTO = useMachineByOvumContainerList.stream().map(entry -> new UseMachineByOvumContainerDTO(entry.getMachine(), entry.getOvumContainer(), entry.getId().getStartTime(), entry.getEndTime(), entry.getTotalBudsCount())).collect(Collectors.toList());
-        log.debug("Извлечено {} записей для {} контейнеров", useMachineByOvumContainerList.size(), ovumContainers.size());
+        log.debug("Машины: Извлечено {} записей для {} контейнеров", useMachineByOvumContainerList.size(), ovumContainers.size());
         return new ResponseEntity<>(useDTO, HttpStatus.OK);
     }
 
@@ -118,7 +118,7 @@ public class AdminController {
             moveOvumContainerToRoomList.addAll(moveForCurrentOvumContainer);
         }
         List<MoveOvumContainerToRoomDTO> moveDTO = moveOvumContainerToRoomList.stream().map(entry -> new MoveOvumContainerToRoomDTO(entry.getOvumContainer(), entry.getRoom(), entry.getId().getArrivalTime())).collect(Collectors.toList());
-        log.debug("Извлечено {} записей для {} контейнеров", moveOvumContainerToRoomList.size(), ovumContainers.size());
+        log.debug("Перемещение: Извлечено {} записей для {} контейнеров", moveOvumContainerToRoomList.size(), ovumContainers.size());
         return new ResponseEntity<>(moveDTO, HttpStatus.OK);
     }
 
@@ -133,7 +133,7 @@ public class AdminController {
             addMaterialToOvumContainerList.addAll(addMaterialToOvumContainers);
         }
         List<AddMaterialToOvumContainerDTO> addDTO = addMaterialToOvumContainerList.stream().map(entry -> new AddMaterialToOvumContainerDTO(entry.getMaterial(), entry.getOvumContainer(), entry.getInsertionTime())).collect(Collectors.toList());
-        log.debug("Извлечено {} записей для {} контейнеров", addMaterialToOvumContainerList.size(), ovumContainers.size());
+        log.debug("Добавление материала: Извлечено {} записей для {} контейнеров", addMaterialToOvumContainerList.size(), ovumContainers.size());
         return new ResponseEntity<>(addDTO, HttpStatus.OK);
     }
 

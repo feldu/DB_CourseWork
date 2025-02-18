@@ -153,7 +153,7 @@ export function addOvum() {
                 if (response.status === 200)
                     dispatch(showMessage({message: "Вы записались и ваша яйцеклетка будет вырезана навеки вечные", isError: false}));
                 else
-                    dispatch(showMessage({message: "Ваша яйцеклетка уже вылизана димоном", isError: true}));
+                    dispatch(showMessage({message: "Ваша яйцеклетка уже вылизана", isError: true}));
             })
             .catch(e => handleError(e, dispatch));
     }
