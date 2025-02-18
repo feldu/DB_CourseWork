@@ -27,8 +27,12 @@ import org.springframework.test.web.servlet.ResultMatcher;
 import test.coursework.TestContainerStarter;
 
 import java.util.Collections;
+import java.util.List;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -82,7 +86,6 @@ public class UserOrderControllerTest extends TestContainerStarter {
         order.setHumanNumber(10);
         order.setCaste(OrderCaste.Alpha);
         order.setFutureJobTypes(Collections.singletonList(futureJobType));
-        order.setProcessing(true);
     }
 
     @Test
@@ -92,14 +95,17 @@ public class UserOrderControllerTest extends TestContainerStarter {
         humanService.save(human);
         userService.saveUser(user);
 
-        String orderDtoJson = "{\"id\":123,\"humanNumber\":10,\"caste\":\"Alpha\",\"futureJobTypes\":[\"HIGH_TEMP\"], \"isProcessing\": \"true\"}";
+        String orderDtoJson = "{\"id\":1,\"humanNumber\":10,\"caste\":\"Alpha\",\"futureJobTypes\":[\"HIGH_TEMP\"]}";
 
         mockMvc.perform(post("/user/orders")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(orderDtoJson))
                 .andExpect(status().isOk());
 
-        assertNotNull(orderRepository.findById(order.getId()));
+        Order result = orderRepository.findById(order.getId()).get();
+        assertNotNull(result);
+        //проверяем, что заказ готов к исполнению, но еще не был выполнен:
+        assertEquals(result.isProcessing(),false);
     }
 
     @Test
