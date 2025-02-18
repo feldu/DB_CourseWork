@@ -30,17 +30,12 @@ public class AdminPage extends Component {
     @FindBy(xpath = "/html/body/div/div/nav/button")
     private WebElement exitButton;
 
-    public void setQuantityInput(String quantity) {
-        quantityInput.sendKeys(quantity);
+    public void setPredeterminerInput(String predeterminer) {
+        predeterminerInput.sendKeys(predeterminer);
     }
 
-    public void setCastSelectionInput(String cast) {
-        castSelectionInput.sendKeys(cast);
-        pressEnter();
-    }
-
-    public void setFutureJobTypeSelectionInput(String futureJobType) {
-        futureJobTypeSelectionInput.sendKeys(futureJobType);
+    public void setOrderInput(String order) {
+        orderInput.sendKeys(order);
         pressEnter();
     }
 
@@ -48,14 +43,12 @@ public class AdminPage extends Component {
         sendOrderButton.click();
     }
 
-    public void createOrder(String quantity, String cast, String futureJobType) {
+    public void processOrder(String predeterminer, String order) {
         driver.get(baseUrl + "/user");
         waitIfNeed();
-        setQuantityInput(quantity);
+        setPredeterminerInput(predeterminer);
         waitIfNeed();
-        setCastSelectionInput(cast);
-        waitIfNeed();
-        setFutureJobTypeSelectionInput(futureJobType);
+        setOrderInput(order);
         waitIfNeed();
         clickSendOrderButton();
     }
