@@ -15,7 +15,7 @@ export default function AuthHeader({buttonText, path}) {
             color="white"
         >
             <Heading as="h1" size="lg" letterSpacing={"tighter"}>
-                <Text>th<b><i>ISIS</i></b> <b><i>ANAL</i></b>yze <b><i>Real</i></b>ity</Text>
+                <Text>thISISANALyze Reality</Text>
             </Heading>
             <Button
                 variant="outline"
